@@ -1,4 +1,4 @@
-﻿services:
+services:
   backend:
     build:
       context: ./backend
@@ -69,6 +69,18 @@
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - restaurant-net
+
+  vector:
+    image: timberio/vector:latest-alpine
+    container_name: restaurant-vector
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./infra/monitoring/vector.toml:/etc/vector/vector.toml:ro
+    depends_on:
+      - backend
+      - frontend
     networks:
       - restaurant-net
 
