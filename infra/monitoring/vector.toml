@@ -1,0 +1,8 @@
+[sources.docker_logs]
+type = "docker_logs"
+include_containers = ["restaurant-backend", "restaurant-frontend"]
+
+[sinks.console]
+type = "console"
+inputs = ["docker_logs"]
+encoding.codec = "json"
