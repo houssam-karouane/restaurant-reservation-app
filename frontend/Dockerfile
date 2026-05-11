@@ -1,19 +1,22 @@
-﻿# Stage 1 : build (sera utilise par MT dans DR-11)
-FROM node:20-alpine AS builder
+﻿# ===== Build stage =====
+FROM node:22-alpine AS builder
 
 WORKDIR /app
 
-# Build placeholder pour Sprint 1 - sera complete par MT
-RUN mkdir -p /app/dist && echo "<html><body><h1>Restaurant Reservation App</h1><p>Frontend placeholder - waiting for DR-11</p></body></html>" > /app/dist/index.html
+COPY package*.json ./
 
-# Stage 2 : serve avec nginx
-FROM nginx:alpine
+RUN npm install
 
-# Copier la page placeholder depuis le builder
-COPY --from=builder /app/dist /usr/share/nginx/html
+COPY . .
 
-# Copier la config nginx
+RUN npm run build
+
+# ===== Runtime stage =====
+FROM nginx:stable-alpine
+
 COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+COPY --from=builder /app/dist/app/browser /usr/share/nginx/html
 
 EXPOSE 80
 
