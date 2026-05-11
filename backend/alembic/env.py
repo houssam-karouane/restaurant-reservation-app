@@ -1,6 +1,9 @@
 import os
 import sys
 from logging.config import fileConfig # <--- Vérifiez que cette ligne est BIEN présente
+
+from app.models.table import Table
+from app.models.review import Review
 # On force l'ajout du dossier /app au chemin de recherche
 sys.path.append("/app")
 from alembic import context
