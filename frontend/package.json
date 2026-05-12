@@ -7,6 +7,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "jest",
+    "lint": "prettier --check \"src/**/*.{ts,html,scss,css}\"",
+    "format": "prettier --write \"src/**/*.{ts,html,scss,css}\"",
     "serve:ssr:app": "node dist/app/server/server.mjs"
   },
   "private": true,

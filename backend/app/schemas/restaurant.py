@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional
 
+
 # Ce qui est commun à la lecture et à la création
 class RestaurantBase(BaseModel):
     name: str
@@ -8,9 +9,11 @@ class RestaurantBase(BaseModel):
     cuisine: str
     description: Optional[str] = None
 
+
 # Ce qu'on reçoit lors de la création (POST)
 class RestaurantCreate(RestaurantBase):
     pass
+
 
 # Ce qu'on renvoie au client (GET) - inclut l'ID généré par la DB
 class Restaurant(RestaurantBase):
