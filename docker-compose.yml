@@ -6,10 +6,13 @@
     container_name: restaurant-backend
     ports:
       - "8000:8000"
+    env_file:
+      - .env  # <--- TRÈS IMPORTANT
     environment:
-      - DATABASE_URL=postgresql://dev:devpassword@postgres:5432/restaurant
-      - REDIS_URL=redis://redis:6379
-      - SECRET_KEY=dev-secret-change-me-in-prod
+      - DATABASE_URL=${DATABASE_URL}
+      - REDIS_URL=${REDIS_URL}
+      - SECRET_KEY=${SECRET_KEY}
+      - ENVIRONMENT=${ENVIRONMENT:-development}
     volumes:
       - ./backend:/app
     depends_on:
@@ -35,6 +38,11 @@
       - "4200:80"
     depends_on:
       - backend
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:80"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
     networks:
       - restaurant-net
 
@@ -42,15 +50,15 @@
     image: postgres:16-alpine
     container_name: restaurant-postgres
     environment:
-      - POSTGRES_USER=dev
-      - POSTGRES_PASSWORD=devpassword
-      - POSTGRES_DB=restaurant
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
     ports:
       - "5432:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U dev -d restaurant"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 10s
       timeout: 5s
       retries: 5
