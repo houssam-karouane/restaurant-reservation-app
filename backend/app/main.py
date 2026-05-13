@@ -2,8 +2,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.v1.endpoints import auth
 from app.api.v1.api import api_router
-from app.db import base  # Cela force le chargement de tous les modèles
-from app.database import engine,Base
+from app.db import base  # noqa: F401  # Force le chargement de tous les modèles
+from app.database import engine, Base
+
 # On inclut le routeur global
 
 Base.metadata.create_all(bind=engine)
