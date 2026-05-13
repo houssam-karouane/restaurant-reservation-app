@@ -1,0 +1,122 @@
+@use 'sass:color' as scolor;
+@use '../../styles/tokens' as t;
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: t.$color-surface;
+  border-bottom: t.$border-default;
+}
+
+nav {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: t.$space-4 t.$space-6;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: t.$space-4;
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: t.$space-3;
+}
+
+.nav-brand a {
+  font-weight: t.$font-medium;
+  font-size: t.$text-md;
+  color: t.$color-text-primary;
+  text-decoration: none;
+  letter-spacing: t.$letter-spacing-heading;
+}
+
+.nav-brand a:hover {
+  color: t.$color-info;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: t.$space-3;
+  list-style: none;
+}
+
+.nav-links a {
+  padding: t.$space-2 t.$space-3;
+  border-radius: t.$radius-btn;
+  transition:
+    background-color 150ms ease,
+    color 150ms ease;
+  font-size: t.$text-sm;
+  color: t.$color-text-primary;
+}
+
+.nav-links a:hover {
+  background-color: t.$color-surface-muted;
+  color: t.$color-info;
+}
+
+.nav-user {
+  font-size: t.$text-sm;
+  color: t.$color-text-secondary;
+}
+
+.btn-logout {
+  background-color: t.$color-surface;
+  color: t.$color-danger;
+  border: t.$border-default;
+  border-radius: t.$radius-btn;
+  padding: t.$btn-secondary-padding;
+  font-size: 13px;
+  font-weight: t.$font-regular;
+}
+
+.btn-logout:hover:not(:disabled) {
+  background-color: t.$color-surface-muted;
+}
+
+.nav-cta {
+  display: inline-block;
+  padding: t.$btn-primary-padding;
+  font-size: t.$text-base;
+  font-weight: t.$font-medium;
+  border-radius: t.$radius-pill;
+  background-color: t.$color-text-primary;
+  color: t.$color-surface;
+  text-decoration: none;
+}
+
+.nav-cta:hover {
+  background-color: scolor.adjust(t.$color-text-primary, $lightness: 8%);
+}
+
+@media (max-width: 768px) {
+  nav {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .nav-links {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  font-size: inherit;
+  font-family: inherit;
+}

@@ -1,0 +1,105 @@
+@use '../../styles/tokens' as t;
+
+.register-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: t.$space-4;
+  background-color: t.$color-surface-muted;
+}
+
+.register-card {
+  width: 100%;
+  max-width: 480px;
+  background-color: t.$color-surface;
+  border: t.$border-default;
+  border-radius: t.$radius-modal;
+  padding: t.$card-outer-padding;
+}
+
+.register-header {
+  margin-bottom: t.$space-8;
+  text-align: center;
+}
+
+.register-header h1 {
+  font-size: t.$text-xl;
+  color: t.$color-text-primary;
+  margin-bottom: t.$space-4;
+  font-weight: t.$font-medium;
+  letter-spacing: t.$letter-spacing-heading;
+}
+
+.register-header p {
+  font-size: t.$text-sm;
+  color: t.$color-text-secondary;
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-4;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-2;
+}
+
+.form-group label {
+  margin-bottom: 0;
+}
+
+.form-group input {
+  width: 100%;
+}
+
+.form-group .error-message {
+  display: none;
+}
+
+.form-group input.ng-invalid.ng-touched ~ .error-message {
+  display: block;
+}
+
+.form-actions {
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-3;
+  margin-top: t.$space-4;
+}
+
+.register-form button {
+  width: 100%;
+}
+
+.register-footer {
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-4;
+  margin-top: t.$space-8;
+  text-align: center;
+  border-top: t.$border-muted;
+  padding-top: t.$space-6;
+}
+
+.register-footer p {
+  font-size: t.$text-sm;
+  margin: 0;
+}
+
+.register-footer a {
+  font-weight: t.$font-medium;
+}
+
+@media (max-width: 640px) {
+  .register-card {
+    padding: t.$space-8 t.$space-4;
+  }
+
+  .register-header h1 {
+    font-size: t.$text-lg;
+  }
+}

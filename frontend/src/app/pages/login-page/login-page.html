@@ -1,0 +1,55 @@
+<div class="login-container">
+  <div class="login-card">
+    <header class="login-header">
+      <h1>Welcome Back</h1>
+      <p>Sign in to your account</p>
+    </header>
+
+    <div *ngIf="errorMessage" class="alert alert-error">
+      {{ errorMessage }}
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="your@email.com"
+          autocomplete="email"
+        />
+        <div *ngIf="submitted && f['email']?.errors" class="error-text error-message">
+          {{ getErrorMessage('email') }}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          placeholder="••••••••"
+          autocomplete="current-password"
+        />
+        <div *ngIf="submitted && f['password']?.errors" class="error-text error-message">
+          {{ getErrorMessage('password') }}
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" [disabled]="loading" class="btn-primary">
+          {{ loading ? 'Signing in...' : 'Sign In' }}
+        </button>
+      </div>
+    </form>
+
+    <div class="login-footer">
+      <p class="link-text">
+        Don't have an account?
+        <a routerLink="/auth/register">Create one</a>
+      </p>
+    </div>
+  </div>
+</div>
