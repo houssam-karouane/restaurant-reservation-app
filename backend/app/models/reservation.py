@@ -6,7 +6,7 @@ from app.database import Base
 
 class Reservation(Base):
     __tablename__ = "reservations"
-    __table_args__ = {'extend_existing': True}
+    __table_args__ = {"extend_existing": True}
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"))
     restaurant_id = Column(Integer, ForeignKey("restaurants.id"))

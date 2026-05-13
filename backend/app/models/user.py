@@ -1,7 +1,8 @@
 from sqlalchemy import Column, Integer, String, Boolean
 from sqlalchemy.orm import relationship
 from app.database import Base
-from app.models.reservation import Reservation
+from app.models.reservation import Reservation  # noqa: F401
+
 
 class User(Base):
     __tablename__ = "users"

@@ -10,6 +10,7 @@ from app.schemas.user import TokenData
 # Définit où FastAPI doit aller chercher le token (le endpoint login)
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/v1/auth/login")
 
+
 def get_current_user(db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
