@@ -28,7 +28,7 @@ interface User {
   is_active: boolean;
 }
 
-const API_URL = 'http://localhost:8000/api/v1';
+const API_URL = '/api/v1';
 const TOKEN_KEY = 'auth_token';
 
 @Injectable({
