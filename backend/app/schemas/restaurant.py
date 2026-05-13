@@ -3,11 +3,9 @@ from typing import Optional, List
 from datetime import datetime
 
 
-
-
 class RestaurantBase(BaseModel):
     name: str
-    address: Optional[str] = None  # <--- Ajout de Optional et = None
+    address: Optional[str] = None
     city: Optional[str] = None
     cuisine: str
     price_range: Optional[int] = Field(None, ge=1, le=4)
@@ -47,6 +45,3 @@ class RestaurantListResponse(BaseModel):
     total: int
     page: int
     pages: int
-
-    class Config:
-        from_attributes = True
