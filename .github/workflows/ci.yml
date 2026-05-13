@@ -174,6 +174,73 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+  e2e-tests:
+    name: E2E Tests (Cypress)
+    runs-on: ubuntu-latest
+    needs: [build-images]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: tests/e2e/package-lock.json
+
+      - name: Install Cypress dependencies
+        working-directory: tests/e2e
+        run: npm ci
+
+      - name: Start full stack with Docker Compose
+        run: |
+          cp .env.example .env || true
+          docker compose up -d --build
+        env:
+          DATABASE_URL: postgresql://devuser:devpassword@restaurant-postgres:5432/restaurant_db
+          POSTGRES_USER: devuser
+          POSTGRES_PASSWORD: devpassword
+          POSTGRES_DB: restaurant_db
+          REDIS_URL: redis://restaurant-redis:6379
+          SECRET_KEY: ci-secret-key-for-tests-only
+
+      - name: Wait for services to be ready
+        run: |
+          echo "Waiting for backend..."
+          timeout 60 bash -c 'until curl -sf http://localhost:8000/health; do sleep 2; done'
+          echo "Backend ready!"
+          echo "Waiting for frontend..."
+          timeout 60 bash -c 'until curl -sf http://localhost:4200; do sleep 2; done'
+          echo "Frontend ready!"
+
+      - name: Run Cypress E2E tests
+        working-directory: tests/e2e
+        run: npx cypress run --headless --browser chrome
+        env:
+          CYPRESS_BASE_URL: http://localhost:4200
+          CYPRESS_API_URL: http://localhost:8000/api/v1
+
+      - name: Upload screenshots on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-screenshots
+          path: tests/e2e/cypress/screenshots
+          retention-days: 7
+
+      - name: Upload videos
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-videos
+          path: tests/e2e/cypress/videos
+          retention-days: 7
+
+      - name: Stop Docker Compose
+        if: always()
+        run: docker compose down
+
   ci:
     name: CI Status
     runs-on: ubuntu-latest

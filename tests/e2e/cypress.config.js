@@ -5,7 +5,24 @@ module.exports = defineConfig({
     setupNodeEvents(on, config) {
       // implement node event listeners here
     },
-    baseUrl: 'http://localhost:4200', // Port frontend
-    supportFile: false
+    baseUrl: 'http://localhost:4200',       // Port Angular (Frontend)
+    supportFile: 'cypress/support/e2e.js', // Charge les custom commands
+    specPattern: 'cypress/e2e/**/*.cy.js',
+
+    // Screenshots automatiques en cas d'échec
+    screenshotOnRunFailure: true,
+    screenshotsFolder: 'cypress/screenshots',
+
+    // Vidéos enregistrées pour chaque run
+    video: true,
+    videosFolder: 'cypress/videos',
+
+    // Timeouts
+    defaultCommandTimeout: 8000,
+    pageLoadTimeout: 30000,
+  },
+
+  env: {
+    apiUrl: 'http://localhost:8000/api/v1', // URL Backend FastAPI
   },
 });

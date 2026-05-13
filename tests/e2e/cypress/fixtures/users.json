@@ -1,0 +1,9 @@
+{
+  "testUser": {
+    "username": "testuser_dr27",
+    "full_name": "Test User DR27",
+    "email": "testuser.dr27@example.com",
+    "password": "TestPassword123!",
+    "confirmPassword": "TestPassword123!"
+  }
+}
