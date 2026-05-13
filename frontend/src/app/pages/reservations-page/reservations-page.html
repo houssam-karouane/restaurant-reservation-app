@@ -1,0 +1,26 @@
+<div class="reservations-page">
+  <div class="reservations-inner">
+    <div class="reservations-panel">
+      <h1 class="reservations-title">My Reservations</h1>
+
+      <div *ngIf="loading" class="reservations-state">
+        <p>Loading reservations...</p>
+      </div>
+
+      <div *ngIf="!loading && reservations.length === 0" class="reservations-state">
+        <p>You have no reservations yet.</p>
+      </div>
+
+      <div *ngIf="!loading && reservations.length > 0" class="reservations-list">
+        <div
+          *ngFor="let reservation of reservations; trackBy: trackByReservationId"
+          class="reservation-row"
+        >
+          <div class="reservation-row-inner">
+            <span class="reservation-placeholder">Reservation {{ reservation.id }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

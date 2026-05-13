@@ -1,4 +1,7 @@
-﻿# Restaurant Reservation App
+# Restaurant Reservation App
+
+[![CI Pipeline](https://github.com/houssam-karouane/restaurant-reservation-app/actions/workflows/ci.yml/badge.svg)](https://github.com/houssam-karouane/restaurant-reservation-app/actions/workflows/ci.yml)
+
 
 Application de reservation de restaurants avec recommandations personnalisees.
 Projet DevOps - Pipeline CI/CD/Monitoring complet.
@@ -90,3 +93,5 @@ Voir [`CONTRIBUTING.md`](./CONTRIBUTING.md) pour les regles completes.
 ## Licence
 
 MIT
+
+<!-- Test tracking DR-29 - verifier liaison Jira -->
