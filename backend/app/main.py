@@ -2,7 +2,6 @@ import logging
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.api.v1.endpoints import auth
 from app.api.v1.api import api_router
 from app.db import base  # noqa: F401  # Force le chargement de tous les modèles
 from app.database import SessionLocal, engine, Base
@@ -10,25 +9,23 @@ from app.seeds.seed_restaurants import seed_restaurants
 
 logger = logging.getLogger("uvicorn.error")
 
-
 app = FastAPI(
     title="Restaurant Reservation API",
     description="API REST pour la gestion des réservations et recommandations de restaurants",
     version="1.0.0",
 )
-app.include_router(api_router, prefix="/api/v1")
-# ...
-api_router.include_router(auth.router, prefix="/auth", tags=["auth"])
-
 
 # Configuration CORS (nécessaire pour que le frontend Angular puisse appeler l'API)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # À restreindre en production (ex: Vercel URL)
+    allow_origins=["http://localhost:4200"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Inclusion du routeur global /api/v1
+app.include_router(api_router, prefix="/api/v1")
 
 
 @app.on_event("startup")
@@ -64,7 +61,7 @@ def health_check():
     return {
         "status": "ok",
         "version": "1.0.0",
-        "database": "connected",  # Vous affinerez cela avec SQLAlchemy plus tard
+        "database": "connected",
     }
 
 
