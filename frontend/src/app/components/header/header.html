@@ -10,7 +10,9 @@
       </li>
       <ng-container *ngIf="headerVm$ | async as vm">
         <ng-container *ngIf="vm.isAuthenticated; else notAuthenticated">
-          <li class="nav-user">Welcome, {{ vm.currentUser?.name || 'Guest' }}</li>
+          <li class="nav-user">
+            Welcome, {{ vm.currentUser?.full_name || vm.currentUser?.username || 'Guest' }}
+          </li>
           <li>
             <a routerLink="/profile">Profile</a>
           </li>

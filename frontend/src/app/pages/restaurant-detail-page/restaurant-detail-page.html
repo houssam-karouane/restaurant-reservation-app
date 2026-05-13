@@ -1,0 +1,153 @@
+@if (loading()) {
+  <div class="detail-page__center">
+    <app-spinner />
+  </div>
+} @else if (loadError()) {
+  <div class="detail-page__center">
+    <app-inline-alert [message]="loadError()!" />
+    <a routerLink="/restaurants" class="btn-secondary">← Retour aux restaurants</a>
+  </div>
+} @else if (restaurant(); as r) {
+  <article class="detail-page">
+    <a routerLink="/restaurants" class="detail-page__back">← Tous les restaurants</a>
+
+    <header class="detail-page__hero">
+      <div class="detail-page__hero-image" aria-hidden="true">
+        @if (r.image_url && !heroImageFailed()) {
+          <img
+            class="detail-page__hero-photo"
+            [src]="r.image_url"
+            [alt]="r.name"
+            (error)="onHeroImageError()"
+          />
+        } @else {
+          <span class="detail-page__hero-initial">{{ r.name.charAt(0) }}</span>
+        }
+      </div>
+      <div class="detail-page__hero-body">
+        <h1 class="detail-page__title">{{ r.name }}</h1>
+        <p class="detail-page__meta">
+          <span>⭐ {{ ratingLabel() }}</span>
+          @if (r.review_count > 0) {
+            <span class="detail-page__meta-muted">({{ r.review_count }} avis)</span>
+          }
+          <span>·</span>
+          <span>{{ r.cuisine }}</span>
+          <span>·</span>
+          <span>{{ priceLabel() }}</span>
+        </p>
+        @if (r.city || r.address) {
+          <p class="detail-page__address">
+            @if (r.address) {
+              {{ r.address }}
+            }
+            @if (r.address && r.city) {
+              ,
+            }
+            @if (r.city) {
+              {{ r.city }}
+            }
+          </p>
+        }
+      </div>
+    </header>
+
+    <div class="detail-page__grid">
+      <div class="detail-page__main">
+        <section class="detail-page__section" aria-labelledby="photos-title">
+          <h2 id="photos-title">Photos</h2>
+          @if (r.image_url && !heroImageFailed()) {
+            <div class="detail-page__gallery">
+              @for (url of galleryUrls(r.image_url); track $index) {
+                <div class="detail-page__gallery-tile" aria-hidden="true">
+                  <img [src]="url" [alt]="r.name + ' — photo ' + ($index + 1)" loading="lazy" />
+                </div>
+              }
+            </div>
+          } @else {
+            <p class="detail-page__muted">Aucune photo disponible.</p>
+          }
+        </section>
+
+        <section class="detail-page__section" aria-labelledby="menu-title">
+          <h2 id="menu-title">Menu</h2>
+          <p class="detail-page__muted">
+            Le menu détaillé pour {{ r.name }} sera disponible prochainement.
+          </p>
+        </section>
+
+        <section class="detail-page__section" aria-labelledby="reviews-title">
+          <h2 id="reviews-title">Avis</h2>
+          @if (r.review_count > 0) {
+            <p class="detail-page__muted">
+              {{ r.review_count }} avis publiés. Affichage détaillé à venir.
+            </p>
+          } @else {
+            <p class="detail-page__muted">Aucun avis pour le moment.</p>
+          }
+        </section>
+      </div>
+
+      <aside class="detail-page__aside" aria-labelledby="reservation-title">
+        <h2 id="reservation-title">Réserver une table</h2>
+
+        @if (submitError()) {
+          <app-inline-alert [message]="submitError()!" />
+        }
+
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="reservation-form" novalidate>
+          <div class="form-group">
+            <label for="res-date">Date</label>
+            <input
+              id="res-date"
+              type="date"
+              formControlName="date"
+              [min]="today"
+              [max]="maxDate"
+              required
+            />
+            @if (fieldError('date'); as msg) {
+              <div class="error-text">{{ msg }}</div>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="res-time">Heure</label>
+            <input
+              id="res-time"
+              type="time"
+              formControlName="time"
+              min="11:00"
+              max="23:00"
+              step="900"
+              required
+            />
+            @if (fieldError('time'); as msg) {
+              <div class="error-text">{{ msg }}</div>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="res-people">Nombre de personnes</label>
+            <input
+              id="res-people"
+              type="number"
+              formControlName="number_of_people"
+              min="1"
+              max="10"
+              step="1"
+              required
+            />
+            @if (fieldError('number_of_people'); as msg) {
+              <div class="error-text">{{ msg }}</div>
+            }
+          </div>
+
+          <button type="submit" class="btn-primary" [disabled]="submitting()">
+            {{ submitting() ? 'Réservation…' : 'Réserver' }}
+          </button>
+        </form>
+      </aside>
+    </div>
+  </article>
+}

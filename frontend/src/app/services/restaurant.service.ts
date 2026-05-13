@@ -2,7 +2,11 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import type { RestaurantListParams, RestaurantListResponse } from '../models/restaurant';
+import type {
+  Restaurant,
+  RestaurantListParams,
+  RestaurantListResponse,
+} from '../models/restaurant';
 
 const API_URL = 'http://localhost:8000/api/v1';
 
@@ -38,5 +42,9 @@ export class RestaurantService {
     }
 
     return this.http.get<RestaurantListResponse>(`${API_URL}/restaurants`, { params: httpParams });
+  }
+
+  getById(id: number): Observable<Restaurant> {
+    return this.http.get<Restaurant>(`${API_URL}/restaurants/${id}`);
   }
 }

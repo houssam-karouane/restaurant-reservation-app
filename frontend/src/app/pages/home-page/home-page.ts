@@ -1,19 +1,32 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  afterNextRender,
+  inject,
+  signal,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 
 import { SearchBar } from '../../components/search-bar/search-bar';
-import type { RestaurantSearchFilters } from '../../models/restaurant';
+import { RestaurantCard } from '../../components/restaurant-card/restaurant-card';
+import { Spinner } from '../../components/atoms/spinner/spinner';
+import { InlineAlert } from '../../components/atoms/inline-alert/inline-alert';
+import type { Restaurant, RestaurantSearchFilters } from '../../models/restaurant';
+import { RestaurantService } from '../../services/restaurant.service';
 
 @Component({
   selector: 'app-home-page',
-  imports: [CommonModule, RouterLink, SearchBar],
+  imports: [CommonModule, RouterLink, SearchBar, RestaurantCard, Spinner, InlineAlert],
   templateUrl: './home-page.html',
   styleUrl: './home-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomePage {
   private readonly router = inject(Router);
+  private readonly restaurantService = inject(RestaurantService);
 
   readonly heroSearchDefaults: RestaurantSearchFilters = {
     city: '',
@@ -22,10 +35,27 @@ export class HomePage {
     minRating: null,
   };
 
-  readonly featuredRestaurantIds: readonly number[] = [1, 2, 3, 4, 5, 6];
+  readonly featured = signal<Restaurant[]>([]);
+  readonly loading = signal(true);
+  readonly error = signal<string | null>(null);
 
-  trackByRestaurantId(_index: number, id: number): number {
-    return id;
+  constructor() {
+    const destroyRef = inject(DestroyRef);
+    afterNextRender(() => {
+      this.restaurantService
+        .list({ page: 1, limit: 6, min_rating: 4 })
+        .pipe(takeUntilDestroyed(destroyRef))
+        .subscribe({
+          next: (res) => {
+            this.featured.set(res.items);
+            this.loading.set(false);
+          },
+          error: () => {
+            this.loading.set(false);
+            this.error.set('Impossible de charger les restaurants. L’API est-elle démarrée ?');
+          },
+        });
+    });
   }
 
   onHeroSearch(filters: RestaurantSearchFilters): void {

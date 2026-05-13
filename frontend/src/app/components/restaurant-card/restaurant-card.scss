@@ -9,10 +9,18 @@
   display: flex;
   flex-direction: column;
   transition: border-color 150ms ease;
+  color: inherit;
+  text-decoration: none;
 }
 
 .restaurant-card:hover {
   border-color: t.$color-border-hover;
+}
+
+.restaurant-card:focus-visible {
+  outline: none;
+  border-color: t.$focus-ring-color;
+  box-shadow: t.$focus-ring-shadow;
 }
 
 .restaurant-card__image {
@@ -23,6 +31,14 @@
   align-items: center;
   justify-content: center;
   border-bottom: t.$border-muted;
+  overflow: hidden;
+}
+
+.restaurant-card__image-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .restaurant-card__image-text {

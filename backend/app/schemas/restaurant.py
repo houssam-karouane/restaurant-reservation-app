@@ -10,6 +10,7 @@ class RestaurantBase(BaseModel):
     cuisine: str
     price_range: Optional[int] = Field(None, ge=1, le=4)
     rating: Optional[float] = Field(None, ge=0.0, le=5.0)
+    image_url: Optional[str] = None
 
 
 class RestaurantCreate(RestaurantBase):
@@ -27,6 +28,7 @@ class RestaurantUpdate(BaseModel):
     cuisine: Optional[str] = None
     price_range: Optional[int] = Field(None, ge=1, le=4)
     rating: Optional[float] = Field(None, ge=0.0, le=5.0)
+    image_url: Optional[str] = None
 
 
 class RestaurantResponse(RestaurantBase):

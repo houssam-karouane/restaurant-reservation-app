@@ -1,6 +1,16 @@
-<article class="restaurant-card">
+<a class="restaurant-card" [routerLink]="['/restaurants', restaurant.id]">
   <div class="restaurant-card__image" aria-hidden="true">
-    <span class="restaurant-card__image-text">{{ restaurant.name.charAt(0) }}</span>
+    @if (restaurant.image_url && !imageFailed()) {
+      <img
+        class="restaurant-card__image-photo"
+        [src]="restaurant.image_url"
+        [alt]="restaurant.name"
+        loading="lazy"
+        (error)="onImageError()"
+      />
+    } @else {
+      <span class="restaurant-card__image-text">{{ restaurant.name.charAt(0) }}</span>
+    }
   </div>
   <div class="restaurant-card__body">
     <h3 class="restaurant-card__name">{{ restaurant.name }}</h3>
@@ -16,4 +26,4 @@
       <p class="restaurant-card__city">{{ restaurant.city }}</p>
     }
   </div>
-</article>
+</a>

@@ -6,8 +6,12 @@
       <ng-container *ngIf="currentUser$ | async as user">
         <div *ngIf="user" class="profile-fields">
           <div class="profile-field">
-            <label>Name</label>
-            <p>{{ user.name }}</p>
+            <label>Username</label>
+            <p>{{ user.username }}</p>
+          </div>
+          <div class="profile-field">
+            <label>Full name</label>
+            <p>{{ user.full_name || '—' }}</p>
           </div>
           <div class="profile-field">
             <label>Email</label>
