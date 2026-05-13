@@ -5,8 +5,8 @@ from sqlalchemy import and_
 
 from app.models.reservation import Reservation
 
-
 # ─── Vérification disponibilité ──────────────────────────────────────────────
+
 
 def is_slot_available(
     db: Session,
@@ -19,18 +19,23 @@ def is_slot_available(
     Vérifie qu'il n'existe pas déjà une réservation confirmée
     pour ce restaurant à cette date/heure.
     """
-    existing = db.query(Reservation).filter(
-        and_(
-            Reservation.restaurant_id == restaurant_id,
-            Reservation.date == date,
-            Reservation.time == time,
-            Reservation.status.in_(["pending", "confirmed"]),
+    existing = (
+        db.query(Reservation)
+        .filter(
+            and_(
+                Reservation.restaurant_id == restaurant_id,
+                Reservation.date == date,
+                Reservation.time == time,
+                Reservation.status.in_(["pending", "confirmed"]),
+            )
         )
-    ).first()
+        .first()
+    )
     return existing is None
 
 
 # ─── Créer une réservation ────────────────────────────────────────────────────
+
 
 def create_reservation(
     db: Session,
@@ -56,14 +61,13 @@ def create_reservation(
 
 # ─── Lister les réservations d'un user ───────────────────────────────────────
 
+
 def get_user_reservations(
     db: Session,
     user_id: int,
     status: Optional[str] = None,
 ) -> Tuple[List[Reservation], int]:
-    query = db.query(Reservation).filter(
-        Reservation.user_id == user_id
-    )
+    query = db.query(Reservation).filter(Reservation.user_id == user_id)
     if status:
         query = query.filter(Reservation.status == status)
 
@@ -75,16 +79,16 @@ def get_user_reservations(
 
 # ─── Détail d'une réservation ─────────────────────────────────────────────────
 
+
 def get_reservation_by_id(
     db: Session,
     reservation_id: int,
 ) -> Optional[Reservation]:
-    return db.query(Reservation).filter(
-        Reservation.id == reservation_id
-    ).first()
+    return db.query(Reservation).filter(Reservation.id == reservation_id).first()
 
 
 # ─── Annuler une réservation (règle H-2) ─────────────────────────────────────
+
 
 def can_cancel(reservation: Reservation) -> bool:
     """

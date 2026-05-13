@@ -33,9 +33,7 @@ def downgrade() -> None:
     op.drop_column('restaurants', 'review_count')
     op.drop_column('restaurants', 'city')
     # ### end Alembic commands ###
-=======
-Create Date: 2026-05-13
->>>>>>> 4218ac8648f7f5938629eab46928395c02bc588b
+
 
 """
 from alembic import op
@@ -63,6 +61,3 @@ def downgrade() -> None:
 <<<<<<< HEAD
  
 """
-=======
- 
->>>>>>> 4218ac8648f7f5938629eab46928395c02bc588b

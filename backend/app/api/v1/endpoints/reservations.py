@@ -17,6 +17,7 @@ router = APIRouter()
 
 # ─── POST /reservations ───────────────────────────────────────────────────────
 
+
 @router.post("", response_model=ReservationResponse, status_code=201)
 def create_reservation(
     payload: ReservationCreate,
@@ -53,11 +54,11 @@ def create_reservation(
 
 # ─── GET /reservations/me ─────────────────────────────────────────────────────
 
+
 @router.get("/me", response_model=ReservationListResponse)
 def list_my_reservations(
     status: Optional[str] = Query(
-        None,
-        description="Filtrer par statut : pending / confirmed / cancelled"
+        None, description="Filtrer par statut : pending / confirmed / cancelled"
     ),
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
@@ -81,6 +82,7 @@ def list_my_reservations(
 
 # ─── GET /reservations/{id} ───────────────────────────────────────────────────
 
+
 @router.get("/{reservation_id}", response_model=ReservationResponse)
 def get_reservation(
     reservation_id: int,
@@ -91,18 +93,17 @@ def get_reservation(
     reservation = crud_reservation.get_reservation_by_id(db, reservation_id)
 
     if not reservation:
-        raise HTTPException(status_code=404,
-            detail=f"Réservation #{reservation_id} introuvable")
+        raise HTTPException(status_code=404, detail=f"Réservation #{reservation_id} introuvable")
 
     # Vérifier que c'est bien la réservation de l'utilisateur courant
     if reservation.user_id != current_user.id:
-        raise HTTPException(status_code=403,
-            detail="Accès interdit à cette réservation")
+        raise HTTPException(status_code=403, detail="Accès interdit à cette réservation")
 
     return reservation
 
 
 # ─── DELETE /reservations/{id} ───────────────────────────────────────────────
+
 
 @router.delete("/{reservation_id}", status_code=200)
 def cancel_reservation(
@@ -118,13 +119,14 @@ def cancel_reservation(
     reservation = crud_reservation.get_reservation_by_id(db, reservation_id)
 
     if not reservation:
-        raise HTTPException(status_code=404,
-            detail=f"Réservation #{reservation_id} introuvable")
+        raise HTTPException(status_code=404, detail=f"Réservation #{reservation_id} introuvable")
 
     # Vérifier propriétaire
     if reservation.user_id != current_user.id:
-        raise HTTPException(status_code=403,
-            detail="Vous ne pouvez pas annuler la réservation d'un autre utilisateur")
+        raise HTTPException(
+            status_code=403,
+            detail="Vous ne pouvez pas annuler la réservation d'un autre utilisateur",
+        )
 
     # Vérifier règle H-2
     if not crud_reservation.can_cancel(reservation):

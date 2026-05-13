@@ -13,7 +13,7 @@ class Reservation(Base):
 
     date = Column(Date, nullable=False)
     time = Column(Time, nullable=False)
-    number_of_people = Column(Integer, nullable=False)    
+    number_of_people = Column(Integer, nullable=False)
     status = Column(String, default="pending")  # pending, confirmed, cancelled
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
