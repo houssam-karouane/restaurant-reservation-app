@@ -1,9 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
@@ -130,9 +125,7 @@ export class RestaurantsPage {
           this.pages.set(1);
           const detail = err?.error?.detail;
           const message =
-            typeof detail === 'string'
-              ? detail
-              : 'Could not load restaurants. Is the API running?';
+            typeof detail === 'string' ? detail : 'Could not load restaurants. Is the API running?';
           this.error.set(message);
         },
       });
