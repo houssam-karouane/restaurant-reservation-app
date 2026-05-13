@@ -42,7 +42,10 @@ $avatar-green-bg: #dcfce7;
 $avatar-green-text: #166534;
 
 // --- Typography ---
-$font-stack: system-ui, -apple-system, sans-serif;
+$font-stack:
+  system-ui,
+  -apple-system,
+  sans-serif;
 $text-xs: 11px;
 $text-sm: 12px;
 $text-base: 14px;

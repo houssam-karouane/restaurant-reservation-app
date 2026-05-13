@@ -64,7 +64,7 @@ export class AuthService {
       catchError((error) => {
         console.error('Login failed:', error);
         throw error;
-      })
+      }),
     );
   }
 
@@ -78,7 +78,7 @@ export class AuthService {
       catchError((error) => {
         console.error('Registration failed:', error);
         throw error;
-      })
+      }),
     );
   }
 
@@ -90,7 +90,7 @@ export class AuthService {
       catchError((error) => {
         console.error('Failed to get current user:', error);
         return of(null as any);
-      })
+      }),
     );
   }
 

@@ -24,7 +24,7 @@ export class LoginPage implements OnInit {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
@@ -59,8 +59,7 @@ export class LoginPage implements OnInit {
       },
       error: (error) => {
         this.loading = false;
-        this.errorMessage =
-          error.error?.detail || 'Login failed. Please check your credentials.';
+        this.errorMessage = error.error?.detail || 'Login failed. Please check your credentials.';
       },
     });
   }

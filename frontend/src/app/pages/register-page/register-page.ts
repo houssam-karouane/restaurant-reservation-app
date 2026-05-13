@@ -22,7 +22,7 @@ export class RegisterPage implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -40,7 +40,7 @@ export class RegisterPage implements OnInit {
       },
       {
         validators: AuthValidators.passwordMatchValidator('password', 'confirmPassword'),
-      }
+      },
     );
   }
 
@@ -66,8 +66,7 @@ export class RegisterPage implements OnInit {
       },
       error: (error) => {
         this.loading = false;
-        this.errorMessage =
-          error.error?.detail || 'Registration failed. Please try again.';
+        this.errorMessage = error.error?.detail || 'Registration failed. Please try again.';
       },
     });
   }
@@ -80,7 +79,10 @@ export class RegisterPage implements OnInit {
     }
 
     if (control.hasError('required')) {
-      const displayName = fieldName === 'full_name' ? 'Full Name' : fieldName.charAt(0).toUpperCase() + fieldName.slice(1);
+      const displayName =
+        fieldName === 'full_name'
+          ? 'Full Name'
+          : fieldName.charAt(0).toUpperCase() + fieldName.slice(1);
       return `${displayName} is required`;
     }
 
@@ -89,7 +91,10 @@ export class RegisterPage implements OnInit {
     }
 
     if (control.hasError('minlength')) {
-      const displayName = fieldName === 'full_name' ? 'Full Name' : fieldName.charAt(0).toUpperCase() + fieldName.slice(1);
+      const displayName =
+        fieldName === 'full_name'
+          ? 'Full Name'
+          : fieldName.charAt(0).toUpperCase() + fieldName.slice(1);
       const minLength = control.getError('minlength').requiredLength;
       return `${displayName} must be at least ${minLength} characters`;
     }
