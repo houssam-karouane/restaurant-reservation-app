@@ -2,7 +2,6 @@
 
 Revision ID: 4983cf9af2f1
 Revises: 83e834274736
-<<<<<<< HEAD
 Create Date: 2026-05-13 11:12:34.777359
 
 """
@@ -33,8 +32,6 @@ def downgrade() -> None:
     op.drop_column('restaurants', 'review_count')
     op.drop_column('restaurants', 'city')
     # ### end Alembic commands ###
-=======
-Create Date: 2026-05-13
 
 """
 from alembic import op
@@ -60,4 +57,4 @@ def downgrade() -> None:
     op.drop_column('restaurants', 'city') 
 
  
->>>>>>> 4218ac8648f7f5938629eab46928395c02bc588b
+"""
