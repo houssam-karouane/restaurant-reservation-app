@@ -5,6 +5,15 @@
       Browse, reserve, and enjoy exceptional dining experiences at the finest restaurants in your
       area.
     </p>
+
+    <div class="hero-search">
+      <app-search-bar
+        [initialFilters]="heroSearchDefaults"
+        [submitOnly]="true"
+        (filtersChange)="onHeroSearch($event)"
+      />
+    </div>
+
     <div class="hero-actions">
       <a routerLink="/restaurants" class="btn-primary hero-cta">Browse Restaurants</a>
       <button type="button" class="btn-secondary hero-cta-secondary">See Offers</button>

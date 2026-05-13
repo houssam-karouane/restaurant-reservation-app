@@ -1,4 +1,4 @@
-<form class="search-bar" [formGroup]="form" (ngSubmit)="$event.preventDefault()">
+<form class="search-bar" [formGroup]="form" (ngSubmit)="onSubmit()">
   <div class="search-bar__field">
     <label for="search-city">City</label>
     <input id="search-city" type="text" formControlName="city" placeholder="e.g. Paris" />
@@ -33,5 +33,9 @@
       <option value="4">4+</option>
       <option value="4.5">4.5+</option>
     </select>
+  </div>
+
+  <div class="search-bar__actions">
+    <button type="submit" class="btn-primary search-bar__submit">Search</button>
   </div>
 </form>

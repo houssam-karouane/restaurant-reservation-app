@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, Component, inject, output, input, effect } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  afterNextRender,
+  DestroyRef,
+  inject,
+  output,
+  input,
+  effect,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
@@ -15,6 +24,10 @@ import type { RestaurantSearchFilters } from '../../models/restaurant';
 })
 export class SearchBar {
   private readonly fb = inject(FormBuilder);
+  private readonly destroyRef = inject(DestroyRef);
+
+  /** When true, filters emit only on Search / Enter — use on the home hero. */
+  readonly submitOnly = input(false);
 
   readonly initialFilters = input<RestaurantSearchFilters>({
     city: '',
@@ -56,18 +69,29 @@ export class SearchBar {
       );
     });
 
-    this.form.valueChanges
-      .pipe(debounceTime(200), takeUntilDestroyed())
-      .subscribe(() => {
-        const v = this.form.getRawValue();
-        const priceRange = v.priceRange === '' ? null : Number(v.priceRange);
-        const minRating = v.minRating === '' ? null : Number(v.minRating);
-        this.filtersChange.emit({
-          city: v.city.trim(),
-          cuisine: v.cuisine.trim(),
-          priceRange: Number.isFinite(priceRange) ? priceRange : null,
-          minRating: Number.isFinite(minRating) ? minRating : null,
-        });
-      });
+    afterNextRender(() => {
+      if (this.submitOnly()) {
+        return;
+      }
+      this.form.valueChanges
+        .pipe(debounceTime(200), takeUntilDestroyed(this.destroyRef))
+        .subscribe(() => this.emitFilters());
+    });
+  }
+
+  onSubmit(): void {
+    this.emitFilters();
+  }
+
+  private emitFilters(): void {
+    const v = this.form.getRawValue();
+    const priceRange = v.priceRange === '' ? null : Number(v.priceRange);
+    const minRating = v.minRating === '' ? null : Number(v.minRating);
+    this.filtersChange.emit({
+      city: v.city.trim(),
+      cuisine: v.cuisine.trim(),
+      priceRange: Number.isFinite(priceRange) ? priceRange : null,
+      minRating: Number.isFinite(minRating) ? minRating : null,
+    });
   }
 }

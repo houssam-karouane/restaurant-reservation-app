@@ -19,3 +19,14 @@
 .search-bar__field select {
   width: 100%;
 }
+
+.search-bar__actions {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  padding-top: t.$space-2;
+}
+
+.search-bar__submit {
+  min-width: 120px;
+}
