@@ -1,1 +1,45 @@
-<p>home-page works!</p>
+<div class="home-container">
+  <section class="hero">
+    <h1>Discover Your Next Favorite Restaurant</h1>
+    <p>Browse, reserve, and enjoy exceptional dining experiences at the finest restaurants in your area.</p>
+    <div class="hero-actions">
+      <a routerLink="/restaurants" class="btn-primary" style="padding: var(--spacing-md) var(--spacing-2xl);">
+        Browse Restaurants
+      </a>
+      <button class="btn-secondary" style="padding: var(--spacing-md) var(--spacing-2xl);">
+        See Offers
+      </button>
+    </div>
+  </section>
+
+  <section class="featured-section">
+    <h2 class="section-title">Featured Restaurants</h2>
+    <div class="restaurants-grid">
+      <div class="restaurant-card" *ngFor="let restaurant of [1, 2, 3, 4, 5, 6]">
+        <div class="restaurant-image">
+          <span>Restaurant {{ restaurant }}</span>
+        </div>
+        <div class="restaurant-content">
+          <h3 class="restaurant-name">Restaurant Name</h3>
+          <div class="restaurant-info">
+            <p>⭐ 4.5 (128 reviews)</p>
+            <p>📍 Downtown Area</p>
+            <p>🍽️ Fine Dining</p>
+          </div>
+          <div class="restaurant-actions">
+            <button class="btn-primary" style="flex: 1;">Reserve</button>
+            <a href="#" class="btn-secondary">View</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <h2>Ready to Make a Reservation?</h2>
+    <p>Join thousands of diners who have discovered amazing restaurants through our platform.</p>
+    <button class="btn-primary" style="padding: var(--spacing-md) var(--spacing-2xl);">
+      Get Started Today
+    </button>
+  </section>
+</div>

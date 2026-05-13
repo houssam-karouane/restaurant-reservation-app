@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable, PLATFORM_ID, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { isPlatformBrowser } from '@angular/common';
 import { BehaviorSubject, Observable, tap, catchError, of } from 'rxjs';
 
 interface LoginRequest {
@@ -10,7 +11,8 @@ interface LoginRequest {
 interface RegisterRequest {
   email: string;
   password: string;
-  name: string;
+  username: string;
+  full_name: string;
 }
 
 interface AuthResponse {
@@ -31,15 +33,16 @@ const TOKEN_KEY = 'auth_token';
   providedIn: 'root',
 })
 export class AuthService {
-  private currentUserSubject = new BehaviorSubject<User | null>(this.getUserFromStorage());
+  private readonly platformId = inject(PLATFORM_ID);
+  private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
-  private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.hasToken());
+  private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
   public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
   constructor(private http: HttpClient) {
-    // Try to validate token on service initialization
     if (this.hasToken()) {
+      this.isAuthenticatedSubject.next(true);
       this.getCurrentUser().subscribe({
         next: (user) => {
           this.currentUserSubject.next(user);
@@ -54,7 +57,8 @@ export class AuthService {
   login(credentials: LoginRequest): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${API_URL}/auth/login`, credentials).pipe(
       tap((response) => {
-        localStorage.setItem(TOKEN_KEY, response.access_token);
+        this.setToken(response.access_token);
+        this.currentUserSubject.next(null);
         this.isAuthenticatedSubject.next(true);
       }),
       catchError((error) => {
@@ -67,7 +71,8 @@ export class AuthService {
   register(data: RegisterRequest): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${API_URL}/auth/register`, data).pipe(
       tap((response) => {
-        localStorage.setItem(TOKEN_KEY, response.access_token);
+        this.setToken(response.access_token);
+        this.currentUserSubject.next(null);
         this.isAuthenticatedSubject.next(true);
       }),
       catchError((error) => {
@@ -90,20 +95,44 @@ export class AuthService {
   }
 
   logout(): void {
-    localStorage.removeItem(TOKEN_KEY);
+    this.removeToken();
     this.currentUserSubject.next(null);
     this.isAuthenticatedSubject.next(false);
   }
 
   getToken(): string | null {
-    return localStorage.getItem(TOKEN_KEY);
+    return this.readToken();
   }
 
   private hasToken(): boolean {
-    return !!localStorage.getItem(TOKEN_KEY);
+    return !!this.readToken();
   }
 
   isAuthenticated(): boolean {
     return this.hasToken();
+  }
+
+  private readToken(): string | null {
+    if (!isPlatformBrowser(this.platformId)) {
+      return null;
+    }
+
+    return window.localStorage.getItem(TOKEN_KEY);
+  }
+
+  private setToken(token: string): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
+    window.localStorage.setItem(TOKEN_KEY, token);
+  }
+
+  private removeToken(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
+    window.localStorage.removeItem(TOKEN_KEY);
   }
 }

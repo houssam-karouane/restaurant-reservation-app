@@ -31,7 +31,8 @@ export class RegisterPage implements OnInit {
   private initializeForm(): void {
     this.registerForm = this.formBuilder.group(
       {
-        name: ['', [Validators.required, Validators.minLength(2)]],
+        username: ['', [Validators.required, Validators.minLength(3)]],
+        full_name: ['', [Validators.required, Validators.minLength(2)]],
         email: ['', [Validators.required, AuthValidators.emailValidator()]],
         password: ['', [Validators.required, AuthValidators.passwordValidator()]],
         confirmPassword: ['', Validators.required],
@@ -56,9 +57,9 @@ export class RegisterPage implements OnInit {
 
     this.loading = true;
 
-    const { name, email, password } = this.registerForm.value;
+    const { username, full_name, email, password } = this.registerForm.value;
 
-    this.authService.register({ name, email, password }).subscribe({
+    this.authService.register({ username, full_name, email, password }).subscribe({
       next: () => {
         this.router.navigate(['/']);
       },
@@ -78,7 +79,8 @@ export class RegisterPage implements OnInit {
     }
 
     if (control.hasError('required')) {
-      return `${fieldName.charAt(0).toUpperCase() + fieldName.slice(1)} is required`;
+      const displayName = fieldName === 'full_name' ? 'Full Name' : fieldName.charAt(0).toUpperCase() + fieldName.slice(1);
+      return `${displayName} is required`;
     }
 
     if (control.hasError('invalidEmail')) {
@@ -86,8 +88,9 @@ export class RegisterPage implements OnInit {
     }
 
     if (control.hasError('minlength')) {
+      const displayName = fieldName === 'full_name' ? 'Full Name' : fieldName.charAt(0).toUpperCase() + fieldName.slice(1);
       const minLength = control.getError('minlength').requiredLength;
-      return `${fieldName.charAt(0).toUpperCase() + fieldName.slice(1)} must be at least ${minLength} characters`;
+      return `${displayName} must be at least ${minLength} characters`;
     }
 
     if (control.hasError('passwordTooShort')) {

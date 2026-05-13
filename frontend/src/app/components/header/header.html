@@ -1,50 +1,37 @@
-<header class="bg-slate-900 text-white shadow-md">
+<header>
   <nav>
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4">
-      <div class="flex items-center space-x-8">
-        <a routerLink="/" class="font-bold text-lg hover:text-blue-400 transition">
-          Restaurant Reservations
-        </a>
-      </div>
+    <div class="nav-brand">
+      <a routerLink="/">
+        Restaurant Reservations
+      </a>
+    </div>
 
-      <div class="flex items-center space-x-4">
-        <ng-container *ngIf="isAuthenticated; else notAuthenticated">
-          <span class="text-sm">Welcome, {{ currentUser?.name }}</span>
-          <a
-            routerLink="/profile"
-            class="px-4 py-2 rounded hover:bg-slate-700 transition"
-          >
-            Profile
-          </a>
-          <a
-            routerLink="/reservations/me"
-            class="px-4 py-2 rounded hover:bg-slate-700 transition"
-          >
-            My Reservations
-          </a>
-          <button
-            (click)="logout()"
-            class="px-4 py-2 bg-red-600 hover:bg-red-700 rounded transition"
-          >
+    <ul class="nav-links">
+      <ng-container *ngIf="isAuthenticated; else notAuthenticated">
+        <li class="nav-user">
+          Welcome, {{ currentUser?.name || 'Guest' }}
+        </li>
+        <li>
+          <a routerLink="/profile">Profile</a>
+        </li>
+        <li>
+          <a routerLink="/reservations/me">My Reservations</a>
+        </li>
+        <li>
+          <button (click)="logout()" class="btn-logout">
             Logout
           </button>
-        </ng-container>
+        </li>
+      </ng-container>
 
-        <ng-template #notAuthenticated>
-          <a
-            routerLink="/auth/login"
-            class="px-4 py-2 rounded hover:bg-slate-700 transition"
-          >
-            Login
-          </a>
-          <a
-            routerLink="/auth/register"
-            class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded transition"
-          >
-            Register
-          </a>
-        </ng-template>
-      </div>
-    </div>
+      <ng-template #notAuthenticated>
+        <li>
+          <a routerLink="/auth/login">Sign In</a>
+        </li>
+        <li>
+          <a routerLink="/auth/register" class="btn-primary" style="display: inline-block;">Create Account</a>
+        </li>
+      </ng-template>
+    </ul>
   </nav>
 </header>
