@@ -1,6 +1,8 @@
 from pydantic import BaseModel, Field, ConfigDict
 from typing import Optional, List
 from datetime import datetime
+from pydantic import BaseModel
+from typing import Optional
 
 
 class RestaurantBase(BaseModel):
@@ -41,3 +43,5 @@ class RestaurantListResponse(BaseModel):
     total: int
     page: int
     pages: int
+    class Config:
+        from_attributes = True
