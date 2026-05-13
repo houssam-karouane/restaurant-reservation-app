@@ -21,9 +21,11 @@ interface AuthResponse {
 }
 
 interface User {
-  id: string;
+  id: number;
   email: string;
-  name: string;
+  username: string;
+  full_name: string | null;
+  is_active: boolean;
 }
 
 const API_URL = 'http://localhost:8000/api/v1';

@@ -7,6 +7,7 @@ export interface Restaurant {
   price_range: number | null;
   rating: number | null;
   review_count: number;
+  image_url: string | null;
   created_at: string | null;
 }
 

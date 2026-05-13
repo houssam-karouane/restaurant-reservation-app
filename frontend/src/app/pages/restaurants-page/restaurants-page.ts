@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  afterNextRender,
+  inject,
+  signal,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
@@ -40,17 +47,20 @@ export class RestaurantsPage {
   readonly error = signal<string | null>(null);
 
   constructor() {
-    this.route.queryParamMap
-      .pipe(
-        map((q) => this.parseRoute(q)),
-        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
-        takeUntilDestroyed(),
-      )
-      .subscribe(({ filters, page }) => {
-        this.filters.set(filters);
-        this.page.set(page);
-        this.fetchRestaurants();
-      });
+    const destroyRef = inject(DestroyRef);
+    afterNextRender(() => {
+      this.route.queryParamMap
+        .pipe(
+          map((q) => this.parseRoute(q)),
+          distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
+          takeUntilDestroyed(destroyRef),
+        )
+        .subscribe(({ filters, page }) => {
+          this.filters.set(filters);
+          this.page.set(page);
+          this.fetchRestaurants();
+        });
+    });
   }
 
   onFiltersChange(filters: RestaurantSearchFilters): void {

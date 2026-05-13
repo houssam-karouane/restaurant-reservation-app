@@ -15,6 +15,7 @@ class Restaurant(Base):
     price_range = Column(Integer)  # 1=€ 2=€€ 3=€€€ 4=€€€€
     rating = Column(Float, default=0.0)
     review_count = Column(Integer, default=0)  # ¬ NOUVEAU DR-20
+    image_url = Column(String, nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     tables = relationship("Table", back_populates="restaurant")

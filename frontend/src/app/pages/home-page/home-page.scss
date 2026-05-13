@@ -64,77 +64,19 @@
 
 .restaurants-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(296px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: t.$space-6;
 }
 
-.restaurant-card {
-  background-color: t.$color-surface;
-  border: t.$border-default;
-  border-radius: t.$radius-card;
-  overflow: hidden;
-  transition: border-color 150ms ease;
-}
-
-.restaurant-card:hover {
-  border-color: t.$color-border-hover;
-}
-
-.restaurant-image {
-  width: 100%;
-  height: 200px;
-  background-color: t.$color-surface-muted;
-  border-bottom: t.$border-muted;
+.featured-center {
   display: flex;
-  align-items: center;
   justify-content: center;
-  color: t.$color-text-secondary;
-  font-size: t.$text-sm;
+  padding: t.$space-8 0;
 }
 
-.restaurant-content {
-  padding: t.$card-padding-y t.$card-padding-x;
-}
-
-.restaurant-name {
-  font-size: t.$text-lg;
-  margin-bottom: t.$space-2;
-  color: t.$color-text-primary;
-  font-weight: t.$font-medium;
-  letter-spacing: t.$letter-spacing-heading;
-}
-
-.restaurant-info {
-  display: flex;
-  flex-direction: column;
-  gap: t.$space-2;
-  margin-bottom: t.$space-4;
-}
-
-.restaurant-info p {
-  font-size: t.$text-sm;
-  color: t.$color-text-secondary;
-  margin: 0;
-  line-height: t.$line-height-ui;
-}
-
-.restaurant-actions {
-  display: flex;
-  gap: t.$space-3;
-}
-
-.restaurant-actions button,
-.restaurant-actions a {
-  flex: 1;
-  padding: t.$space-3 t.$space-4;
-  border-radius: t.$radius-btn;
-  cursor: pointer;
-  font-size: t.$text-sm;
+.featured-empty {
   text-align: center;
-  text-decoration: none;
-  transition:
-    background-color 150ms ease,
-    border-color 150ms ease;
+  color: t.$color-text-secondary;
 }
 
 .cta-section {
