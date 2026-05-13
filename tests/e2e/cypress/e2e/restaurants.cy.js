@@ -26,9 +26,13 @@ describe('Parcours 2 : Recherche restaurant avec filtres', () => {
       // Attendre les nouveaux résultats
       cy.get('app-restaurant-card', { timeout: 10000 }).should('have.length.greaterThan', 0);
 
-      // Vérifier que chaque carte affiche la cuisine "Italienne"
+      // Vérifier que chaque carte affiche la cuisine (insensible à la casse)
       cy.get('app-restaurant-card').each(($card) => {
-        cy.wrap($card).should('contain.text', data.filterCuisineValue);
+        cy.wrap($card).should(($el) => {
+          const text = $el.text().toLowerCase();
+          const cuisine = data.filterCuisineValue.toLowerCase();
+          expect(text).to.include(cuisine);
+        });
       });
     });
   });

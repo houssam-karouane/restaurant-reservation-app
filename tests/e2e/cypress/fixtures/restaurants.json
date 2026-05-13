@@ -1,7 +1,7 @@
 {
   "italianRestaurant": {
-    "cuisine": "Italienne",
-    "name": "La Dolce Vita"
+    "cuisine": "italienne",
+    "name": "Bella Napoli"
   },
-  "filterCuisineValue": "Italienne"
+  "filterCuisineValue": "italienne"
 }

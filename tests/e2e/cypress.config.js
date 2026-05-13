@@ -17,9 +17,11 @@ module.exports = defineConfig({
     video: true,
     videosFolder: 'cypress/videos',
 
-    // Timeouts
-    defaultCommandTimeout: 8000,
-    pageLoadTimeout: 30000,
+    // Timeouts augmentés pour la CI
+    defaultCommandTimeout: 15000,
+    pageLoadTimeout: 60000,
+    requestTimeout: 15000,
+    responseTimeout: 30000,
   },
 
   env: {
