@@ -10,8 +10,13 @@ build/
 dist/
 .pytest_cache/
 .coverage
+coverage.xml
 htmlcov/
 .tox/
+
+# === Local test SQLite files ===
+*.db
+backend/_pytest_default.db
 
 # === Node / Angular ===
 node_modules/
