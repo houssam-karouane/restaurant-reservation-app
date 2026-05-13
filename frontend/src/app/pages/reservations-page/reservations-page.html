@@ -21,7 +21,9 @@
                 </h2>
                 <span
                   class="reservation-row__status"
-                  [class.reservation-row__status--confirmed]="row.reservation.status === 'confirmed'"
+                  [class.reservation-row__status--confirmed]="
+                    row.reservation.status === 'confirmed'
+                  "
                   [class.reservation-row__status--pending]="row.reservation.status === 'pending'"
                   [class.reservation-row__status--cancelled]="
                     row.reservation.status === 'cancelled'

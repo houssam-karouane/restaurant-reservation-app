@@ -11,10 +11,7 @@ from app.models.restaurant import Restaurant  # noqa: E402
 
 # Images Unsplash curées par cuisine — URLs publiques, pas de clé API requise.
 # Le client front-end utilise un fallback (lettre initiale) si une URL casse.
-_UNSPLASH = (
-    "https://images.unsplash.com/photo-{id}"
-    "?auto=format&fit=crop&w=800&q=80"
-)
+_UNSPLASH = "https://images.unsplash.com/photo-{id}" "?auto=format&fit=crop&w=800&q=80"
 
 
 def _img(photo_id: str) -> str:
