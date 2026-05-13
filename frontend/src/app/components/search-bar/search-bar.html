@@ -1,0 +1,41 @@
+<form class="search-bar" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="search-bar__field">
+    <label for="search-city">City</label>
+    <input id="search-city" type="text" formControlName="city" placeholder="e.g. Paris" />
+  </div>
+
+  <div class="search-bar__field">
+    <label for="search-cuisine">Cuisine</label>
+    <select id="search-cuisine" formControlName="cuisine">
+      @for (opt of cuisineOptions; track opt.value) {
+        <option [value]="opt.value">{{ opt.label }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="search-bar__field">
+    <label for="search-price">Price</label>
+    <select id="search-price" formControlName="priceRange">
+      <option value="">Any price</option>
+      <option value="1">€</option>
+      <option value="2">€€</option>
+      <option value="3">€€€</option>
+      <option value="4">€€€€</option>
+    </select>
+  </div>
+
+  <div class="search-bar__field">
+    <label for="search-rating">Min rating</label>
+    <select id="search-rating" formControlName="minRating">
+      <option value="">Any rating</option>
+      <option value="3">3+</option>
+      <option value="3.5">3.5+</option>
+      <option value="4">4+</option>
+      <option value="4.5">4.5+</option>
+    </select>
+  </div>
+
+  <div class="search-bar__actions">
+    <button type="submit" class="btn-primary search-bar__submit">Search</button>
+  </div>
+</form>

@@ -27,6 +27,13 @@
   line-height: t.$line-height-prose;
 }
 
+.hero-search {
+  width: 100%;
+  max-width: 920px;
+  margin: 0 auto t.$section-gap-lg;
+  text-align: left;
+}
+
 .hero-actions {
   display: flex;
   gap: t.$space-4;
