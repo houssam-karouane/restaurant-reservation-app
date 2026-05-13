@@ -5,7 +5,7 @@ import os
 
 # L'URL utilise les identifiants du docker-compose (dev:devpassword)
 SQLALCHEMY_DATABASE_URL = os.getenv(
-    "DATABASE_URL", "postgresql://dev:devpassword@postgres:5432/restaurant"
+    "DATABASE_URL", "postgresql://postgres:password@restaurant-db:5432/restaurant_db"
 )
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
