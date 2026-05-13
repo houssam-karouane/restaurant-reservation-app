@@ -1,0 +1,21 @@
+@use '../../styles/tokens' as t;
+
+.search-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: t.$space-4;
+  padding: t.$space-6;
+  background-color: t.$color-surface;
+  border: t.$border-default;
+  border-radius: t.$radius-card;
+  margin-bottom: t.$space-6;
+}
+
+.search-bar__field label {
+  margin-bottom: t.$space-2;
+}
+
+.search-bar__field input,
+.search-bar__field select {
+  width: 100%;
+}

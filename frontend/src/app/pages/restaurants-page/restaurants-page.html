@@ -1,0 +1,24 @@
+<div class="restaurants-page">
+  <header class="restaurants-page__header">
+    <h1>Browse restaurants</h1>
+    <p class="restaurants-page__intro">Filter by city, cuisine, price, and rating.</p>
+  </header>
+
+  <app-search-bar [initialFilters]="filters()" (filtersChange)="onFiltersChange($event)" />
+
+  @if (error(); as errMsg) {
+    <app-inline-alert [message]="errMsg" />
+  }
+
+  @if (loading()) {
+    <app-spinner />
+  } @else if (!error()) {
+    <app-restaurant-list
+      [restaurants]="restaurants()"
+      [page]="page()"
+      [pages]="pages()"
+      [total]="total()"
+      (pageChange)="onPageChange($event)"
+    />
+  }
+</div>

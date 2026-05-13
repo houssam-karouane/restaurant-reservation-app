@@ -1,0 +1,6 @@
+@use '../../../styles/tokens' as t;
+
+:host {
+  display: block;
+  margin-bottom: t.$space-4;
+}

@@ -1,0 +1,27 @@
+@use '../../styles/tokens' as t;
+
+.restaurants-page {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: t.$space-12 t.$space-6;
+}
+
+.restaurants-page__header {
+  margin-bottom: t.$space-6;
+}
+
+.restaurants-page__header h1 {
+  margin-bottom: t.$space-2;
+}
+
+.restaurants-page__intro {
+  margin: 0;
+  font-size: t.$text-sm;
+  color: t.$color-text-secondary;
+}
+
+@media (max-width: 768px) {
+  .restaurants-page {
+    padding: t.$space-8 t.$space-4;
+  }
+}
