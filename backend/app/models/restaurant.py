@@ -6,7 +6,7 @@ from sqlalchemy.orm import relationship
 
 class Restaurant(Base):
     __tablename__ = "restaurants"
-    __table_args__ = {'extend_existing': True}
+    __table_args__ = {"extend_existing": True}
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, index=True, nullable=False)
     cuisine = Column(String, index=True)
