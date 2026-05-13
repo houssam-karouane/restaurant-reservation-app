@@ -5,7 +5,7 @@ from datetime import datetime
 
 class RestaurantBase(BaseModel):
     name: str
-    address: str
+    address: Optional[str] = None  # <--- Ajout de Optional et = None
     city: Optional[str] = None
     cuisine: str
     price_range: Optional[int] = Field(None, ge=1, le=4)
