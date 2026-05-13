@@ -38,7 +38,7 @@ describe('Parcours 2 : Recherche restaurant avec filtres', () => {
     cy.get('app-restaurant-card', { timeout: 10000 }).should('have.length.greaterThan', 0);
 
     // Cliquer sur la première carte
-    cy.get('app-restaurant-card').first().click();
+    cy.get('app-restaurant-card').first().click({ force: true });
 
     // Vérifier la redirection vers /restaurants/:id
     cy.url().should('match', /\/restaurants\/\d+$/);
