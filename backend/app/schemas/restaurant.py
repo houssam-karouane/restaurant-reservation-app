@@ -1,8 +1,8 @@
 from pydantic import BaseModel, Field, ConfigDict
 from typing import Optional, List
 from datetime import datetime
-from pydantic import BaseModel
-from typing import Optional
+
+
 
 
 class RestaurantBase(BaseModel):

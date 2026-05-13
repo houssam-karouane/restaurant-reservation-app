@@ -1,6 +1,6 @@
 import math
 from typing import Optional
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from app.api.deps import get_current_user
 from app.crud import restaurant as crud_restaurant

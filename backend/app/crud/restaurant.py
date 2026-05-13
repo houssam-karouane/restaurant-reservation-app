@@ -1,5 +1,4 @@
 from typing import Optional, Tuple, List
-import math
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 from app.models.restaurant import Restaurant

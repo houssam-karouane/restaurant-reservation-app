@@ -3,9 +3,9 @@ import os
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from app.database import SessionLocal, engine, Base
+from app.database import SessionLocal
 from app.models.restaurant import Restaurant
-from app.db import base
+
 
 
 def seed():
