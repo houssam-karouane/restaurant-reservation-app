@@ -1,5 +1,50 @@
-<header>
+<header class="bg-slate-900 text-white shadow-md">
   <nav>
-    <a routerLink="/">Home</a>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4">
+      <div class="flex items-center space-x-8">
+        <a routerLink="/" class="font-bold text-lg hover:text-blue-400 transition">
+          Restaurant Reservations
+        </a>
+      </div>
+
+      <div class="flex items-center space-x-4">
+        <ng-container *ngIf="isAuthenticated; else notAuthenticated">
+          <span class="text-sm">Welcome, {{ currentUser?.name }}</span>
+          <a
+            routerLink="/profile"
+            class="px-4 py-2 rounded hover:bg-slate-700 transition"
+          >
+            Profile
+          </a>
+          <a
+            routerLink="/reservations/me"
+            class="px-4 py-2 rounded hover:bg-slate-700 transition"
+          >
+            My Reservations
+          </a>
+          <button
+            (click)="logout()"
+            class="px-4 py-2 bg-red-600 hover:bg-red-700 rounded transition"
+          >
+            Logout
+          </button>
+        </ng-container>
+
+        <ng-template #notAuthenticated>
+          <a
+            routerLink="/auth/login"
+            class="px-4 py-2 rounded hover:bg-slate-700 transition"
+          >
+            Login
+          </a>
+          <a
+            routerLink="/auth/register"
+            class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded transition"
+          >
+            Register
+          </a>
+        </ng-template>
+      </div>
+    </div>
   </nav>
 </header>

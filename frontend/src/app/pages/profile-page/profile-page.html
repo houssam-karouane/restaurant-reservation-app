@@ -1,0 +1,32 @@
+<div class="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 p-8">
+  <div class="max-w-2xl mx-auto">
+    <div class="bg-white rounded-lg shadow-xl p-8">
+      <h1 class="text-3xl font-bold text-gray-900 mb-8">My Profile</h1>
+
+      <div *ngIf="loading" class="text-center py-8">
+        <p class="text-gray-500">Loading...</p>
+      </div>
+
+      <div *ngIf="!loading && currentUser" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Name</label>
+          <p class="text-lg text-gray-900">{{ currentUser.name }}</p>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Email</label>
+          <p class="text-lg text-gray-900">{{ currentUser.email }}</p>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700">User ID</label>
+          <p class="text-lg text-gray-900">{{ currentUser.id }}</p>
+        </div>
+      </div>
+
+      <div *ngIf="!loading && !currentUser" class="text-center py-8">
+        <p class="text-red-500">Unable to load profile information.</p>
+      </div>
+    </div>
+  </div>
+</div>
