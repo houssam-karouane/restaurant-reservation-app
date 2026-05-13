@@ -16,11 +16,13 @@ class RestaurantBase(BaseModel):
 
 class RestaurantCreate(RestaurantBase):
     """Payload POST /restaurants — admin seulement."""
+
     pass
 
 
 class RestaurantUpdate(BaseModel):
     """Payload PUT — tous les champs sont optionnels."""
+
     name: Optional[str] = None
     address: Optional[str] = None
     city: Optional[str] = None
@@ -31,6 +33,7 @@ class RestaurantUpdate(BaseModel):
 
 class RestaurantResponse(RestaurantBase):
     """Réponse lecture — inclut id, review_count, created_at."""
+
     id: int
     review_count: int = 0
     created_at: Optional[datetime] = None
@@ -39,9 +42,11 @@ class RestaurantResponse(RestaurantBase):
 
 class RestaurantListResponse(BaseModel):
     """Réponse paginée pour GET /restaurants."""
+
     items: List[RestaurantResponse]
     total: int
     page: int
     pages: int
+
     class Config:
         from_attributes = True

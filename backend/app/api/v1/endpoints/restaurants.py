@@ -7,8 +7,10 @@ from app.crud import restaurant as crud_restaurant
 from app.database import get_db
 from app.models.user import User
 from app.schemas.restaurant import (
-    RestaurantCreate, RestaurantListResponse,
-    RestaurantResponse, RestaurantUpdate,
+    RestaurantCreate,
+    RestaurantListResponse,
+    RestaurantResponse,
+    RestaurantUpdate,
 )
 
 router = APIRouter()
@@ -26,9 +28,14 @@ def list_restaurants(
     db: Session = Depends(get_db),
 ):
     items, total = crud_restaurant.get_restaurants(
-        db=db, page=page, limit=limit,
-        cuisine=cuisine, min_price=min_price,
-        max_price=max_price, min_rating=min_rating, city=city,
+        db=db,
+        page=page,
+        limit=limit,
+        cuisine=cuisine,
+        min_price=min_price,
+        max_price=max_price,
+        min_rating=min_rating,
+        city=city,
     )
     pages = math.ceil(total / limit) if total > 0 else 1
     return RestaurantListResponse(items=items, total=total, page=page, pages=pages)
@@ -38,8 +45,7 @@ def list_restaurants(
 def get_restaurant(restaurant_id: int, db: Session = Depends(get_db)):
     restaurant = crud_restaurant.get_restaurant_by_id(db, restaurant_id)
     if not restaurant:
-        raise HTTPException(status_code=404,
-            detail=f"Restaurant #{restaurant_id} introuvable")
+        raise HTTPException(status_code=404, detail=f"Restaurant #{restaurant_id} introuvable")
     return restaurant
 
 
@@ -50,8 +56,7 @@ def create_restaurant(
     current_user: User = Depends(get_current_user),
 ):
     if not getattr(current_user, "is_admin", False):
-        raise HTTPException(status_code=403,
-            detail="Réservé aux administrateurs")
+        raise HTTPException(status_code=403, detail="Réservé aux administrateurs")
     return crud_restaurant.create_restaurant(db=db, restaurant_in=restaurant_in)
 
 
@@ -63,14 +68,11 @@ def update_restaurant(
     current_user: User = Depends(get_current_user),
 ):
     if not getattr(current_user, "is_admin", False):
-        raise HTTPException(status_code=403,
-            detail="Réservé aux administrateurs")
+        raise HTTPException(status_code=403, detail="Réservé aux administrateurs")
     restaurant = crud_restaurant.get_restaurant_by_id(db, restaurant_id)
     if not restaurant:
-        raise HTTPException(status_code=404,
-            detail=f"Restaurant #{restaurant_id} introuvable")
-    return crud_restaurant.update_restaurant(db=db, restaurant=restaurant,
-                                             update_data=update_data)
+        raise HTTPException(status_code=404, detail=f"Restaurant #{restaurant_id} introuvable")
+    return crud_restaurant.update_restaurant(db=db, restaurant=restaurant, update_data=update_data)
 
 
 @router.delete("/{restaurant_id}", status_code=204)
@@ -80,10 +82,8 @@ def delete_restaurant(
     current_user: User = Depends(get_current_user),
 ):
     if not getattr(current_user, "is_admin", False):
-        raise HTTPException(status_code=403,
-            detail="Réservé aux administrateurs")
+        raise HTTPException(status_code=403, detail="Réservé aux administrateurs")
     restaurant = crud_restaurant.get_restaurant_by_id(db, restaurant_id)
     if not restaurant:
-        raise HTTPException(status_code=404,
-            detail=f"Restaurant #{restaurant_id} introuvable")
+        raise HTTPException(status_code=404, detail=f"Restaurant #{restaurant_id} introuvable")
     crud_restaurant.delete_restaurant(db=db, restaurant=restaurant)

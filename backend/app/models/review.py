@@ -4,8 +4,6 @@ from app.database import Base
 from sqlalchemy.orm import relationship
 
 
-
-
 class Review(Base):
     __tablename__ = "reviews"
     __table_args__ = {"extend_existing": True}  # <--- Ajoutez cette ligne
@@ -16,7 +14,3 @@ class Review(Base):
     restaurant_id = Column(Integer, ForeignKey("restaurants.id"))
 
     restaurant = relationship("Restaurant", back_populates="reviews")
-
-
-
-
