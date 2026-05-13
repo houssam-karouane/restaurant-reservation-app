@@ -1,46 +1,43 @@
-<<<<<<< HEAD
-from pydantic import BaseModel
-from typing import Optional
+from pydantic import BaseModel, Field, ConfigDict
+from typing import Optional, List
+from datetime import datetime
 
-# Ce qui est commun à la lecture et à la création
+
 class RestaurantBase(BaseModel):
     name: str
     address: str
+    city: Optional[str] = None
     cuisine: str
-    description: Optional[str] = None
+    price_range: Optional[int] = Field(None, ge=1, le=4)
+    rating: Optional[float] = Field(None, ge=0.0, le=5.0)
 
-# Ce qu'on reçoit lors de la création (POST)
+
 class RestaurantCreate(RestaurantBase):
-    pass
-
-# Ce qu'on renvoie au client (GET) - inclut l'ID généré par la DB
-class Restaurant(RestaurantBase):
-    id: int
-
-    class Config:
-        from_attributes = True
-=======
-from pydantic import BaseModel
-from typing import Optional
-
-
-# Ce qui est commun à la lecture et à la création
-class RestaurantBase(BaseModel):
-    name: str
-    address: str
-    cuisine: str
-    description: Optional[str] = None
-
-
-# Ce qu'on reçoit lors de la création (POST)
-class RestaurantCreate(RestaurantBase):
+    """Payload POST /restaurants — admin seulement."""
     pass
 
 
-# Ce qu'on renvoie au client (GET) - inclut l'ID généré par la DB
-class Restaurant(RestaurantBase):
-    id: int
+class RestaurantUpdate(BaseModel):
+    """Payload PUT — tous les champs sont optionnels."""
+    name: Optional[str] = None
+    address: Optional[str] = None
+    city: Optional[str] = None
+    cuisine: Optional[str] = None
+    price_range: Optional[int] = Field(None, ge=1, le=4)
+    rating: Optional[float] = Field(None, ge=0.0, le=5.0)
 
-    class Config:
-        from_attributes = True
->>>>>>> develop
+
+class RestaurantResponse(RestaurantBase):
+    """Réponse lecture — inclut id, review_count, created_at."""
+    id: int
+    review_count: int = 0
+    created_at: Optional[datetime] = None
+    model_config = ConfigDict(from_attributes=True)
+
+
+class RestaurantListResponse(BaseModel):
+    """Réponse paginée pour GET /restaurants."""
+    items: List[RestaurantResponse]
+    total: int
+    page: int
+    pages: int
