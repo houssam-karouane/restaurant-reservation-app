@@ -1,0 +1,80 @@
+<div class="min-h-screen bg-white flex items-center justify-center px-4 py-12">
+  <div class="w-full max-w-md">
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <h1 class="text-3xl font-bold text-gray-900">Sign In</h1>
+      <p class="text-gray-600 mt-2">Enter your credentials to access your account</p>
+    </div>
+
+    <!-- Form -->
+    <form (ngSubmit)="onSubmit()" class="space-y-6">
+      <!-- Error Alert -->
+      <div
+        *ngIf="error"
+        class="error-alert bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded"
+      >
+        <p class="font-medium text-sm">{{ error }}</p>
+      </div>
+
+      <!-- Email Field -->
+      <div>
+        <label
+          for="email"
+          class="block text-xs font-semibold text-gray-900 mb-2 uppercase tracking-wide"
+        >
+          Email Address
+        </label>
+        <input
+          id="email"
+          type="email"
+          [(ngModel)]="email"
+          name="email"
+          placeholder="you@example.com"
+          class="w-full px-4 py-2 border border-gray-300 hover:border-gray-400 focus:outline-none focus:border-gray-900 focus:ring-1 focus:ring-gray-900 transition-colors rounded"
+          [attr.aria-invalid]="submitted && emailError ? true : false"
+        />
+        <p *ngIf="emailError" class="mt-1 text-xs text-red-600">✗ {{ emailError }}</p>
+      </div>
+
+      <!-- Password Field -->
+      <div>
+        <label
+          for="password"
+          class="block text-xs font-semibold text-gray-900 mb-2 uppercase tracking-wide"
+        >
+          Password
+        </label>
+        <input
+          id="password"
+          type="password"
+          [(ngModel)]="password"
+          name="password"
+          placeholder="••••••••"
+          class="w-full px-4 py-2 border border-gray-300 hover:border-gray-400 focus:outline-none focus:border-gray-900 focus:ring-1 focus:ring-gray-900 transition-colors rounded"
+          [attr.aria-invalid]="submitted && passwordError ? true : false"
+        />
+        <p *ngIf="passwordError" class="mt-1 text-xs text-red-600">✗ {{ passwordError }}</p>
+      </div>
+
+      <!-- Submit Button -->
+      <button
+        type="submit"
+        [disabled]="!isFormValid || loading"
+        class="w-full bg-gray-900 hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium py-2 rounded transition-colors duration-200"
+        [attr.aria-busy]="loading"
+      >
+        {{ loading ? 'Signing in...' : 'Sign In' }}
+      </button>
+    </form>
+
+    <!-- Footer -->
+    <div class="mt-8 text-center">
+      <p class="text-gray-600 text-sm">
+        Don't have an account?
+        <a routerLink="/auth/register" class="text-gray-900 font-semibold hover:underline">
+          Sign up
+        </a>
+      </p>
+    </div>
+  </div>
+</div>
