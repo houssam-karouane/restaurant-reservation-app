@@ -125,7 +125,10 @@ def cancel_reservation(
     if reservation.user_id != current_user.id:
         raise HTTPException(
             status_code=403,
-            detail="Cette action est interdite : vous ne pouvez pas annuler la réservation d'un autre utilisateur",  # ✅ Ajoutez "interdit"
+            detail=(
+                "Cette action est interdite : vous ne pouvez pas annuler "
+                "la réservation d'un autre utilisateur"
+            ),
         )
 
     # Vérifier règle H-2
