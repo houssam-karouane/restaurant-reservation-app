@@ -1,0 +1,64 @@
+@use '../../styles/tokens' as t;
+
+.reservations-page {
+  min-height: 100vh;
+  padding: t.$space-8;
+  background-color: t.$color-surface-muted;
+}
+
+.reservations-inner {
+  max-width: 896px;
+  margin: 0 auto;
+}
+
+.reservations-panel {
+  background-color: t.$color-surface;
+  border: t.$border-default;
+  border-radius: t.$radius-modal;
+  padding: t.$modal-padding;
+}
+
+.reservations-title {
+  font-size: t.$text-xl;
+  font-weight: t.$font-medium;
+  letter-spacing: t.$letter-spacing-heading;
+  color: t.$color-text-primary;
+  margin-bottom: t.$space-8;
+}
+
+.reservations-state {
+  text-align: center;
+  padding: t.$space-8 0;
+}
+
+.reservations-state p {
+  font-size: t.$text-sm;
+  color: t.$color-text-secondary;
+}
+
+.reservations-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.reservation-row {
+  padding: t.$list-row-padding-y 0;
+  border-bottom: t.$border-muted;
+}
+
+.reservation-row:last-child {
+  border-bottom: none;
+}
+
+.reservation-row-inner {
+  display: flex;
+  align-items: center;
+  gap: t.$list-row-gap;
+  padding: t.$space-2 0;
+}
+
+.reservation-placeholder {
+  font-size: t.$text-sm;
+  color: t.$color-text-secondary;
+}

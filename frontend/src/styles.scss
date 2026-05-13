@@ -1,0 +1,196 @@
+@use 'sass:color' as scolor;
+@use './app/styles/tokens' as t;
+
+:root {
+  --ds-color-surface: #{t.$color-surface};
+  --ds-color-surface-muted: #{t.$color-surface-muted};
+  --ds-color-surface-hover: #{t.$color-surface-hover};
+  --ds-color-border: #{t.$color-border};
+  --ds-color-border-muted: #{t.$color-border-muted};
+  --ds-color-text-primary: #{t.$color-text-primary};
+  --ds-color-text-secondary: #{t.$color-text-secondary};
+  --ds-color-text-hint: #{t.$color-text-hint};
+  --ds-color-success: #{t.$color-success};
+  --ds-color-warning: #{t.$color-warning};
+  --ds-color-danger: #{t.$color-danger};
+  --ds-color-info: #{t.$color-info};
+  --ds-radius-pill: #{t.$radius-pill};
+  --ds-radius-modal: #{t.$radius-modal};
+  --ds-radius-card: #{t.$radius-card};
+  --ds-radius-btn: #{t.$radius-btn};
+  --ds-focus-ring-shadow: #{t.$focus-ring-shadow};
+}
+
+@import 'tailwindcss';
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: t.$font-stack;
+  font-size: t.$text-base;
+  font-weight: t.$font-regular;
+  line-height: t.$line-height-prose;
+  color: t.$color-text-primary;
+  background-color: t.$color-surface-muted;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: t.$font-medium;
+  line-height: t.$line-height-ui;
+  letter-spacing: t.$letter-spacing-heading;
+  color: t.$color-text-primary;
+}
+
+h1 {
+  font-size: t.$text-2xl;
+}
+
+h2 {
+  font-size: t.$text-xl;
+}
+
+p {
+  color: t.$color-text-secondary;
+}
+
+a {
+  color: t.$color-info;
+  text-decoration: none;
+  transition: color 150ms ease;
+}
+
+a:hover {
+  color: scolor.adjust(t.$color-info, $lightness: -6%);
+}
+
+input,
+textarea,
+select {
+  font-family: inherit;
+  font-size: inherit;
+  padding: t.$space-4;
+  border: t.$border-default;
+  border-radius: t.$radius-pill;
+  transition:
+    border-color 150ms ease,
+    box-shadow 150ms ease;
+  background-color: t.$color-surface;
+  color: t.$color-text-primary;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: t.$color-text-hint;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: t.$color-info;
+  box-shadow: t.$focus-ring-shadow;
+}
+
+button {
+  font-family: inherit;
+  font-size: inherit;
+  border: none;
+  border-radius: t.$radius-pill;
+  padding: t.$btn-primary-padding;
+  cursor: pointer;
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease;
+  font-weight: t.$font-medium;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background-color: t.$color-text-primary;
+  color: t.$color-surface;
+  border: none;
+  border-radius: t.$radius-pill;
+  padding: t.$btn-primary-padding;
+  font-size: t.$text-base;
+  font-weight: t.$font-medium;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: scolor.adjust(t.$color-text-primary, $lightness: 6%);
+}
+
+.btn-secondary {
+  background-color: t.$color-surface;
+  color: t.$color-text-primary;
+  border: t.$border-default;
+  border-radius: t.$radius-btn;
+  padding: t.$btn-secondary-padding;
+  font-size: 13px;
+  font-weight: t.$font-regular;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: t.$color-surface-muted;
+}
+
+.alert {
+  padding: t.$space-4;
+  border-radius: t.$radius-card;
+  margin-bottom: t.$space-4;
+  font-size: t.$text-sm;
+  border: t.$border-default;
+}
+
+.alert-error {
+  background-color: t.$color-surface-muted;
+  color: t.$color-danger;
+  border-color: t.$color-border-muted;
+}
+
+.alert-success {
+  background-color: t.$color-surface-muted;
+  color: t.$color-success;
+  border-color: t.$color-border-muted;
+}
+
+.error-text {
+  color: t.$color-danger;
+  font-size: t.$text-xs;
+  margin-top: t.$space-2;
+}
+
+label {
+  display: block;
+  font-size: t.$text-sm;
+  font-weight: t.$font-medium;
+  color: t.$color-text-primary;
+  margin-bottom: t.$space-2;
+}
+
+.link-text {
+  color: t.$color-text-secondary;
+}
+
+.link-text a {
+  color: t.$color-info;
+  font-weight: t.$font-medium;
+}

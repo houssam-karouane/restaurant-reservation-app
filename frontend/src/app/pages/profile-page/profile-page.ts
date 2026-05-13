@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -7,18 +8,11 @@ import { AuthService } from '../../services/auth.service';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './profile-page.html',
-  styleUrl: './profile-page.css',
+  styleUrl: './profile-page.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProfilePage implements OnInit {
-  currentUser: any = null;
-  loading = true;
+export class ProfilePage {
+  private readonly authService = inject(AuthService);
 
-  constructor(private authService: AuthService) {}
-
-  ngOnInit(): void {
-    this.authService.currentUser$.subscribe((user) => {
-      this.currentUser = user;
-      this.loading = false;
-    });
-  }
+  readonly currentUser$ = this.authService.currentUser$;
 }

@@ -1,21 +1,23 @@
 <div class="home-container">
   <section class="hero">
     <h1>Discover Your Next Favorite Restaurant</h1>
-    <p>Browse, reserve, and enjoy exceptional dining experiences at the finest restaurants in your area.</p>
+    <p>
+      Browse, reserve, and enjoy exceptional dining experiences at the finest restaurants in your
+      area.
+    </p>
     <div class="hero-actions">
-      <a routerLink="/restaurants" class="btn-primary" style="padding: var(--spacing-md) var(--spacing-2xl);">
-        Browse Restaurants
-      </a>
-      <button class="btn-secondary" style="padding: var(--spacing-md) var(--spacing-2xl);">
-        See Offers
-      </button>
+      <a routerLink="/restaurants" class="btn-primary hero-cta">Browse Restaurants</a>
+      <button type="button" class="btn-secondary hero-cta-secondary">See Offers</button>
     </div>
   </section>
 
   <section class="featured-section">
     <h2 class="section-title">Featured Restaurants</h2>
     <div class="restaurants-grid">
-      <div class="restaurant-card" *ngFor="let restaurant of [1, 2, 3, 4, 5, 6]">
+      <div
+        class="restaurant-card"
+        *ngFor="let restaurant of featuredRestaurantIds; trackBy: trackByRestaurantId"
+      >
         <div class="restaurant-image">
           <span>Restaurant {{ restaurant }}</span>
         </div>
@@ -27,7 +29,7 @@
             <p>🍽️ Fine Dining</p>
           </div>
           <div class="restaurant-actions">
-            <button class="btn-primary" style="flex: 1;">Reserve</button>
+            <button type="button" class="btn-primary">Reserve</button>
             <a href="#" class="btn-secondary">View</a>
           </div>
         </div>
@@ -38,8 +40,6 @@
   <section class="cta-section">
     <h2>Ready to Make a Reservation?</h2>
     <p>Join thousands of diners who have discovered amazing restaurants through our platform.</p>
-    <button class="btn-primary" style="padding: var(--spacing-md) var(--spacing-2xl);">
-      Get Started Today
-    </button>
+    <button type="button" class="btn-primary">Get Started Today</button>
   </section>
 </div>

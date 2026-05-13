@@ -1,32 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, Router } from '@angular/router';
+import { combineLatest } from 'rxjs';
+
 import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-header',
   imports: [CommonModule, RouterLink],
   templateUrl: './header.html',
-  styleUrl: './header.css',
+  styleUrl: './header.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Header implements OnInit {
-  isAuthenticated = false;
-  currentUser: any = null;
+export class Header {
+  private readonly router = inject(Router);
+  readonly authService = inject(AuthService);
 
-  constructor(public authService: AuthService, private router: Router) {}
-
-  ngOnInit(): void {
-    this.authService.isAuthenticated$.subscribe((isAuth) => {
-      this.isAuthenticated = isAuth;
-    });
-
-    this.authService.currentUser$.subscribe((user) => {
-      this.currentUser = user;
-    });
-  }
+  readonly headerVm$ = combineLatest({
+    isAuthenticated: this.authService.isAuthenticated$,
+    currentUser: this.authService.currentUser$,
+  });
 
   logout(): void {
     this.authService.logout();
-    this.router.navigate(['/']);
+    void this.router.navigate(['/']);
   }
 }

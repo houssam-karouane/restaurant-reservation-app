@@ -1,0 +1,64 @@
+@use '../../styles/tokens' as t;
+
+.profile-page {
+  min-height: 100vh;
+  padding: t.$space-8;
+  background-color: t.$color-surface-muted;
+}
+
+.profile-inner {
+  max-width: 672px;
+  margin: 0 auto;
+}
+
+.profile-panel {
+  background-color: t.$color-surface;
+  border: t.$border-default;
+  border-radius: t.$radius-modal;
+  padding: t.$modal-padding;
+}
+
+.profile-title {
+  font-size: t.$text-xl;
+  font-weight: t.$font-medium;
+  letter-spacing: t.$letter-spacing-heading;
+  color: t.$color-text-primary;
+  margin-bottom: t.$space-8;
+}
+
+.profile-state {
+  text-align: center;
+  padding: t.$space-8 0;
+}
+
+.profile-state p {
+  font-size: t.$text-sm;
+  color: t.$color-text-secondary;
+}
+
+.profile-error {
+  color: t.$color-danger;
+  font-size: t.$text-sm;
+  font-weight: t.$font-medium;
+}
+
+.profile-fields {
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-6;
+}
+
+.profile-field label {
+  display: block;
+  font-size: t.$text-sm;
+  font-weight: t.$font-medium;
+  color: t.$color-text-secondary;
+  margin-bottom: t.$space-2;
+}
+
+.profile-field p {
+  font-size: t.$text-md;
+  color: t.$color-text-primary;
+  margin: 0;
+  line-height: t.$line-height-ui;
+}

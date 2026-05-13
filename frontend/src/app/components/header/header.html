@@ -1,27 +1,23 @@
 <header>
   <nav>
     <div class="nav-brand">
-      <a routerLink="/">
-        Restaurant Reservations
-      </a>
+      <a routerLink="/">Restaurant Reservations</a>
     </div>
 
     <ul class="nav-links">
-      <ng-container *ngIf="isAuthenticated; else notAuthenticated">
-        <li class="nav-user">
-          Welcome, {{ currentUser?.name || 'Guest' }}
-        </li>
-        <li>
-          <a routerLink="/profile">Profile</a>
-        </li>
-        <li>
-          <a routerLink="/reservations/me">My Reservations</a>
-        </li>
-        <li>
-          <button (click)="logout()" class="btn-logout">
-            Logout
-          </button>
-        </li>
+      <ng-container *ngIf="headerVm$ | async as vm">
+        <ng-container *ngIf="vm.isAuthenticated; else notAuthenticated">
+          <li class="nav-user">Welcome, {{ vm.currentUser?.name || 'Guest' }}</li>
+          <li>
+            <a routerLink="/profile">Profile</a>
+          </li>
+          <li>
+            <a routerLink="/reservations/me">My Reservations</a>
+          </li>
+          <li>
+            <button type="button" (click)="logout()" class="btn-logout">Logout</button>
+          </li>
+        </ng-container>
       </ng-container>
 
       <ng-template #notAuthenticated>
@@ -29,7 +25,7 @@
           <a routerLink="/auth/login">Sign In</a>
         </li>
         <li>
-          <a routerLink="/auth/register" class="btn-primary" style="display: inline-block;">Create Account</a>
+          <a routerLink="/auth/register" class="nav-cta">Create Account</a>
         </li>
       </ng-template>
     </ul>

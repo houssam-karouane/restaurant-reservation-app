@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -10,7 +10,8 @@ import { AuthValidators } from '../../validators/auth.validators';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './register-page.html',
-  styleUrl: './register-page.css',
+  styleUrl: './register-page.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegisterPage implements OnInit {
   registerForm!: FormGroup;
