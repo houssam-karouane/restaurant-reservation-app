@@ -1,6 +1,5 @@
 import pytest
-from datetime import date, time, datetime, timedelta
-from unittest.mock import MagicMock, patch
+from datetime import datetime, timedelta
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
