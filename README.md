@@ -93,3 +93,5 @@ Voir [`CONTRIBUTING.md`](./CONTRIBUTING.md) pour les regles completes.
 ## Licence
 
 MIT
+
+<!-- Test tracking DR-29 - verifier liaison Jira -->
