@@ -35,3 +35,11 @@
     transform: rotate(360deg);
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner__ring {
+    animation: none;
+    border-top-color: t.$color-info;
+    opacity: 0.9;
+  }
+}

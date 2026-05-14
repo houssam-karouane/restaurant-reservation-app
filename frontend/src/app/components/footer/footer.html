@@ -1,44 +1,48 @@
-<footer>
+<footer aria-label="Site">
   <div class="footer-content">
-    <section class="footer-section">
-      <h3>About</h3>
+    <section class="footer-section footer-section--brand" aria-labelledby="footer-brand-label">
+      <p id="footer-brand-label" class="footer-brand-name">Restaurant Reservations</p>
+      <p class="footer-tagline">
+        Find a table, keep your plans organized, and get back to enjoying the meal.
+      </p>
+    </section>
+
+    <section class="footer-section" aria-labelledby="footer-explore-heading">
+      <h2 id="footer-explore-heading" class="footer-heading">Explore</h2>
       <ul>
-        <li><a href="#">About Us</a></li>
-        <li><a href="#">Our Story</a></li>
-        <li><a href="#">Careers</a></li>
+        <li><a routerLink="/">Home</a></li>
+        <li><a routerLink="/restaurants">Restaurants</a></li>
+        <li><a routerLink="/auth/login">Sign in</a></li>
+        <li><a routerLink="/auth/register">Create account</a></li>
       </ul>
     </section>
 
-    <section class="footer-section">
-      <h3>Support</h3>
+    <section class="footer-section" aria-labelledby="footer-account-heading">
+      <h2 id="footer-account-heading" class="footer-heading">Your account</h2>
       <ul>
-        <li><a href="#">Help Center</a></li>
-        <li><a href="#">Contact Us</a></li>
-        <li><a href="#">FAQ</a></li>
+        <li><a routerLink="/profile">Profile</a></li>
+        <li><a routerLink="/reservations/me">My reservations</a></li>
       </ul>
     </section>
 
-    <section class="footer-section">
-      <h3>Legal</h3>
-      <ul>
-        <li><a href="#">Privacy Policy</a></li>
-        <li><a href="#">Terms of Service</a></li>
-        <li><a href="#">Cookie Policy</a></li>
+    <section class="footer-section footer-section--credits" aria-labelledby="footer-team-heading">
+      <h2 id="footer-team-heading" class="footer-heading">Team credits</h2>
+      <p class="footer-credits-lede">
+        Built for the government / academic restaurant reservation demo (2026).
+      </p>
+      <ul class="footer-credits-list">
+        <li>Product &amp; UX — course team</li>
+        <li>Frontend — Angular + design system</li>
+        <li>Backend &amp; data — API contributors</li>
       </ul>
-    </section>
-
-    <section class="footer-section">
-      <h3>Connect</h3>
-      <ul>
-        <li><a href="#">Twitter</a></li>
-        <li><a href="#">Facebook</a></li>
-        <li><a href="#">Instagram</a></li>
-      </ul>
+      <p class="footer-credits-note">
+        Replace the lines above with your real names before the final presentation.
+      </p>
     </section>
   </div>
 
   <div class="footer-bottom">
     <p>&copy; 2026 Restaurant Reservations. All rights reserved.</p>
-    <p>Made with care for restaurant enthusiasts</p>
+    <p class="footer-bottom__meta">Accessibility-first layout · responsive by default</p>
   </div>
 </footer>

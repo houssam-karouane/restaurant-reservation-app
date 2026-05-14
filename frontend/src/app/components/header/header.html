@@ -1,12 +1,33 @@
-<header>
-  <nav>
-    <div class="nav-brand">
-      <a routerLink="/">Restaurant Reservations</a>
+<header (keydown.escape)="closeMenu()">
+  <nav class="nav" aria-label="Main">
+    <div class="nav-top">
+      <div class="nav-brand">
+        <a routerLink="/" class="nav-brand__link" aria-label="Restaurant Reservations home">
+          <img class="nav-brand__logo" src="logo.svg" width="152" height="30" alt="" />
+        </a>
+      </div>
+
+      <button
+        type="button"
+        class="nav-burger"
+        (click)="toggleMenu()"
+        [attr.aria-expanded]="menuOpen()"
+        aria-controls="primary-navigation"
+        [attr.aria-label]="menuOpen() ? 'Close menu' : 'Open menu'"
+      >
+        <span class="nav-burger__bar" aria-hidden="true"></span>
+        <span class="nav-burger__bar" aria-hidden="true"></span>
+        <span class="nav-burger__bar" aria-hidden="true"></span>
+      </button>
     </div>
 
-    <ul class="nav-links">
+    <ul
+      id="primary-navigation"
+      class="nav-links"
+      [class.nav-links--open]="menuOpen()"
+    >
       <li>
-        <a routerLink="/restaurants">Restaurants</a>
+        <a routerLink="/restaurants" (click)="closeMenu()">Restaurants</a>
       </li>
       <ng-container *ngIf="headerVm$ | async as vm">
         <ng-container *ngIf="vm.isAuthenticated; else notAuthenticated">
@@ -14,23 +35,23 @@
             Welcome, {{ vm.currentUser?.full_name || vm.currentUser?.username || 'Guest' }}
           </li>
           <li>
-            <a routerLink="/profile">Profile</a>
+            <a routerLink="/profile" (click)="closeMenu()">Profile</a>
           </li>
           <li>
-            <a routerLink="/reservations/me">My Reservations</a>
+            <a routerLink="/reservations/me" (click)="closeMenu()">My Reservations</a>
           </li>
           <li>
-            <button type="button" (click)="logout()" class="btn-logout">Logout</button>
+            <button type="button" (click)="logout(); closeMenu()" class="btn-logout">Logout</button>
           </li>
         </ng-container>
       </ng-container>
 
       <ng-template #notAuthenticated>
         <li>
-          <a routerLink="/auth/login">Sign In</a>
+          <a routerLink="/auth/login" (click)="closeMenu()">Sign In</a>
         </li>
         <li>
-          <a routerLink="/auth/register" class="nav-cta">Create Account</a>
+          <a routerLink="/auth/register" class="nav-cta" (click)="closeMenu()">Create Account</a>
         </li>
       </ng-template>
     </ul>

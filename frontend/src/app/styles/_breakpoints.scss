@@ -1,0 +1,30 @@
+// -----------------------------------------------------------------------------
+// Responsive breakpoints — @use './breakpoints' as bp;
+// Mobile: < $bp-tablet | Tablet: $bp-tablet–($bp-desktop - 1) | Desktop: ≥ $bp-desktop
+// -----------------------------------------------------------------------------
+
+@use 'tokens' as t;
+
+@mixin mobile-only {
+  @media (max-width: (t.$bp-tablet - 1px)) {
+    @content;
+  }
+}
+
+@mixin tablet-up {
+  @media (min-width: t.$bp-tablet) {
+    @content;
+  }
+}
+
+@mixin tablet-only {
+  @media (min-width: t.$bp-tablet) and (max-width: (t.$bp-desktop - 1px)) {
+    @content;
+  }
+}
+
+@mixin desktop-up {
+  @media (min-width: t.$bp-desktop) {
+    @content;
+  }
+}

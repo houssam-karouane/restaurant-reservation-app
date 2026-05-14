@@ -8,13 +8,29 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  transition: border-color 150ms ease;
+  transition:
+    border-color 150ms ease,
+    transform var(--ds-motion-duration, 220ms) var(--ds-motion-ease, ease),
+    box-shadow var(--ds-motion-duration, 220ms) var(--ds-motion-ease, ease);
   color: inherit;
   text-decoration: none;
 }
 
 .restaurant-card:hover {
   border-color: t.$color-border-hover;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(26, 26, 26, 0.08);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .restaurant-card {
+    transition: border-color 150ms ease;
+  }
+
+  .restaurant-card:hover {
+    transform: none;
+    box-shadow: none;
+  }
 }
 
 .restaurant-card:focus-visible {

@@ -5,6 +5,10 @@
 // Import in feature SCSS: @use '../../styles/tokens' as t;
 // -----------------------------------------------------------------------------
 
+// --- Layout breakpoints ---
+$bp-tablet: 768px;
+$bp-desktop: 1024px;
+
 // --- Border radius ---
 $radius-pill: 9999px;
 $radius-modal: 16px;

@@ -2,6 +2,10 @@
 @use './app/styles/tokens' as t;
 
 :root {
+  --ds-bp-tablet: #{t.$bp-tablet};
+  --ds-bp-desktop: #{t.$bp-desktop};
+  --ds-motion-duration: 220ms;
+  --ds-motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
   --ds-color-surface: #{t.$color-surface};
   --ds-color-surface-muted: #{t.$color-surface-muted};
   --ds-color-surface-hover: #{t.$color-surface-hover};
@@ -32,6 +36,27 @@
 html,
 body {
   height: 100%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ds-color-info);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 body {

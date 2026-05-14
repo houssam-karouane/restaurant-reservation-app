@@ -1,4 +1,5 @@
 @use './styles/tokens' as t;
+@use './styles/breakpoints' as bp;
 
 :host {
   display: flex;
@@ -6,10 +7,69 @@
   min-height: 100%;
 }
 
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 200;
+  padding: t.$space-3 t.$space-4;
+  background-color: t.$color-text-primary;
+  color: t.$color-surface;
+  border-radius: t.$radius-btn;
+  font-size: t.$text-sm;
+  font-weight: t.$font-medium;
+  text-decoration: none;
+  box-shadow: t.$focus-ring-shadow;
+}
+
+.skip-link:focus {
+  left: t.$space-4;
+  top: t.$space-4;
+}
+
+.skip-link:focus-visible {
+  outline: 2px solid t.$color-surface;
+  outline-offset: 2px;
+}
+
 main.container {
   flex: 1;
   width: 100%;
   max-width: 1280px;
   margin: 0 auto;
-  padding: 0 t.$space-6;
+  padding: 0 t.$space-4;
+}
+
+@include bp.tablet-up {
+  main.container {
+    padding: 0 t.$space-6;
+  }
+}
+
+@include bp.desktop-up {
+  main.container {
+    padding: 0 t.$space-8;
+  }
+}
+
+@keyframes main-shell-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.main-shell--enter {
+  animation: main-shell-enter var(--ds-motion-duration) var(--ds-motion-ease) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .main-shell--enter {
+    animation: none;
+  }
 }
