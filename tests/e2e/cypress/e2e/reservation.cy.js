@@ -24,10 +24,10 @@ describe('Parcours 3 : Réservation complète (E2E)', () => {
     cy.visit('/restaurants');
 
     // Attendre les cartes
-    cy.get('app-restaurant-card', { timeout: 10000 }).should('have.length.greaterThan', 0);
+    cy.get('.restaurant-card', { timeout: 15000 }).should('have.length.greaterThan', 0);
 
-    // Cliquer sur le premier restaurant
-    cy.get('app-restaurant-card').first().click({ force: true });
+    // Cliquer sur le lien à l'intérieur de la première carte
+    cy.get('.restaurant-card', { timeout: 15000 }).first().click({ force: true });
 
     // Vérifier qu'on est sur /restaurants/:id
     cy.url().should('include', '/restaurants');
