@@ -1,0 +1,36 @@
+<section class="profile-card" aria-labelledby="recommendations-heading">
+  <h2 id="recommendations-heading" class="profile-card__title">Recommended for you</h2>
+
+  @if (loading()) {
+    <div class="profile-card__state"><app-spinner /></div>
+  } @else if (error()) {
+    <app-inline-alert [message]="error()!" />
+  } @else if (restaurants().length === 0) {
+    <div class="profile-card__state">
+      <p>No recommendations right now.</p>
+    </div>
+  } @else {
+    <ul class="restaurant-grid">
+      @for (r of restaurants(); track r.id) {
+        <li>
+          <a class="restaurant-tile" [routerLink]="['/restaurants', r.id]">
+            <div class="restaurant-tile__placeholder" aria-hidden="true"></div>
+            <div class="restaurant-tile__body">
+              <span class="restaurant-tile__name">{{ r.name }}</span>
+              <span class="restaurant-tile__meta">
+                {{ r.cuisine }}
+                @if (r.city) {
+                  <span aria-hidden="true"> · </span>
+                  {{ r.city }}
+                }
+              </span>
+              @if (r.rating != null) {
+                <span class="restaurant-tile__rating">{{ r.rating | number: '1.1-1' }} ★</span>
+              }
+            </div>
+          </a>
+        </li>
+      }
+    </ul>
+  }
+</section>
