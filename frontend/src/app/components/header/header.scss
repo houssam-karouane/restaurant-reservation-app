@@ -1,107 +1,236 @@
-@use 'sass:color' as scolor;
-@use '../../styles/tokens' as t;
+@use '../../styles/breakpoints' as bp;
 
-header {
+.site-header {
   position: sticky;
   top: 0;
   z-index: 100;
-  background-color: t.$color-surface;
-  border-bottom: t.$border-default;
+  background-color: transparent;
+  border-bottom: 1px solid transparent;
+  transition:
+    background-color var(--motion-duration) var(--motion-ease),
+    border-color var(--motion-duration) var(--motion-ease),
+    box-shadow var(--motion-duration) var(--motion-ease);
 }
 
-nav {
-  max-width: 1280px;
+.site-header--scrolled {
+  background-color: var(--color-bg-overlay);
+  backdrop-filter: blur(10px);
+  border-bottom-color: var(--color-border);
+  box-shadow: 0 2px 12px var(--color-shadow);
+}
+
+.nav {
+  max-width: var(--content-max-width);
   margin: 0 auto;
-  padding: t.$space-4 t.$space-6;
+  padding: var(--space-3) var(--container-padding-x);
+}
+
+@include bp.tablet-up {
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+  }
+}
+
+.nav-top {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: t.$space-4;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+@include bp.tablet-up {
+  .nav-top {
+    flex: 0 0 auto;
+  }
 }
 
 .nav-brand {
   display: flex;
   align-items: center;
-  gap: t.$space-3;
+  min-width: 0;
 }
 
-.nav-brand a {
-  font-weight: t.$font-medium;
-  font-size: t.$text-md;
-  color: t.$color-text-primary;
+.nav-brand__link {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
   text-decoration: none;
-  letter-spacing: t.$letter-spacing-heading;
+  border-radius: var(--radius-pill);
+  transition: opacity 0.16s var(--motion-ease);
 }
 
-.nav-brand a:hover {
-  color: t.$color-info;
+.nav-brand__link:hover {
+  opacity: 0.88;
+}
+
+.nav-wordmark {
+  font-family: var(--font-heading);
+  font-weight: var(--weight-bold);
+  font-size: clamp(1.15rem, 3.2vw, 1.4rem);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-text-primary);
+}
+
+.nav-burger {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+  align-items: center;
+}
+
+.nav-burger:hover {
+  background-color: var(--color-bg-secondary);
+  transform: translateY(-1px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-burger:hover {
+    transform: none;
+  }
+}
+
+.nav-burger__bar {
+  width: 18px;
+  height: 2px;
+  background-color: var(--color-text-primary);
+  border-radius: 2px;
+  transition:
+    transform 0.18s var(--motion-ease),
+    opacity 0.18s var(--motion-ease);
+}
+
+@include bp.tablet-up {
+  .nav-burger {
+    display: none;
+  }
+}
+
+@include bp.mobile-only {
+  .nav-burger[aria-expanded='true'] .nav-burger__bar:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .nav-burger[aria-expanded='true'] .nav-burger__bar:nth-child(2) {
+    opacity: 0;
+  }
+
+  .nav-burger[aria-expanded='true'] .nav-burger__bar:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
 }
 
 .nav-links {
-  display: flex;
-  align-items: center;
-  gap: t.$space-3;
+  display: none;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-2);
   list-style: none;
+  margin: var(--space-4) 0 0;
+  padding: var(--space-2) 0 0;
+  border-top: 1px solid var(--color-border);
+}
+
+.nav-links--open {
+  display: flex;
+}
+
+@include bp.tablet-up {
+  .nav-links {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    margin: 0;
+    padding: 0;
+    border-top: none;
+    gap: var(--space-3);
+  }
 }
 
 .nav-links a {
-  padding: t.$space-2 t.$space-3;
-  border-radius: t.$radius-btn;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-pill);
   transition:
-    background-color 150ms ease,
-    color 150ms ease;
-  font-size: t.$text-sm;
-  color: t.$color-text-primary;
+    background-color var(--motion-duration) var(--motion-ease),
+    color var(--motion-duration) var(--motion-ease);
+  font-size: var(--text-sm);
+  color: var(--color-text-primary);
 }
 
 .nav-links a:hover {
-  background-color: t.$color-surface-muted;
-  color: t.$color-info;
+  background-color: var(--color-bg-secondary);
+  color: var(--color-green-primary);
 }
 
 .nav-user {
-  font-size: t.$text-sm;
-  color: t.$color-text-secondary;
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  padding: var(--space-2) var(--space-3);
 }
 
 .btn-logout {
-  background-color: t.$color-surface;
-  color: t.$color-danger;
-  border: t.$border-default;
-  border-radius: t.$radius-btn;
-  padding: t.$btn-secondary-padding;
-  font-size: 13px;
-  font-weight: t.$font-regular;
+  background-color: var(--color-bg-primary);
+  color: var(--color-accent-red);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  padding: 0.5rem 1rem;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-regular);
+  width: 100%;
+}
+
+@include bp.tablet-up {
+  .btn-logout {
+    width: auto;
+  }
 }
 
 .btn-logout:hover:not(:disabled) {
-  background-color: t.$color-surface-muted;
+  background-color: var(--color-bg-secondary);
+  transform: translateY(-1px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-logout:hover:not(:disabled) {
+    transform: none;
+  }
 }
 
 .nav-cta {
   display: inline-block;
-  padding: t.$btn-primary-padding;
-  font-size: t.$text-base;
-  font-weight: t.$font-medium;
-  border-radius: t.$radius-pill;
-  background-color: t.$color-text-primary;
-  color: t.$color-surface;
+  padding: 0.65rem 1.25rem;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  border-radius: var(--radius-pill);
+  background-color: var(--color-green-primary);
+  color: var(--color-text-on-green);
   text-decoration: none;
+  text-align: center;
+  transition:
+    background-color var(--motion-duration) var(--motion-ease),
+    transform 0.15s var(--motion-ease);
 }
 
 .nav-cta:hover {
-  background-color: scolor.adjust(t.$color-text-primary, $lightness: 8%);
+  background-color: var(--color-green-hover);
+  transform: translateY(-1px);
 }
 
-@media (max-width: 768px) {
-  nav {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .nav-links {
-    flex-wrap: wrap;
-    justify-content: center;
+@media (prefers-reduced-motion: reduce) {
+  .nav-cta:hover {
+    transform: none;
   }
 }
 

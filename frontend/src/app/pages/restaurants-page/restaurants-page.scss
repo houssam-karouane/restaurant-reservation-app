@@ -1,27 +1,27 @@
-@use '../../styles/tokens' as t;
-
 .restaurants-page {
-  max-width: 1280px;
+  max-width: var(--content-max-width);
   margin: 0 auto;
-  padding: t.$space-12 t.$space-6;
+  padding: var(--section-padding-y) var(--container-padding-x);
 }
 
 .restaurants-page__header {
-  margin-bottom: t.$space-6;
+  margin-bottom: var(--space-6);
 }
 
 .restaurants-page__header h1 {
-  margin-bottom: t.$space-2;
+  font-family: var(--font-heading);
+  margin-bottom: var(--space-2);
 }
 
 .restaurants-page__intro {
   margin: 0;
-  font-size: t.$text-sm;
-  color: t.$color-text-secondary;
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
 }
 
 @media (max-width: 768px) {
   .restaurants-page {
-    padding: t.$space-8 t.$space-4;
+    padding-top: var(--space-8);
+    padding-bottom: var(--space-8);
   }
 }
