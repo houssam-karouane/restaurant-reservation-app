@@ -8,7 +8,7 @@ import type {
   ReservationListResponse,
 } from '../models/reservation';
 
-const API_URL = 'http://localhost:8000/api/v1';
+const API_URL = '/api/v1';
 
 @Injectable({
   providedIn: 'root',
