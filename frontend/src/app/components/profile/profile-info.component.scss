@@ -1,0 +1,64 @@
+@use '../../styles/tokens' as t;
+
+.profile-card {
+  background-color: t.$color-surface;
+  border: t.$border-default;
+  border-radius: t.$radius-modal;
+  padding: t.$modal-padding;
+}
+
+.profile-card__title {
+  margin: 0 0 t.$space-6;
+  font-size: t.$text-lg;
+  font-weight: t.$font-medium;
+  letter-spacing: t.$letter-spacing-heading;
+  color: t.$color-text-primary;
+}
+
+.profile-card__state {
+  display: flex;
+  justify-content: center;
+  padding: t.$space-8 0;
+}
+
+.profile-card__state p {
+  margin: 0;
+  font-size: t.$text-sm;
+  color: t.$color-text-secondary;
+}
+
+.profile-info {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-5;
+}
+
+.profile-info__row {
+  display: grid;
+  grid-template-columns: minmax(120px, 160px) 1fr;
+  gap: t.$space-4;
+  align-items: baseline;
+}
+
+.profile-info__row dt {
+  margin: 0;
+  font-size: t.$text-sm;
+  font-weight: t.$font-medium;
+  color: t.$color-text-secondary;
+}
+
+.profile-info__row dd {
+  margin: 0;
+  font-size: t.$text-md;
+  color: t.$color-text-primary;
+  line-height: t.$line-height-ui;
+  word-break: break-word;
+}
+
+@media (max-width: 520px) {
+  .profile-info__row {
+    grid-template-columns: 1fr;
+    gap: t.$space-1;
+  }
+}
