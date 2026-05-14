@@ -12,7 +12,9 @@ from app.models.user import User
 from app.core.security import create_access_token
 
 SQLALCHEMY_TEST_URL = "sqlite:///./test_reservations.db"
-engine_test = create_engine(SQLALCHEMY_TEST_URL, connect_args={"check_same_thread": False})
+engine_test = create_engine(
+    SQLALCHEMY_TEST_URL, connect_args={"check_same_thread": False}
+)
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine_test)
 
 
@@ -173,7 +175,9 @@ def test_cancel_reservation_success(client, auth_headers):
     reservation_id = create_response.json()["id"]
 
     # Annuler
-    response = client.delete(f"/api/v1/reservations/{reservation_id}", headers=auth_headers)
+    response = client.delete(
+        f"/api/v1/reservations/{reservation_id}", headers=auth_headers
+    )
     assert response.status_code == 200
     assert "annulée" in response.json()["message"].lower()
 
@@ -205,7 +209,9 @@ def test_cancel_reservation_too_late(client, db_session, auth_headers):
 # ── Test 6 : annuler la réservation d'un autre user ──────────────────────────
 
 
-def test_cancel_other_user_reservation_forbidden(client, auth_headers, other_auth_headers):
+def test_cancel_other_user_reservation_forbidden(
+    client, auth_headers, other_auth_headers
+):
     """DELETE /reservations/{id} → 403 si pas le propriétaire."""
     # Créer une réservation avec other_user
     future_date = (datetime.now() + timedelta(days=7)).date()
@@ -222,6 +228,8 @@ def test_cancel_other_user_reservation_forbidden(client, auth_headers, other_aut
     reservation_id = create_response.json()["id"]
 
     # Tenter d'annuler avec le premier user → 403
-    response = client.delete(f"/api/v1/reservations/{reservation_id}", headers=auth_headers)
+    response = client.delete(
+        f"/api/v1/reservations/{reservation_id}", headers=auth_headers
+    )
     assert response.status_code == 403
     assert "autre utilisateur" in response.json()["detail"].lower()

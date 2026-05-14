@@ -23,7 +23,9 @@ def get_password_hash(password: str) -> str:
     return pwd_context.hash(password)
 
 
-def create_access_token(subject: Union[str, Any], expires_delta: timedelta = None) -> str:
+def create_access_token(
+    subject: Union[str, Any], expires_delta: timedelta = None
+) -> str:
     """Génère un jeton JWT signé."""
     if expires_delta:
         expire = datetime.utcnow() + expires_delta

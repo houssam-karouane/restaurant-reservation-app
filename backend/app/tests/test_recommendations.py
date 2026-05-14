@@ -13,7 +13,9 @@ from app.models.user import User
 from app.core.security import create_access_token
 
 SQLALCHEMY_TEST_URL = "sqlite:///./test_recommendations.db"
-engine_test = create_engine(SQLALCHEMY_TEST_URL, connect_args={"check_same_thread": False})
+engine_test = create_engine(
+    SQLALCHEMY_TEST_URL, connect_args={"check_same_thread": False}
+)
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine_test)
 
 
@@ -42,16 +44,36 @@ def db_session():
     # Restaurants
     restaurants = [
         Restaurant(
-            id=10, name="Sakura", cuisine="japonaise", city="Paris", price_range=3, rating=4.9
+            id=10,
+            name="Sakura",
+            cuisine="japonaise",
+            city="Paris",
+            price_range=3,
+            rating=4.9,
         ),
         Restaurant(
-            id=11, name="Le Bistrot", cuisine="française", city="Paris", price_range=2, rating=4.7
+            id=11,
+            name="Le Bistrot",
+            cuisine="française",
+            city="Paris",
+            price_range=2,
+            rating=4.7,
         ),
         Restaurant(
-            id=12, name="Bella Napoli", cuisine="italienne", city="Lyon", price_range=2, rating=4.6
+            id=12,
+            name="Bella Napoli",
+            cuisine="italienne",
+            city="Lyon",
+            price_range=2,
+            rating=4.6,
         ),
         Restaurant(
-            id=13, name="Dragon", cuisine="chinoise", city="Paris", price_range=1, rating=4.2
+            id=13,
+            name="Dragon",
+            cuisine="chinoise",
+            city="Paris",
+            price_range=1,
+            rating=4.2,
         ),
         Restaurant(
             id=14,
@@ -62,10 +84,20 @@ def db_session():
             rating=4.8,
         ),
         Restaurant(
-            id=15, name="Tacos", cuisine="mexicaine", city="Bordeaux", price_range=1, rating=3.9
+            id=15,
+            name="Tacos",
+            cuisine="mexicaine",
+            city="Bordeaux",
+            price_range=1,
+            rating=3.9,
         ),
         Restaurant(
-            id=16, name="Luxe", cuisine="française", city="Paris", price_range=4, rating=4.5
+            id=16,
+            name="Luxe",
+            cuisine="française",
+            city="Paris",
+            price_range=4,
+            rating=4.5,
         ),
     ]
     db.add_all(restaurants)
@@ -130,7 +162,8 @@ def test_recommendations_with_history(client, headers_with_history):
     """GET /recommendations/me → 200 avec recommandations personnalisées."""
     # Désactiver le cache pour ce test
     with patch(
-        "app.api.v1.endpoints.recommendations.get_cached_recommendations", return_value=None
+        "app.api.v1.endpoints.recommendations.get_cached_recommendations",
+        return_value=None,
     ), patch("app.api.v1.endpoints.recommendations.set_cached_recommendations"):
 
         response = client.get(
@@ -165,7 +198,8 @@ def test_recommendations_with_history(client, headers_with_history):
 def test_recommendations_new_user(client, headers_new_user):
     """GET /recommendations/me → fallback=True si aucun historique."""
     with patch(
-        "app.api.v1.endpoints.recommendations.get_cached_recommendations", return_value=None
+        "app.api.v1.endpoints.recommendations.get_cached_recommendations",
+        return_value=None,
     ), patch("app.api.v1.endpoints.recommendations.set_cached_recommendations"):
 
         response = client.get(
@@ -208,7 +242,8 @@ def test_recommendations_cached(client, headers_with_history):
     ]
 
     with patch(
-        "app.api.v1.endpoints.recommendations.get_cached_recommendations", return_value=cached_data
+        "app.api.v1.endpoints.recommendations.get_cached_recommendations",
+        return_value=cached_data,
     ):
 
         response = client.get(

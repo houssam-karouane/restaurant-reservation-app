@@ -45,7 +45,9 @@ def list_restaurants(
 def get_restaurant(restaurant_id: int, db: Session = Depends(get_db)):
     restaurant = crud_restaurant.get_restaurant_by_id(db, restaurant_id)
     if not restaurant:
-        raise HTTPException(status_code=404, detail=f"Restaurant #{restaurant_id} introuvable")
+        raise HTTPException(
+            status_code=404, detail=f"Restaurant #{restaurant_id} introuvable"
+        )
     return restaurant
 
 
@@ -71,8 +73,12 @@ def update_restaurant(
         raise HTTPException(status_code=403, detail="Réservé aux administrateurs")
     restaurant = crud_restaurant.get_restaurant_by_id(db, restaurant_id)
     if not restaurant:
-        raise HTTPException(status_code=404, detail=f"Restaurant #{restaurant_id} introuvable")
-    return crud_restaurant.update_restaurant(db=db, restaurant=restaurant, update_data=update_data)
+        raise HTTPException(
+            status_code=404, detail=f"Restaurant #{restaurant_id} introuvable"
+        )
+    return crud_restaurant.update_restaurant(
+        db=db, restaurant=restaurant, update_data=update_data
+    )
 
 
 @router.delete("/{restaurant_id}", status_code=204)
@@ -85,5 +91,7 @@ def delete_restaurant(
         raise HTTPException(status_code=403, detail="Réservé aux administrateurs")
     restaurant = crud_restaurant.get_restaurant_by_id(db, restaurant_id)
     if not restaurant:
-        raise HTTPException(status_code=404, detail=f"Restaurant #{restaurant_id} introuvable")
+        raise HTTPException(
+            status_code=404, detail=f"Restaurant #{restaurant_id} introuvable"
+        )
     crud_restaurant.delete_restaurant(db=db, restaurant=restaurant)

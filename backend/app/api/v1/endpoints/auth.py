@@ -4,7 +4,11 @@ from datetime import timedelta
 from app.database import get_db
 from app.schemas.user import UserCreate, UserResponse, UserLogin, Token
 from app.crud import user as crud_user
-from app.core.security import verify_password, create_access_token, ACCESS_TOKEN_EXPIRE_MINUTES
+from app.core.security import (
+    verify_password,
+    create_access_token,
+    ACCESS_TOKEN_EXPIRE_MINUTES,
+)
 
 router = APIRouter()
 
@@ -34,6 +38,8 @@ def login(login_data: UserLogin, db: Session = Depends(get_db)):
 
     # 2. Générer le token
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = create_access_token(subject=user.email, expires_delta=access_token_expires)
+    access_token = create_access_token(
+        subject=user.email, expires_delta=access_token_expires
+    )
 
     return {"access_token": access_token, "token_type": "bearer"}
