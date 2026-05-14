@@ -14,3 +14,4 @@ class Review(Base):
     restaurant_id = Column(Integer, ForeignKey("restaurants.id"))
 
     restaurant = relationship("Restaurant", back_populates="reviews")
+    user = relationship("User", back_populates="reviews")
