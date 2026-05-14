@@ -1,4 +1,4 @@
-from .user import User
-from .restaurant import Restaurant
-from .reservation import Reservation
-from .review import Review  # <--- Assurez-vous que celle-ci est là
+from .user import User  # noqa: F401
+from .restaurant import Restaurant  # noqa: F401
+from .reservation import Reservation  # noqa: F401
+from .review import Review  # noqa: F401

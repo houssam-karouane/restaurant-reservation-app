@@ -1,5 +1,4 @@
 import pytest
-from unittest.mock import patch
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -9,7 +8,6 @@ from app.database import Base, get_db
 from app.models.restaurant import Restaurant
 from app.models.reservation import Reservation
 from app.models.user import User
-from app.models.review import Review
 from app.core.security import create_access_token
 
 SQLALCHEMY_TEST_URL = "sqlite:///./test_reviews.db"
