@@ -21,7 +21,6 @@ from app.schemas.restaurant import (
 )
 from app.schemas.user import UserCreate
 
-
 # ─── RestaurantBase / RestaurantCreate ───────────────────────────────────────
 
 

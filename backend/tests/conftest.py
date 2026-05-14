@@ -34,7 +34,6 @@ from app.models.reservation import Reservation  # noqa: E402
 from app.models.restaurant import Restaurant  # noqa: E402
 from app.models.user import User  # noqa: E402
 
-
 # ─── Infra SQLite en mémoire ─────────────────────────────────────────────────
 
 
