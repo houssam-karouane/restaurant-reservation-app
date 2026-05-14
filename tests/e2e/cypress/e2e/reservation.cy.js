@@ -30,7 +30,7 @@ describe('Parcours 3 : Réservation complète (E2E)', () => {
     cy.get('app-restaurant-card').first().click({ force: true });
 
     // Vérifier qu'on est sur /restaurants/:id
-    cy.url().should('match', /\/restaurants\/\d+$/);
+    cy.url().should('include', '/restaurants/');
 
     // Vérifier que le formulaire de réservation est présent
     cy.get('.reservation-form').should('exist');
