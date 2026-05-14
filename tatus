@@ -1,0 +1,114 @@
+[33m4630bc8[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeature/DR-40-ui-polish[m[33m)[m polich ui v2
+[33m37f4b37[m plich ui v1
+[33m022cb7e[m[33m ([m[1;31morigin/develop[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mdevelop[m[33m)[m Merge pull request #33 from houssam-karouane/feature/DR-33-profile-page
+[33m037a9b4[m[33m ([m[1;31morigin/feature/DR-33-profile-page[m[33m, [m[1;32mfeature/DR-33-profile-page[m[33m)[m adding /profile page
+[33m310b280[m Merge pull request #32 from houssam-karouane/main
+[33m86bc648[m[33m ([m[1;33mtag: [m[1;33mv2.0.0[m[33m, [m[1;31morigin/main[m[33m)[m Merge pull request #31 from houssam-karouane/develop
+[33md2612ea[m Merge pull request #29 from houssam-karouane/feature/DR-27-cypress-e2e
+[33m9244560[m fix(frontend): use relative redirects in nginx (absolute_redirect off)
+[33m2b6dd79[m ci(e2e): use 127.0.0.1 instead of localhost to dodge IPv6/IPv4 race
+[33m69aafc3[m fix(e2e): drop incompatible retryOnStatusCodeFailure with failOnStatusCode
+[33m2ef8827[m ci(e2e): warm up baseUrl via cy.request before first cy.visit
+[33mf038bc1[m ci(e2e): require 5 successive successful curls before running Cypress
+[33m2c1727d[m style(frontend): apply prettier to app.config.ts
+[33m1057b1e[m chore(e2e): untrack cypress videos (already in .gitignore)
+[33mebf3d87[m DR-27 test(e2e): implémentation des 3 parcours critiques Cypress
+[33m7f9c8f8[m fix(e2e): final stabilization of toast checks and auth redirects DR-27
+[33mef25448[m fix(e2e): target specific card link element for reliable navigation DR-27
+[33m9963025[m fix(e2e): definitive fix for URL assertions and auth flow DR-27
+[33mf843191[m fix(e2e): loosen URL redirection regex for better stability DR-27
+[33mef31394[m fix: fix Nginx proxy and update unit tests for relative API path DR-27
+[33m66b5e27[m fix(frontend): remove hardcoded API URL and use relative paths for proxy support DR-27
+[33m23e09c9[m fix(e2e): fix cuisine casing and increase timeouts for CI stability DR-27
+[33mf1dfb84[m fix(e2e): fix Nginx routing and improve test stability for CI DR-27
+[33me37043b[m chore: resolve merge conflict in main.py
+[33m39a3c10[m Merge branch 'develop' into feature/DR-27-cypress-e2e
+[33m5cd68a8[m Merge pull request #30 from houssam-karouane/feature/DR-26-pytest-coverage
+[33m6b08320[m test(backend): expand pytest suite to 88.55% coverage (DR-26)
+[33m4e87670[m[33m ([m[1;31morigin/feature/DR-27-cypress-e2e[m[33m)[m test(e2e): implement 3 critical user journeys with Cypress DR-27
+[33me9a2b48[m Merge pull request #28 from houssam-karouane/feature/DR-24-restaurant-detail
+[33m9e8f506[m fix(lint): black format on seed; add prettier to pre-commit hooks
+[33m151970c[m fix(lint): black format on seed; add prettier to pre-commit hooks
+[33m7b81da0[m Merge branch 'develop' into feature/DR-24-restaurant-detail
+[33mbad50c5[m feature/DR-24-restaurant-detail
+[33mdcbec5a[m Merge pull request #27 from houssam-karouane/feature/DR-28-zabbix-deploy
+[33mdcf1d2a[m Merge develop into feature/DR-28-zabbix-deploy and resolve conflicts
+[33m0adc13f[m feat: Add Zabbix services to docker-compose and prepare mock dashboards
+[33m32cc632[m Merge pull request #26 from houssam-karouane/feature/DR-22-search-page
+[33m069330a[m[33m ([m[1;31morigin/feature/DR-22-search-page[m[33m, [m[1;32mfeature/DR-22-search-page[m[33m)[m fix: apply prettier formatting
+[33m50dbfdb[m Merge remote-tracking branch 'origin/develop' into feature/DR-22-search-page
+[33m63ff1d9[m Merge pull request #21 from houssam-karouane/feature/DR-21-reservations-api
+[33mb61b523[m ading SearchBarComponent page
+[33m4f7e34f[m Merge branch 'develop' into feature/DR-21-reservations-api
+[33maf3549a[m chore: resolve merge conflicts with develop
+[33m1090282[m chore: resolve merge conflicts with develop
+[33mb3fc202[m chore: resolve merge conflicts with develop
+[33mbfd73bf[m adding /restaurants
+[33m495786e[m chore: resolve merge conflicts with develop
+[33m77f8b3b[m Merge pull request #23 from houssam-karouane/feature/DR-23-login-register
+[33me9f70cb[m[33m ([m[1;31morigin/feature/DR-23-login-register[m[33m, [m[1;32mfeature/DR-23-login-register[m[33m)[m Merge branch 'feature/DR-23-login-register' of github.com:houssam-karouane/restaurant-reservation-app into feature/DR-23-login-register
+[33me5628c6[m Merge branch 'develop' into feature/DR-23-login-register
+[33maf6b954[m fix: apply prettier formatting
+[33mfa49f9a[m[33m ([m[1;31morigin/feature/DR-21-reservations-api[m[33m)[m chore: resolve merge conflicts with develop
+[33m78a45b1[m Merge branch 'develop' into feature/DR-23-login-register
+[33m468bad0[m chore: resolve merge conflicts with develop
+[33m4110c68[m chore: resolve merge conflicts with develop
+[33m0a42d29[m the ui is fixed
+[33mf854bf0[m feat(reservations): implémentation du CRUD, endpoints API sécurisés et tests Pytest
+[33mb300507[m error fixed
+[33m4218ac8[m Merge pull request #20 from houssam-karouane/feature/DR-20-restaurants-api
+[33m8db80c9[m fix: format backend code with Black
+[33m3d5d1ca[m style: fix black and flake8 errors
+[33m84f1faa[m fix: remove unused imports (flake8)
+[33m72d9817[m style: apply black formatting
+[33m3f3934e[m fix: resolve merge conflicts with develop
+[33m2a58c52[m adding login page
+[33m57cea91[m[33m ([m[1;31morigin/feature/DR-20-restaurants-api[m[33m)[m chore: resolve merge conflicts with develop
+[33mab9c5d4[m test(restaurants): add 5 Pytest cases for DR-20 and reach 79% global coverage
+[33m996c83f[m feat(seed): add 17 demo restaurants across 5 French cities and fix schema
+[33mf6202c6[m feat(restaurants): add CRUD with filters pagination and sorting
+[33m3a58a2f[m feat(restaurants): fix merge conflict and add RestaurantUpdate ListResponse schemas
+[33m82b3021[m feat(db): alembic migration add city and review_count to restaurants
+[33m66d5ad5[m feat(db): add alembic migration for city and review_count on restaurants
+[33meb3137d[m Merge pull request #19 from houssam-karouane/chore/DR-29-test-tracking
+[33mae71c71[m chore(jira): verify tracking link DR-29
+[33m9261ec1[m Merge pull request #18 from houssam-karouane/chore/DR-29-add-ci-badge
+[33mbd721f8[m docs(readme): add CI status badge DR-29
+[33m1dfc569[m Merge pull request #17 from houssam-karouane/fix/DR-XX-post-merge-fixes
+[33mb5b167f[m fix(ci): correct lint/test failures from DR-19 merge
+[33m3593709[m fix(auth): correct CI issues on jwt implementation DR-19
+[33mf2a9735[m Merge pull request #15 from houssam-karouane/feature/DR-19-auth-jwt
+[33m0ba0141[m[33m ([m[1;31morigin/feature/DR-19-auth-jwt[m[33m, [m[1;32mfeature/DR-19-auth-jwt[m[33m)[m Ajout des dépendances JWT
+[33mc0b6198[m Fix: backend database connection, user models and login functional
+[33m40c767f[m Fix: backend database connection, user models and login functional
+[33m35c1ea1[m feat(backend): add review and table models before syncing
+[33mbab5593[m[33m ([m[1;31morigin/DR-22-search-page[m[33m)[m Merge pull request #14 from houssam-karouane/feature/DR-25-ci-pipeline
+[33mf03e5c6[m style(frontend): apply prettier formatting to 14 files DR-25
+[33m2dc740d[m ci(github-actions): add CI pipeline with lint/test/build jobs DR-25
+[33mce7820e[m Merge pull request #13 from houssam-karouane/main
+[33m6c63080[m[33m ([m[1;33mtag: [m[1;33mv1.0.0[m[33m)[m Merge pull request #12 from houssam-karouane/develop
+[33me4018aa[m Merge pull request #11 from houssam-karouane/feature/DR-12-ui-mockups
+[33mc66413c[m[33m ([m[1;31morigin/feature/DR-12-ui-mockups[m[33m, [m[1;32mfeature/DR-12-ui-mockups[m[33m)[m temporary ui mockup
+[33macbf69c[m Merge pull request #10 from houssam-karouane/chore/DR-XX-secure-secrets-and-docs
+[33m7b26adf[m chore(security): use env vars in docker-compose + add agile docs DR-10
+[33mbd0d7ab[m Merge pull request #9 from houssam-karouane/feature/DR-14-data-models
+[33mb1f2aec[m Merge branch 'develop' into feature/DR-14-data-models
+[33m13e8723[m fix: add missing review model and migration files
+[33me27751c[m Merge pull request #8 from houssam-karouane/feature/DR-11-init-angular
+[33m6685227[m Merge pull request #7 from houssam-karouane/feature/DR-17-18-setup-vector-zabbix
+[33m5576fe0[m[33m ([m[1;31morigin/feature/DR-11-init-angular[m[33m, [m[1;32mfeature/DR-11-init-angular[m[33m)[m tests passed whith jtest
+[33mc4f762d[m[33m ([m[1;31morigin/feature/DR-17-18-setup-vector-zabbix[m[33m)[m feat(monitoring): setup vector and zabbix docs DR-17 DR-18
+[33m3e47419[m Initialiser projet Angular+ working with docker
+[33med85679[m feat(backend): complete data models and apply initial migrations DR-14
+[33mffac74a[m Merge pull request #6 from houssam-karouane/feature/DR-13-init-fastapi
+[33ma00ff91[m feat(backend): initialize FastAPI with health endpoint DR-13
+[33maa9b277[m Merge pull request #5 from houssam-karouane/feature/DR-16-cypress-setup
+[33m76e2ef7[m test(e2e): ajout d'un test trivial sur la page d'accueil DR-16
+[33m00a495f[m[33m ([m[1;31morigin/feature/DR-16-setup-cypress[m[33m)[m chore(qa): initialisation cypress et plan de test DR-16
+[33m68ee127[m Merge pull request #3 from houssam-karouane/feature/DR-15-docker-compose
+[33mf146fe7[m feat(infra): add docker-compose multi-services stack DR-15
+[33m7cded39[m Merge pull request #2 from houssam-karouane/feature/DR-10-conventions
+[33m6a59931[m chore(conventions): add contributing guide and pre-commit hooks DR-10
+[33m7d5aa68[m Merge pull request #1 from houssam-karouane/feature/DR-9-monorepo-structure
+[33m8fd9554[m chore(setup): create monorepo structure DR-9
+[33m8abd90c[m[33m ([m[1;32mmain[m[33m)[m Initial commit

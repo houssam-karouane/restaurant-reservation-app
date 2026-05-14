@@ -1,9 +1,13 @@
-<header (keydown.escape)="closeMenu()">
+<header
+  class="site-header"
+  [class.site-header--scrolled]="scrolled()"
+  (keydown.escape)="closeMenu()"
+>
   <nav class="nav" aria-label="Main">
     <div class="nav-top">
       <div class="nav-brand">
         <a routerLink="/" class="nav-brand__link" aria-label="Restaurant Reservations home">
-          <img class="nav-brand__logo" src="logo.svg" width="152" height="30" alt="" />
+          <span class="nav-wordmark" translate="no">Reserve</span>
         </a>
       </div>
 

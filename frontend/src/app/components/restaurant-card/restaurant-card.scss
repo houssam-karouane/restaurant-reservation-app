@@ -1,52 +1,55 @@
-@use '../../styles/tokens' as t;
-
 .restaurant-card {
-  background-color: t.$color-surface;
-  border: t.$border-default;
-  border-radius: t.$radius-card;
+  background-color: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
   overflow: hidden;
   height: 100%;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 2px 12px var(--color-shadow);
   transition:
-    border-color 150ms ease,
-    transform var(--ds-motion-duration, 220ms) var(--ds-motion-ease, ease),
-    box-shadow var(--ds-motion-duration, 220ms) var(--ds-motion-ease, ease);
+    border-color var(--motion-duration) var(--motion-ease),
+    transform 0.15s var(--motion-ease),
+    box-shadow var(--motion-duration) var(--motion-ease);
   color: inherit;
   text-decoration: none;
 }
 
 .restaurant-card:hover {
-  border-color: t.$color-border-hover;
+  border-color: var(--color-border);
   transform: translateY(-2px);
-  box-shadow: 0 10px 28px rgba(26, 26, 26, 0.08);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
 }
 
 @media (prefers-reduced-motion: reduce) {
   .restaurant-card {
-    transition: border-color 150ms ease;
+    transition:
+      border-color var(--motion-duration) var(--motion-ease),
+      box-shadow var(--motion-duration) var(--motion-ease);
   }
 
   .restaurant-card:hover {
     transform: none;
-    box-shadow: none;
   }
 }
 
 .restaurant-card:focus-visible {
   outline: none;
-  border-color: t.$focus-ring-color;
-  box-shadow: t.$focus-ring-shadow;
+  border-color: var(--color-green-primary);
+  box-shadow: var(--focus-ring);
 }
 
 .restaurant-card__image {
   width: 100%;
   height: 160px;
-  background: linear-gradient(135deg, t.$color-surface-muted 0%, t.$color-border-muted 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-bg-secondary) 0%,
+    color-mix(in srgb, var(--color-border) 65%, var(--color-bg-secondary)) 100%
+  );
   display: flex;
   align-items: center;
   justify-content: center;
-  border-bottom: t.$border-muted;
   overflow: hidden;
 }
 
@@ -58,44 +61,49 @@
 }
 
 .restaurant-card__image-text {
-  font-size: t.$text-2xl;
-  font-weight: t.$font-medium;
-  color: t.$color-text-secondary;
+  font-family: var(--font-heading);
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-secondary);
   text-transform: uppercase;
 }
 
 .restaurant-card__body {
-  padding: t.$card-padding-y t.$card-padding-x;
+  padding: var(--space-6);
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: t.$space-2;
+  gap: var(--space-2);
 }
 
 .restaurant-card__name {
-  font-size: t.$text-lg;
+  font-family: var(--font-heading);
+  font-size: var(--text-xl);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-snug);
   margin: 0;
 }
 
 .restaurant-card__meta {
   margin: 0;
-  font-size: t.$text-sm;
-  color: t.$color-text-secondary;
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
 }
 
 .restaurant-card__reviews {
-  color: t.$color-text-hint;
+  color: var(--color-text-muted);
 }
 
 .restaurant-card__cuisine,
 .restaurant-card__price,
 .restaurant-card__city {
   margin: 0;
-  font-size: t.$text-sm;
-  color: t.$color-text-secondary;
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
 }
 
 .restaurant-card__price {
-  font-weight: t.$font-medium;
-  color: t.$color-text-primary;
+  font-family: var(--font-mono);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-primary);
 }

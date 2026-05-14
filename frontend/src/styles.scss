@@ -1,31 +1,120 @@
-@use 'sass:color' as scolor;
-@use './app/styles/tokens' as t;
+// @import 'tailwindcss';
+@use 'tailwindcss';
+
+/* -----------------------------------------------------------------------------
+   Hirebird-inspired design system — canonical tokens (hex only here)
+   ----------------------------------------------------------------------------- */
 
 :root {
-  --ds-bp-tablet: #{t.$bp-tablet};
-  --ds-bp-desktop: #{t.$bp-desktop};
+  /* Backgrounds */
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #f5f5f5;
+  --color-bg-card: #ffffff;
+  --color-bg-overlay: rgba(255, 255, 255, 0.85);
+
+  /* Brand green */
+  --color-green-primary: #4caf6e;
+  --color-green-light: #e8f5ec;
+  --color-green-hover: #3d9e5f;
+
+  /* Text */
+  --color-text-primary: #1a1a1a;
+  --color-text-secondary: #555555;
+  --color-text-muted: #999999;
+  --color-text-on-green: #ffffff;
+
+  /* Accents */
+  --color-accent-red: #ff6b6b;
+  --color-border: #e8e8e8;
+  --color-shadow: rgba(0, 0, 0, 0.06);
+
+  /* Semantic (single definition; use via var only) */
+  --color-success: var(--color-green-primary);
+  --color-warning: #8a7a00;
+  --color-danger: var(--color-accent-red);
+  --color-info: var(--color-green-primary);
+
+  /* Typography */
+  --font-heading: 'Fraunces', Georgia, serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: 2.25rem;
+  --text-hero: clamp(2.5rem, 5vw, 3.5rem);
+
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+  --weight-black: 900;
+
+  --leading-tight: 1.15;
+  --leading-snug: 1.35;
+  --leading-normal: 1.6;
+  --leading-loose: 1.8;
+
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0em;
+  --tracking-wide: 0.06em;
+
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+
+  --section-padding-y: clamp(4rem, 8vw, 7rem);
+  --content-max-width: 1100px;
+  --card-max-width: 480px;
+  --container-padding-x: clamp(1.25rem, 5vw, 3rem);
+
+  /* Radii */
+  --radius-card: 16px;
+  --radius-pill: 100px;
+  --radius-image: 12px;
+
+  /* Motion */
+  --motion-duration: 0.2s;
+  --motion-ease: ease;
+  --focus-ring: 0 0 0 3px rgba(76, 175, 110, 0.28);
+
+  /* Legacy aliases (app shell + existing utilities) */
+  --ds-bp-tablet: 768px;
+  --ds-bp-desktop: 1024px;
   --ds-motion-duration: 220ms;
   --ds-motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --ds-color-surface: #{t.$color-surface};
-  --ds-color-surface-muted: #{t.$color-surface-muted};
-  --ds-color-surface-hover: #{t.$color-surface-hover};
-  --ds-color-border: #{t.$color-border};
-  --ds-color-border-muted: #{t.$color-border-muted};
-  --ds-color-text-primary: #{t.$color-text-primary};
-  --ds-color-text-secondary: #{t.$color-text-secondary};
-  --ds-color-text-hint: #{t.$color-text-hint};
-  --ds-color-success: #{t.$color-success};
-  --ds-color-warning: #{t.$color-warning};
-  --ds-color-danger: #{t.$color-danger};
-  --ds-color-info: #{t.$color-info};
-  --ds-radius-pill: #{t.$radius-pill};
-  --ds-radius-modal: #{t.$radius-modal};
-  --ds-radius-card: #{t.$radius-card};
-  --ds-radius-btn: #{t.$radius-btn};
-  --ds-focus-ring-shadow: #{t.$focus-ring-shadow};
+  --ds-color-surface: var(--color-bg-primary);
+  --ds-color-surface-muted: var(--color-bg-secondary);
+  --ds-color-surface-hover: var(--color-bg-secondary);
+  --ds-color-border: var(--color-border);
+  --ds-color-border-muted: var(--color-border);
+  --ds-color-text-primary: var(--color-text-primary);
+  --ds-color-text-secondary: var(--color-text-secondary);
+  --ds-color-text-hint: var(--color-text-muted);
+  --ds-color-success: var(--color-success);
+  --ds-color-warning: var(--color-warning);
+  --ds-color-danger: var(--color-danger);
+  --ds-color-info: var(--color-info);
+  --ds-radius-pill: var(--radius-pill);
+  --ds-radius-modal: var(--radius-card);
+  --ds-radius-card: var(--radius-card);
+  --ds-radius-btn: var(--radius-pill);
+  --ds-focus-ring-shadow: var(--focus-ring);
 }
-
-@import 'tailwindcss';
 
 * {
   margin: 0;
@@ -49,7 +138,7 @@ body {
 }
 
 :focus-visible {
-  outline: 2px solid var(--ds-color-info);
+  outline: 2px solid var(--color-green-primary);
   outline-offset: 2px;
 }
 
@@ -60,12 +149,12 @@ body {
 }
 
 body {
-  font-family: t.$font-stack;
-  font-size: t.$text-base;
-  font-weight: t.$font-regular;
-  line-height: t.$line-height-prose;
-  color: t.$color-text-primary;
-  background-color: t.$color-surface-muted;
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-normal);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-secondary);
 }
 
 h1,
@@ -74,74 +163,82 @@ h3,
 h4,
 h5,
 h6 {
-  font-weight: t.$font-medium;
-  line-height: t.$line-height-ui;
-  letter-spacing: t.$letter-spacing-heading;
-  color: t.$color-text-primary;
+  font-family: var(--font-heading);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-text-primary);
 }
 
 h1 {
-  font-size: t.$text-2xl;
+  font-size: var(--text-3xl);
 }
 
 h2 {
-  font-size: t.$text-xl;
+  font-size: var(--text-2xl);
+}
+
+h3 {
+  font-size: var(--text-xl);
 }
 
 p {
-  color: t.$color-text-secondary;
+  color: var(--color-text-secondary);
 }
 
 a {
-  color: t.$color-info;
+  color: var(--color-text-primary);
   text-decoration: none;
-  transition: color 150ms ease;
+  transition:
+    color var(--motion-duration) var(--motion-ease),
+    opacity var(--motion-duration) var(--motion-ease);
 }
 
 a:hover {
-  color: scolor.adjust(t.$color-info, $lightness: -6%);
+  color: var(--color-green-primary);
 }
 
 input,
 textarea,
 select {
-  font-family: inherit;
+  font-family: var(--font-body);
   font-size: inherit;
-  padding: t.$space-4;
-  border: t.$border-default;
-  border-radius: t.$radius-pill;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
   transition:
-    border-color 150ms ease,
-    box-shadow 150ms ease;
-  background-color: t.$color-surface;
-  color: t.$color-text-primary;
+    border-color var(--motion-duration) var(--motion-ease),
+    box-shadow var(--motion-duration) var(--motion-ease);
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
 }
 
 input::placeholder,
 textarea::placeholder {
-  color: t.$color-text-hint;
+  color: var(--color-text-muted);
 }
 
 input:focus,
 textarea:focus,
 select:focus {
   outline: none;
-  border-color: t.$color-info;
-  box-shadow: t.$focus-ring-shadow;
+  border-color: var(--color-green-primary);
+  box-shadow: var(--focus-ring);
 }
 
 button {
-  font-family: inherit;
+  font-family: var(--font-body);
   font-size: inherit;
   border: none;
-  border-radius: t.$radius-pill;
-  padding: t.$btn-primary-padding;
+  border-radius: var(--radius-pill);
+  padding: 0.65rem 1.4rem;
   cursor: pointer;
   transition:
-    background-color 150ms ease,
-    border-color 150ms ease,
-    color 150ms ease;
-  font-weight: t.$font-medium;
+    background-color var(--motion-duration) var(--motion-ease),
+    border-color var(--motion-duration) var(--motion-ease),
+    color var(--motion-duration) var(--motion-ease),
+    transform 0.15s var(--motion-ease);
+  font-weight: var(--weight-semibold);
 }
 
 button:disabled {
@@ -150,72 +247,186 @@ button:disabled {
 }
 
 .btn-primary {
-  background-color: t.$color-text-primary;
-  color: t.$color-surface;
+  background-color: var(--color-green-primary);
+  color: var(--color-text-on-green);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  padding: 0.65rem 1.4rem;
+  border-radius: var(--radius-pill);
   border: none;
-  border-radius: t.$radius-pill;
-  padding: t.$btn-primary-padding;
-  font-size: t.$text-base;
-  font-weight: t.$font-medium;
 }
 
 .btn-primary:hover:not(:disabled) {
-  background-color: scolor.adjust(t.$color-text-primary, $lightness: 6%);
+  background-color: var(--color-green-hover);
+  transform: translateY(-1px);
 }
 
 .btn-secondary {
-  background-color: t.$color-surface;
-  color: t.$color-text-primary;
-  border: t.$border-default;
-  border-radius: t.$radius-btn;
-  padding: t.$btn-secondary-padding;
-  font-size: 13px;
-  font-weight: t.$font-regular;
+  background: transparent;
+  color: var(--color-text-primary);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  padding: 0.65rem 1.4rem;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
 }
 
 .btn-secondary:hover:not(:disabled) {
-  background-color: t.$color-surface-muted;
+  background-color: var(--color-bg-secondary);
+  transform: translateY(-1px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-primary:hover:not(:disabled),
+  .btn-secondary:hover:not(:disabled) {
+    transform: none;
+  }
 }
 
 .alert {
-  padding: t.$space-4;
-  border-radius: t.$radius-card;
-  margin-bottom: t.$space-4;
-  font-size: t.$text-sm;
-  border: t.$border-default;
+  padding: var(--space-4);
+  border-radius: var(--radius-card);
+  margin-bottom: var(--space-4);
+  font-size: var(--text-sm);
+  border: 1px solid var(--color-border);
 }
 
 .alert-error {
-  background-color: t.$color-surface-muted;
-  color: t.$color-danger;
-  border-color: t.$color-border-muted;
+  background-color: var(--color-bg-secondary);
+  color: var(--color-danger);
+  border-color: var(--color-border);
 }
 
 .alert-success {
-  background-color: t.$color-surface-muted;
-  color: t.$color-success;
-  border-color: t.$color-border-muted;
+  background-color: var(--color-green-light);
+  color: var(--color-green-primary);
+  border-color: var(--color-border);
 }
 
 .error-text {
-  color: t.$color-danger;
-  font-size: t.$text-xs;
-  margin-top: t.$space-2;
+  color: var(--color-danger);
+  font-size: var(--text-xs);
+  margin-top: var(--space-2);
 }
 
 label {
   display: block;
-  font-size: t.$text-sm;
-  font-weight: t.$font-medium;
-  color: t.$color-text-primary;
-  margin-bottom: t.$space-2;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-2);
 }
 
 .link-text {
-  color: t.$color-text-secondary;
+  color: var(--color-text-secondary);
 }
 
 .link-text a {
-  color: t.$color-info;
-  font-weight: t.$font-medium;
+  color: var(--color-green-primary);
+  font-weight: var(--weight-medium);
+}
+
+.link-text a:hover {
+  color: var(--color-green-hover);
+}
+
+/* Utility patterns from the brief */
+.eyebrow {
+  display: block;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  margin-bottom: var(--space-3);
+  text-align: center;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-green-light);
+  color: var(--color-green-primary);
+}
+
+.badge-neutral {
+  background-color: var(--color-bg-secondary);
+  color: var(--color-text-secondary);
+}
+
+.card {
+  background: var(--color-bg-card);
+  border-radius: var(--radius-card);
+  padding: var(--space-6);
+  box-shadow: 0 2px 12px var(--color-shadow);
+  border: 1px solid var(--color-border);
+  transition: box-shadow var(--motion-duration) var(--motion-ease);
+}
+
+.card:hover {
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
+}
+
+/* Scroll reveal (used with appRevealSection) */
+.reveal-section {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.55s var(--motion-ease),
+    transform 0.55s var(--motion-ease);
+}
+
+.reveal-section.reveal-section--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-section {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* Keyword rejection / negation — red strikethrough (brief §7) */
+.keyword-strike {
+  position: relative;
+  color: var(--color-text-secondary);
+}
+
+.keyword-strike::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 2px;
+  background: var(--color-accent-red);
+  border-radius: 1px;
+  transform: scaleX(0);
+  transform-origin: left center;
+  animation: keyword-strike-draw 0.45s var(--motion-ease) forwards;
+}
+
+@keyframes keyword-strike-draw {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .keyword-strike::after {
+    animation: none;
+    transform: scaleX(1);
+  }
 }

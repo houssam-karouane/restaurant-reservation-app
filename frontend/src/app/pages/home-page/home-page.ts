@@ -14,12 +14,13 @@ import { SearchBar } from '../../components/search-bar/search-bar';
 import { RestaurantCard } from '../../components/restaurant-card/restaurant-card';
 import { Spinner } from '../../components/atoms/spinner/spinner';
 import { InlineAlert } from '../../components/atoms/inline-alert/inline-alert';
+import { RevealSectionDirective } from '../../directives/reveal-section';
 import type { Restaurant, RestaurantSearchFilters } from '../../models/restaurant';
 import { RestaurantService } from '../../services/restaurant.service';
 
 @Component({
   selector: 'app-home-page',
-  imports: [CommonModule, RouterLink, SearchBar, RestaurantCard, Spinner, InlineAlert],
+  imports: [CommonModule, RouterLink, SearchBar, RestaurantCard, Spinner, InlineAlert, RevealSectionDirective],
   templateUrl: './home-page.html',
   styleUrl: './home-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -1,4 +1,3 @@
-@use './styles/tokens' as t;
 @use './styles/breakpoints' as bp;
 
 :host {
@@ -12,44 +11,32 @@
   left: -9999px;
   top: 0;
   z-index: 200;
-  padding: t.$space-3 t.$space-4;
-  background-color: t.$color-text-primary;
-  color: t.$color-surface;
-  border-radius: t.$radius-btn;
-  font-size: t.$text-sm;
-  font-weight: t.$font-medium;
+  padding: var(--space-3) var(--space-4);
+  background-color: var(--color-text-primary);
+  color: var(--color-bg-primary);
+  border-radius: var(--radius-pill);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
   text-decoration: none;
-  box-shadow: t.$focus-ring-shadow;
+  box-shadow: var(--focus-ring);
 }
 
 .skip-link:focus {
-  left: t.$space-4;
-  top: t.$space-4;
+  left: var(--space-4);
+  top: var(--space-4);
 }
 
 .skip-link:focus-visible {
-  outline: 2px solid t.$color-surface;
+  outline: 2px solid var(--color-bg-primary);
   outline-offset: 2px;
 }
 
 main.container {
   flex: 1;
   width: 100%;
-  max-width: 1280px;
+  max-width: var(--content-max-width);
   margin: 0 auto;
-  padding: 0 t.$space-4;
-}
-
-@include bp.tablet-up {
-  main.container {
-    padding: 0 t.$space-6;
-  }
-}
-
-@include bp.desktop-up {
-  main.container {
-    padding: 0 t.$space-8;
-  }
+  padding: 0 var(--container-padding-x);
 }
 
 @keyframes main-shell-enter {

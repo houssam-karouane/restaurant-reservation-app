@@ -1,46 +1,126 @@
-<div class="home-container">
-  <section class="hero">
-    <h1>Discover Your Next Favorite Restaurant</h1>
-    <p>
-      Browse, reserve, and enjoy exceptional dining experiences at the finest restaurants in your
-      area.
-    </p>
+<div class="home">
+  <section class="home-band home-band--hero" appRevealSection>
+    <div class="home-hero-bg" aria-hidden="true"></div>
+    <div class="home-inner home-inner--hero">
+      <span class="eyebrow">✦ Discover</span>
+      <h1 class="home-hero-title">Discover Your Next Favorite Restaurant</h1>
+      <p class="home-hero-lede">
+        Browse, reserve, and enjoy exceptional dining experiences at the finest restaurants in your
+        area.
+      </p>
 
-    <div class="hero-search">
-      <app-search-bar
-        [initialFilters]="heroSearchDefaults"
-        [submitOnly]="true"
-        (filtersChange)="onHeroSearch($event)"
-      />
-    </div>
+      <ul class="home-hero-stats" aria-label="Highlights">
+        <li class="home-hero-stat">
+          <span class="home-hero-stat__value">500+</span>
+          <span class="home-hero-stat__label">venues listed</span>
+        </li>
+        <li class="home-hero-stat">
+          <span class="home-hero-stat__value">4.8</span>
+          <span class="home-hero-stat__label">avg. guest rating</span>
+        </li>
+        <li class="home-hero-stat">
+          <span class="home-hero-stat__value">24/7</span>
+          <span class="home-hero-stat__label">self-serve booking</span>
+        </li>
+      </ul>
 
-    <div class="hero-actions">
-      <a routerLink="/restaurants" class="btn-primary hero-cta">Browse Restaurants</a>
-      <a routerLink="/restaurants" class="btn-secondary hero-cta-secondary">See Offers</a>
-    </div>
-  </section>
-
-  <section class="featured-section">
-    <h2 class="section-title">Featured Restaurants</h2>
-
-    @if (loading()) {
-      <div class="featured-center"><app-spinner /></div>
-    } @else if (error()) {
-      <app-inline-alert [message]="error()!" />
-    } @else if (featured().length === 0) {
-      <p class="featured-empty">Aucun restaurant pour le moment.</p>
-    } @else {
-      <div class="restaurants-grid">
-        @for (r of featured(); track r.id) {
-          <app-restaurant-card [restaurant]="r" />
-        }
+      <div class="hero-search">
+        <app-search-bar
+          [initialFilters]="heroSearchDefaults"
+          [submitOnly]="true"
+          [heroLayout]="true"
+          (filtersChange)="onHeroSearch($event)"
+        />
       </div>
-    }
+
+      <div class="home-hero-trust" aria-label="Trust signals">
+        <span class="badge badge-neutral">No booking fees</span>
+        <span class="badge badge-neutral">Instant confirmation</span>
+        <span class="badge badge-neutral">Paris · Lyon · Marseille</span>
+      </div>
+
+      <div class="hero-actions">
+        <a routerLink="/restaurants" class="btn-primary hero-cta">Browse Restaurants</a>
+        <a routerLink="/restaurants" class="btn-secondary hero-cta-secondary">See Offers</a>
+      </div>
+    </div>
   </section>
 
-  <section class="cta-section">
-    <h2>Ready to Make a Reservation?</h2>
-    <p>Join thousands of diners who have discovered amazing restaurants through our platform.</p>
-    <a routerLink="/restaurants" class="btn-primary">Get Started Today</a>
+  <section class="home-band home-band--features" appRevealSection>
+    <div class="home-inner">
+      <span class="eyebrow">✦ Why Reserve</span>
+      <h2 class="section-title">Everything you need before the first bite</h2>
+      <p class="home-features-lede">
+        A calm, modern flow from search to seated — built for diners who value their time.
+      </p>
+      <ul class="home-feature-grid">
+        <li class="home-feature-card">
+          <span class="home-feature-card__icon" aria-hidden="true">◎</span>
+          <h3 class="home-feature-card__title">Smart search</h3>
+          <p class="home-feature-card__text">
+            Filter by city, cuisine, price tier, and rating so the shortlist matches your night out.
+          </p>
+        </li>
+        <li class="home-feature-card">
+          <span class="home-feature-card__icon" aria-hidden="true">✦</span>
+          <h3 class="home-feature-card__title">Live availability</h3>
+          <p class="home-feature-card__text">
+            See what is bookable now and lock a slot without phone tag or back-and-forth email.
+          </p>
+        </li>
+        <li class="home-feature-card">
+          <span class="home-feature-card__icon" aria-hidden="true">◇</span>
+          <h3 class="home-feature-card__title">Your plans, organized</h3>
+          <p class="home-feature-card__text">
+            Profile and reservation history keep past visits and upcoming tables in one place.
+          </p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="home-band home-band--muted" appRevealSection>
+    <div class="home-inner">
+      <span class="eyebrow">✦ Featured</span>
+      <h2 class="section-title">Featured Restaurants</h2>
+
+      @if (loading()) {
+        <div class="featured-center"><app-spinner /></div>
+      } @else if (error()) {
+        <app-inline-alert [message]="error()!" />
+      } @else if (featured().length === 0) {
+        <p class="featured-empty">Aucun restaurant pour le moment.</p>
+      } @else {
+        <div class="restaurants-grid">
+          @for (r of featured(); track r.id) {
+            <app-restaurant-card [restaurant]="r" />
+          }
+        </div>
+      }
+    </div>
+  </section>
+
+  <section class="home-band home-band--quote" appRevealSection>
+    <div class="home-inner home-inner--quote">
+      <blockquote class="home-quote">
+        <p>
+          “We skipped the queue of phone calls and had a corner table for our anniversary in under
+          two minutes.”
+        </p>
+        <footer>
+          <span class="home-quote__name">— Guest story</span>
+          <span class="badge">Demo testimonial</span>
+        </footer>
+      </blockquote>
+    </div>
+  </section>
+
+  <section class="home-band home-band--primary" appRevealSection>
+    <div class="home-inner home-inner--cta">
+      <span class="eyebrow">✦ Get started</span>
+      <h2>Ready to Make a Reservation?</h2>
+      <p>Join thousands of diners who have discovered amazing restaurants through our platform.</p>
+      <a routerLink="/restaurants" class="btn-primary">Get Started Today</a>
+    </div>
   </section>
 </div>
