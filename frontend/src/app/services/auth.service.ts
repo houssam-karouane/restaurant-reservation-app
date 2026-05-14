@@ -39,13 +39,15 @@ export class AuthService {
   constructor(private http: HttpClient) {
     if (this.hasToken()) {
       this.isAuthenticatedSubject.next(true);
-      this.getCurrentUser().subscribe({
-        next: (user) => {
-          this.currentUserSubject.next(user);
-        },
-        error: () => {
-          this.logout();
-        },
+      Promise.resolve().then(() => {
+        this.getCurrentUser().subscribe({
+          next: (user) => {
+            this.currentUserSubject.next(user);
+          },
+          error: () => {
+            this.logout();
+          },
+        });
       });
     }
   }
