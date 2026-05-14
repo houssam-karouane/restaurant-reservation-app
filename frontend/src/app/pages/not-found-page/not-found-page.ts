@@ -2,10 +2,10 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'app-footer',
+  selector: 'app-not-found-page',
   imports: [RouterLink],
-  templateUrl: './footer.html',
-  styleUrl: './footer.scss',
+  templateUrl: './not-found-page.html',
+  styleUrl: './not-found-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Footer {}
+export class NotFoundPage {}

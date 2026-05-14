@@ -1,64 +1,64 @@
-@use '../../styles/tokens' as t;
-
 .profile-card {
-  background-color: t.$color-surface;
-  border: t.$border-default;
-  border-radius: t.$radius-modal;
-  padding: t.$modal-padding;
+  background-color: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: 0 2px 12px var(--color-shadow);
+  padding: var(--space-6);
 }
 
 .profile-card__title {
-  margin: 0 0 t.$space-6;
-  font-size: t.$text-lg;
-  font-weight: t.$font-medium;
-  letter-spacing: t.$letter-spacing-heading;
-  color: t.$color-text-primary;
+  margin: 0 0 var(--space-6);
+  font-family: var(--font-heading);
+  font-size: var(--text-xl);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-text-primary);
 }
 
 .profile-card__state {
   display: flex;
   justify-content: center;
-  padding: t.$space-8 0;
+  padding: var(--space-8) 0;
 }
 
 .profile-card__state p {
   margin: 0;
-  font-size: t.$text-sm;
-  color: t.$color-text-secondary;
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
 }
 
 .profile-info {
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: t.$space-5;
+  gap: var(--space-5);
 }
 
 .profile-info__row {
   display: grid;
   grid-template-columns: minmax(120px, 160px) 1fr;
-  gap: t.$space-4;
+  gap: var(--space-4);
   align-items: baseline;
 }
 
 .profile-info__row dt {
   margin: 0;
-  font-size: t.$text-sm;
-  font-weight: t.$font-medium;
-  color: t.$color-text-secondary;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-secondary);
 }
 
 .profile-info__row dd {
   margin: 0;
-  font-size: t.$text-md;
-  color: t.$color-text-primary;
-  line-height: t.$line-height-ui;
+  font-size: var(--text-base);
+  color: var(--color-text-primary);
+  line-height: var(--leading-snug);
   word-break: break-word;
 }
 
 @media (max-width: 520px) {
   .profile-info__row {
     grid-template-columns: 1fr;
-    gap: t.$space-1;
+    gap: var(--space-1);
   }
 }

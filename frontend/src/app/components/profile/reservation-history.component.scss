@@ -1,67 +1,67 @@
-@use '../../styles/tokens' as t;
-
 .profile-card {
-  background-color: t.$color-surface;
-  border: t.$border-default;
-  border-radius: t.$radius-modal;
-  padding: t.$modal-padding;
+  background-color: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: 0 2px 12px var(--color-shadow);
+  padding: var(--space-6);
 }
 
 .profile-card__title {
-  margin: 0 0 t.$space-6;
-  font-size: t.$text-lg;
-  font-weight: t.$font-medium;
-  letter-spacing: t.$letter-spacing-heading;
-  color: t.$color-text-primary;
+  margin: 0 0 var(--space-6);
+  font-family: var(--font-heading);
+  font-size: var(--text-xl);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-text-primary);
 }
 
 .profile-card__state {
   text-align: center;
-  padding: t.$space-8 0;
+  padding: var(--space-8) 0;
 }
 
 .profile-card__state p {
   margin: 0;
-  font-size: t.$text-sm;
-  color: t.$color-text-secondary;
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
 }
 
 .reservation-filters {
   display: flex;
   flex-wrap: wrap;
-  gap: t.$space-2;
-  margin-bottom: t.$space-6;
+  gap: var(--space-2);
+  margin-bottom: var(--space-6);
 }
 
 .reservation-filters__btn {
-  font-family: t.$font-stack;
-  font-size: t.$text-sm;
-  font-weight: t.$font-medium;
-  padding: t.$pill-input-padding;
-  border-radius: t.$radius-pill;
-  border: t.$border-default;
-  background: t.$color-surface-muted;
-  color: t.$color-text-secondary;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  padding: 0.5rem 0.85rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-secondary);
+  color: var(--color-text-secondary);
   cursor: pointer;
   transition:
-    background 0.15s ease,
-    color 0.15s ease,
-    border-color 0.15s ease;
+    background var(--motion-duration) var(--motion-ease),
+    color var(--motion-duration) var(--motion-ease),
+    border-color var(--motion-duration) var(--motion-ease);
 }
 
 .reservation-filters__btn:hover {
-  background: t.$color-surface-hover;
-  border-color: t.$color-border-hover;
+  background: color-mix(in srgb, var(--color-bg-secondary) 85%, var(--color-text-primary));
+  border-color: var(--color-border);
 }
 
 .reservation-filters__btn--active {
-  background: t.$color-text-primary;
-  color: t.$color-surface;
-  border-color: t.$color-text-primary;
+  background: var(--color-green-primary);
+  color: var(--color-text-on-green);
+  border-color: var(--color-green-primary);
 }
 
 .reservation-filters__btn:focus-visible {
-  outline: t.$focus-ring-width solid t.$focus-ring-color;
+  outline: 2px solid var(--color-green-primary);
   outline-offset: 2px;
 }
 
@@ -74,11 +74,11 @@
 }
 
 .reservation-row {
-  padding: t.$space-4 0;
-  border-bottom: t.$border-muted;
+  padding: var(--space-4) 0;
+  border-bottom: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
-  gap: t.$space-2;
+  gap: var(--space-2);
 }
 
 .reservation-row:last-child {
@@ -89,69 +89,70 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: t.$space-3;
+  gap: var(--space-3);
 }
 
 .reservation-row__name {
   margin: 0;
-  font-size: t.$text-md;
-  font-weight: t.$font-medium;
-  color: t.$color-text-primary;
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-primary);
 }
 
 .reservation-row__status {
   flex-shrink: 0;
-  font-size: t.$text-xs;
-  padding: 2px 10px;
-  border-radius: t.$radius-pill;
-  background: t.$color-surface-muted;
-  color: t.$color-text-secondary;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-bg-secondary);
+  color: var(--color-text-secondary);
   text-transform: uppercase;
-  letter-spacing: 0.02em;
+  letter-spacing: var(--tracking-wide);
 }
 
 .reservation-row__status--confirmed {
-  background: t.$avatar-green-bg;
-  color: t.$avatar-green-text;
+  background: var(--color-green-light);
+  color: var(--color-green-primary);
 }
 
 .reservation-row__status--pending {
-  background: t.$avatar-yellow-bg;
-  color: t.$avatar-yellow-text;
+  background: var(--color-bg-secondary);
+  color: var(--color-text-secondary);
 }
 
 .reservation-row__status--cancelled {
-  background: t.$avatar-red-bg;
-  color: t.$avatar-red-text;
+  background: color-mix(in srgb, var(--color-accent-red) 12%, var(--color-bg-primary));
+  color: var(--color-accent-red);
 }
 
 .reservation-row__meta {
   margin: 0;
   display: flex;
   flex-wrap: wrap;
-  gap: t.$space-2;
-  font-size: t.$text-sm;
-  color: t.$color-text-secondary;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
 }
 
 .reservation-row__actions {
-  margin-top: t.$space-2;
+  margin-top: var(--space-2);
 }
 
 .reservation-row__cancel {
-  font-family: t.$font-stack;
-  font-size: t.$text-sm;
-  font-weight: t.$font-medium;
-  padding: t.$btn-secondary-padding;
-  border-radius: t.$radius-btn;
-  border: t.$border-default;
-  background: t.$color-surface;
-  color: t.$color-danger;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-primary);
+  color: var(--color-accent-red);
   cursor: pointer;
 }
 
 .reservation-row__cancel:hover:not(:disabled) {
-  background: t.$avatar-red-bg;
+  background: color-mix(in srgb, var(--color-accent-red) 10%, var(--color-bg-primary));
 }
 
 .reservation-row__cancel:disabled {
@@ -160,6 +161,6 @@
 }
 
 .reservation-row__cancel:focus-visible {
-  outline: t.$focus-ring-width solid t.$focus-ring-color;
+  outline: 2px solid var(--color-green-primary);
   outline-offset: 2px;
 }

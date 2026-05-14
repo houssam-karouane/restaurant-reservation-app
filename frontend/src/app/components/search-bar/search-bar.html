@@ -1,41 +1,61 @@
-<form class="search-bar" [formGroup]="form" (ngSubmit)="onSubmit()">
-  <div class="search-bar__field">
-    <label for="search-city">City</label>
-    <input id="search-city" type="text" formControlName="city" placeholder="e.g. Paris" />
-  </div>
+<form
+  class="search-bar"
+  [class.search-bar--hero]="heroLayout()"
+  [formGroup]="form"
+  (ngSubmit)="onSubmit()"
+>
+  @if (heroLayout()) {
+    <div class="search-bar__head">
+      <span class="search-bar__head-icon" aria-hidden="true">⌕</span>
+      <div>
+        <p class="search-bar__head-title">Find a table</p>
+        <p class="search-bar__head-sub">Search by city, cuisine, budget, and minimum rating.</p>
+      </div>
+    </div>
+  }
 
-  <div class="search-bar__field">
-    <label for="search-cuisine">Cuisine</label>
-    <select id="search-cuisine" formControlName="cuisine">
-      @for (opt of cuisineOptions; track opt.value) {
-        <option [value]="opt.value">{{ opt.label }}</option>
-      }
-    </select>
-  </div>
+  <div class="search-bar__row">
+    <div class="search-bar__field" [class.search-bar__field--grow]="heroLayout()">
+      <label for="search-city">City</label>
+      <input id="search-city" type="text" formControlName="city" placeholder="e.g. Paris" />
+    </div>
 
-  <div class="search-bar__field">
-    <label for="search-price">Price</label>
-    <select id="search-price" formControlName="priceRange">
-      <option value="">Any price</option>
-      <option value="1">€</option>
-      <option value="2">€€</option>
-      <option value="3">€€€</option>
-      <option value="4">€€€€</option>
-    </select>
-  </div>
+    <div class="search-bar__field">
+      <label for="search-cuisine">Cuisine</label>
+      <select id="search-cuisine" formControlName="cuisine">
+        @for (opt of cuisineOptions; track opt.value) {
+          <option [value]="opt.value">{{ opt.label }}</option>
+        }
+      </select>
+    </div>
 
-  <div class="search-bar__field">
-    <label for="search-rating">Min rating</label>
-    <select id="search-rating" formControlName="minRating">
-      <option value="">Any rating</option>
-      <option value="3">3+</option>
-      <option value="3.5">3.5+</option>
-      <option value="4">4+</option>
-      <option value="4.5">4.5+</option>
-    </select>
-  </div>
+    <div class="search-bar__field">
+      <label for="search-price">Price</label>
+      <select id="search-price" formControlName="priceRange">
+        <option value="">Any price</option>
+        <option value="1">€</option>
+        <option value="2">€€</option>
+        <option value="3">€€€</option>
+        <option value="4">€€€€</option>
+      </select>
+    </div>
 
-  <div class="search-bar__actions">
-    <button type="submit" class="btn-primary search-bar__submit">Search</button>
+    <div class="search-bar__field">
+      <label for="search-rating">Min rating</label>
+      <select id="search-rating" formControlName="minRating">
+        <option value="">Any rating</option>
+        <option value="3">3+</option>
+        <option value="3.5">3.5+</option>
+        <option value="4">4+</option>
+        <option value="4.5">4.5+</option>
+      </select>
+    </div>
+
+    <div class="search-bar__actions">
+      <button type="submit" class="btn-primary search-bar__submit">
+        <span class="search-bar__submit-label">Search</span>
+        <span class="search-bar__submit-arrow" aria-hidden="true">→</span>
+      </button>
+    </div>
   </div>
 </form>

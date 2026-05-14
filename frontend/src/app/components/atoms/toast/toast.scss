@@ -1,78 +1,63 @@
-@use '../../../styles/tokens' as t;
-
 .toast-stack {
   position: fixed;
-  top: t.$space-6;
-  right: t.$space-6;
-  z-index: 1000;
+  right: var(--space-4);
+  bottom: var(--space-4);
+  z-index: 300;
   display: flex;
   flex-direction: column;
-  gap: t.$space-3;
+  gap: var(--space-3);
+  max-width: min(420px, calc(100vw - var(--space-8)));
   pointer-events: none;
-  max-width: 360px;
+}
+
+.toast-stack .toast {
+  pointer-events: auto;
 }
 
 .toast {
-  pointer-events: auto;
-  background: t.$color-surface;
-  border: t.$border-default;
-  border-left-width: 4px;
-  border-radius: t.$radius-btn;
-  padding: t.$space-3 t.$space-4;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  display: flex;
-  align-items: flex-start;
-  gap: t.$space-3;
-  animation: toast-in 180ms ease-out;
+  position: relative;
+  padding: var(--space-4) var(--space-10) var(--space-4) var(--space-4);
+  border-radius: var(--radius-card);
+  background: var(--color-bg-overlay);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--color-border);
+  box-shadow: 0 8px 32px var(--color-shadow);
+  border-left: 4px solid var(--color-border);
 }
 
 .toast--success {
-  border-left-color: t.$color-success;
+  border-left-color: var(--color-green-primary);
 }
+
 .toast--error {
-  border-left-color: t.$color-danger;
+  border-left-color: var(--color-accent-red);
 }
+
 .toast--info {
-  border-left-color: t.$color-info;
+  border-left-color: var(--color-green-primary);
 }
 
 .toast__message {
-  flex: 1;
-  font-size: t.$text-base;
-  color: t.$color-text-primary;
-  line-height: t.$line-height-ui;
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-primary);
+  line-height: var(--leading-normal);
 }
 
 .toast__close {
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-2);
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--radius-pill);
   background: transparent;
-  border: 0;
-  cursor: pointer;
-  color: t.$color-text-secondary;
-  font-size: t.$text-xl;
+  color: var(--color-text-primary);
+  font-size: var(--text-lg);
   line-height: 1;
-  padding: 0 t.$space-1;
+  padding: 0;
 }
 
 .toast__close:hover {
-  color: t.$color-text-primary;
-}
-
-@keyframes toast-in {
-  from {
-    opacity: 0;
-    transform: translateY(-6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@media (max-width: 640px) {
-  .toast-stack {
-    top: t.$space-4;
-    right: t.$space-4;
-    left: t.$space-4;
-    max-width: none;
-  }
+  background-color: var(--color-bg-secondary);
 }

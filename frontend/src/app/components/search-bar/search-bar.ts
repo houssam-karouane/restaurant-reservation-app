@@ -29,6 +29,9 @@ export class SearchBar {
   /** When true, filters emit only on Search / Enter — use on the home hero. */
   readonly submitOnly = input(false);
 
+  /** Larger landing-style card with headline row (use with hero / marketing). */
+  readonly heroLayout = input(false);
+
   readonly initialFilters = input<RestaurantSearchFilters>({
     city: '',
     cuisine: '',
