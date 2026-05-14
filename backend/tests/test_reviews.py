@@ -11,9 +11,7 @@ from app.models.user import User
 from app.core.security import create_access_token
 
 SQLALCHEMY_TEST_URL = "sqlite:///./test_reviews.db"
-engine_test = create_engine(
-    SQLALCHEMY_TEST_URL, connect_args={"check_same_thread": False}
-)
+engine_test = create_engine(SQLALCHEMY_TEST_URL, connect_args={"check_same_thread": False})
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine_test)
 
 
@@ -89,9 +87,7 @@ def headers_valid():
 
 @pytest.fixture
 def headers_invalid():
-    return {
-        "Authorization": f"Bearer {create_access_token(subject='invalid@test.com')}"
-    }
+    return {"Authorization": f"Bearer {create_access_token(subject='invalid@test.com')}"}
 
 
 # ─── TESTS ─────

@@ -122,9 +122,7 @@ def test_create_reservation_persists_confirmed(test_db, test_user, test_restaura
 # ─── get_user_reservations ───────────────────────────────────────────────────
 
 
-def test_get_user_reservations_returns_only_owner(
-    test_db, test_user, other_user, test_restaurant
-):
+def test_get_user_reservations_returns_only_owner(test_db, test_user, other_user, test_restaurant):
     test_db.add_all(
         [
             Reservation(
@@ -175,9 +173,7 @@ def test_get_user_reservations_filter_status(test_db, test_user, test_restaurant
     )
     test_db.commit()
 
-    items, total = crud.get_user_reservations(
-        test_db, user_id=test_user.id, status="cancelled"
-    )
+    items, total = crud.get_user_reservations(test_db, user_id=test_user.id, status="cancelled")
     assert total == 1
     assert items[0].status == "cancelled"
 

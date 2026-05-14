@@ -11,9 +11,7 @@ from app.schemas.user import TokenData
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/v1/auth/login")
 
 
-def get_current_user(
-    db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)
-):
+def get_current_user(db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",

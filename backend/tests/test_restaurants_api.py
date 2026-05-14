@@ -11,18 +11,10 @@ from app.models.restaurant import Restaurant
 def seven_restaurants(test_db):
     """Population variée pour tester pagination, tri et filtres."""
     rows = [
-        Restaurant(
-            name="Alpha", cuisine="française", city="Paris", price_range=1, rating=3.0
-        ),
-        Restaurant(
-            name="Bravo", cuisine="japonaise", city="Paris", price_range=3, rating=4.8
-        ),
-        Restaurant(
-            name="Charlie", cuisine="italienne", city="Lyon", price_range=2, rating=4.5
-        ),
-        Restaurant(
-            name="Delta", cuisine="française", city="Lyon", price_range=4, rating=4.9
-        ),
+        Restaurant(name="Alpha", cuisine="française", city="Paris", price_range=1, rating=3.0),
+        Restaurant(name="Bravo", cuisine="japonaise", city="Paris", price_range=3, rating=4.8),
+        Restaurant(name="Charlie", cuisine="italienne", city="Lyon", price_range=2, rating=4.5),
+        Restaurant(name="Delta", cuisine="française", city="Lyon", price_range=4, rating=4.9),
         Restaurant(
             name="Echo",
             cuisine="japonaise",
@@ -30,12 +22,8 @@ def seven_restaurants(test_db):
             price_range=2,
             rating=4.1,
         ),
-        Restaurant(
-            name="Foxtrot", cuisine="italienne", city="Nice", price_range=3, rating=3.5
-        ),
-        Restaurant(
-            name="Golf", cuisine="française", city="Nice", price_range=2, rating=4.6
-        ),
+        Restaurant(name="Foxtrot", cuisine="italienne", city="Nice", price_range=3, rating=3.5),
+        Restaurant(name="Golf", cuisine="française", city="Nice", price_range=2, rating=4.6),
     ]
     test_db.add_all(rows)
     test_db.commit()

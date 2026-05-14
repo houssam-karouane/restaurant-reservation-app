@@ -48,9 +48,7 @@ def test_create_reservation_requires_auth(test_client, test_restaurant):
     assert response.status_code == 401
 
 
-def test_create_reservation_rejects_zero_people(
-    test_client, test_restaurant, auth_headers
-):
+def test_create_reservation_rejects_zero_people(test_client, test_restaurant, auth_headers):
     response = test_client.post(
         "/api/v1/reservations",
         json={
@@ -64,9 +62,7 @@ def test_create_reservation_rejects_zero_people(
     assert response.status_code == 422
 
 
-def test_create_reservation_rejects_too_many_people(
-    test_client, test_restaurant, auth_headers
-):
+def test_create_reservation_rejects_too_many_people(test_client, test_restaurant, auth_headers):
     response = test_client.post(
         "/api/v1/reservations",
         json={
@@ -80,9 +76,7 @@ def test_create_reservation_rejects_too_many_people(
     assert response.status_code == 422
 
 
-def test_create_reservation_slot_already_taken(
-    test_client, test_restaurant, auth_headers
-):
+def test_create_reservation_slot_already_taken(test_client, test_restaurant, auth_headers):
     payload = {
         "restaurant_id": test_restaurant.id,
         "date": FUTURE_DATE,
@@ -141,9 +135,7 @@ def test_list_me_requires_auth(test_client):
 
 
 def test_list_me_invalid_status_filter(test_client, auth_headers):
-    response = test_client.get(
-        "/api/v1/reservations/me?status=garbage", headers=auth_headers
-    )
+    response = test_client.get("/api/v1/reservations/me?status=garbage", headers=auth_headers)
     assert response.status_code == 400
     assert "statut" in response.json()["detail"].lower()
 
@@ -152,9 +144,7 @@ def test_list_me_filter_by_status(test_client, make_reservation, auth_headers):
     make_reservation(time=time(18, 0), status="confirmed")
     make_reservation(time=time(19, 0), status="cancelled")
 
-    response = test_client.get(
-        "/api/v1/reservations/me?status=confirmed", headers=auth_headers
-    )
+    response = test_client.get("/api/v1/reservations/me?status=confirmed", headers=auth_headers)
     assert response.status_code == 200
     body = response.json()
     assert body["total"] == 1
@@ -166,20 +156,14 @@ def test_list_me_filter_by_status(test_client, make_reservation, auth_headers):
 
 def test_get_reservation_by_owner(test_client, make_reservation, auth_headers):
     reservation = make_reservation()
-    response = test_client.get(
-        f"/api/v1/reservations/{reservation.id}", headers=auth_headers
-    )
+    response = test_client.get(f"/api/v1/reservations/{reservation.id}", headers=auth_headers)
     assert response.status_code == 200
     assert response.json()["id"] == reservation.id
 
 
-def test_get_reservation_other_user_forbidden(
-    test_client, make_reservation, other_auth_headers
-):
+def test_get_reservation_other_user_forbidden(test_client, make_reservation, other_auth_headers):
     reservation = make_reservation()
-    response = test_client.get(
-        f"/api/v1/reservations/{reservation.id}", headers=other_auth_headers
-    )
+    response = test_client.get(f"/api/v1/reservations/{reservation.id}", headers=other_auth_headers)
     assert response.status_code == 403
 
 
@@ -193,32 +177,22 @@ def test_get_reservation_not_found(test_client, auth_headers):
 
 def test_cancel_reservation_success(test_client, make_reservation, auth_headers):
     reservation = make_reservation(date=date.today() + timedelta(days=7))
-    response = test_client.delete(
-        f"/api/v1/reservations/{reservation.id}", headers=auth_headers
-    )
+    response = test_client.delete(f"/api/v1/reservations/{reservation.id}", headers=auth_headers)
     assert response.status_code == 200
     assert "annulée" in response.json()["message"].lower()
 
 
-def test_cancel_reservation_too_late_h_minus_2(
-    test_client, make_reservation, auth_headers
-):
+def test_cancel_reservation_too_late_h_minus_2(test_client, make_reservation, auth_headers):
     """Annulation à moins de H-2 → 400."""
     soon = datetime.now() + timedelta(hours=1)
-    reservation = make_reservation(
-        date=soon.date(), time=soon.time().replace(microsecond=0)
-    )
+    reservation = make_reservation(date=soon.date(), time=soon.time().replace(microsecond=0))
 
-    response = test_client.delete(
-        f"/api/v1/reservations/{reservation.id}", headers=auth_headers
-    )
+    response = test_client.delete(f"/api/v1/reservations/{reservation.id}", headers=auth_headers)
     assert response.status_code == 400
     assert "2 heures" in response.json()["detail"]
 
 
-def test_cancel_reservation_other_user_forbidden(
-    test_client, make_reservation, other_auth_headers
-):
+def test_cancel_reservation_other_user_forbidden(test_client, make_reservation, other_auth_headers):
     reservation = make_reservation()
     response = test_client.delete(
         f"/api/v1/reservations/{reservation.id}", headers=other_auth_headers

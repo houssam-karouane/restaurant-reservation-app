@@ -22,9 +22,7 @@ def create_review(
     Crée un nouvel avis.
     Nécessite une réservation 'completed' pour ce restaurant.
     """
-    return review_service.create_review(
-        db=db, review_in=review_in, user_id=current_user.id
-    )
+    return review_service.create_review(db=db, review_in=review_in, user_id=current_user.id)
 
 
 @router.get("/me", response_model=List[ReviewOut])

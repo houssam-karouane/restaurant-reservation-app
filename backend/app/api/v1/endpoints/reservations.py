@@ -93,15 +93,11 @@ def get_reservation(
     reservation = crud_reservation.get_reservation_by_id(db, reservation_id)
 
     if not reservation:
-        raise HTTPException(
-            status_code=404, detail=f"Réservation #{reservation_id} introuvable"
-        )
+        raise HTTPException(status_code=404, detail=f"Réservation #{reservation_id} introuvable")
 
     # Vérifier que c'est bien la réservation de l'utilisateur courant
     if reservation.user_id != current_user.id:
-        raise HTTPException(
-            status_code=403, detail="Accès interdit à cette réservation"
-        )
+        raise HTTPException(status_code=403, detail="Accès interdit à cette réservation")
 
     return reservation
 
@@ -123,9 +119,7 @@ def cancel_reservation(
     reservation = crud_reservation.get_reservation_by_id(db, reservation_id)
 
     if not reservation:
-        raise HTTPException(
-            status_code=404, detail=f"Réservation #{reservation_id} introuvable"
-        )
+        raise HTTPException(status_code=404, detail=f"Réservation #{reservation_id} introuvable")
 
     # Vérifier propriétaire
     if reservation.user_id != current_user.id:

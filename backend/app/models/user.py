@@ -15,6 +15,4 @@ class User(Base):
     full_name = Column(String, index=True)
     # Relation avec les réservations
     reservations = relationship("Reservation", back_populates="user")
-    reviews = relationship(
-        "Review", back_populates="user", cascade="all, delete-orphan"
-    )
+    reviews = relationship("Review", back_populates="user", cascade="all, delete-orphan")

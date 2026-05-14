@@ -10,9 +10,7 @@ from app.schemas.review import ReviewCreate
 def update_restaurant_rating(db: Session, restaurant_id: int):
     """Calcule la moyenne des avis et met à jour le restaurant."""
     avg_rating = (
-        db.query(func.avg(Review.rating))
-        .filter(Review.restaurant_id == restaurant_id)
-        .scalar()
+        db.query(func.avg(Review.rating)).filter(Review.restaurant_id == restaurant_id).scalar()
     )
 
     restaurant = db.query(Restaurant).filter(Restaurant.id == restaurant_id).first()
@@ -57,9 +55,7 @@ def create_review(db: Session, review_in: ReviewCreate, user_id: int):
     return db_review
 
 
-def get_restaurant_reviews(
-    db: Session, restaurant_id: int, skip: int = 0, limit: int = 10
-):
+def get_restaurant_reviews(db: Session, restaurant_id: int, skip: int = 0, limit: int = 10):
     """Récupère les avis d'un restaurant avec pagination."""
     return (
         db.query(Review)

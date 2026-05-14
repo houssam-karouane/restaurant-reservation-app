@@ -194,9 +194,7 @@ def compute_recommendations(
                 "price_range": r.price_range,
                 "rating": r.rating or 0.0,
                 "score": round(total_score, 2),
-                "score_reason": (
-                    ", ".join(reason_parts) if reason_parts else "découverte"
-                ),
+                "score_reason": (", ".join(reason_parts) if reason_parts else "découverte"),
             }
         )
 
