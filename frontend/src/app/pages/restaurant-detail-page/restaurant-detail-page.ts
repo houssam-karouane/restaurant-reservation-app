@@ -147,7 +147,7 @@ export class RestaurantDetailPage {
       next: () => {
         this.submitting.set(false);
         this.toast.success(`Réservation confirmée chez ${r.name}.`);
-        void this.router.navigate(['/reservations/me']);
+        void this.router.navigate(['/profile']);
       },
       error: (err: HttpErrorResponse) => {
         this.submitting.set(false);
