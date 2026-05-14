@@ -1,0 +1,33 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: restaurant-ingress
+  namespace: restaurant-app
+  labels:
+    app.kubernetes.io/part-of: restaurant-reservation-app
+  annotations:
+    # Le backend FastAPI sert déjà ses routes sous /api/v1 — on ne
+    # réécrit donc PAS le path : /api/* arrive tel quel au backend.
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          # /api → backend (placé AVANT la route catch-all pour avoir
+          # la priorité dans le matching prefix)
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: backend
+                port:
+                  number: 8000
+          # / → frontend SPA
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend
+                port:
+                  number: 80

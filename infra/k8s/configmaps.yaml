@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  namespace: restaurant-app
+  labels:
+    app.kubernetes.io/part-of: restaurant-reservation-app
+data:
+  # Postgres
+  POSTGRES_USER: devuser
+  POSTGRES_DB: restaurant_db
+  # Backend
+  ENVIRONMENT: production
+  REDIS_URL: redis://redis:6379
+  # DATABASE_URL est assemblé dans le Deployment backend à partir du
+  # secret POSTGRES_PASSWORD pour éviter d'écrire le password en clair
+  # dans le ConfigMap.
