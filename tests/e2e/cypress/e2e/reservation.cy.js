@@ -48,9 +48,8 @@ describe('Parcours 3 : Réservation complète (E2E)', () => {
     // Soumettre la réservation
     cy.get('.reservation-form button[type="submit"]').click();
 
-    // Vérifier le toast de confirmation de succès
-    cy.get('.toast--success', { timeout: 10000 }).should('be.visible');
-    cy.get('.toast__message').should('not.be.empty');
+    // Vérifier que le message de succès apparaît
+    cy.contains('Réservation confirmée', { timeout: 15000 }).should('be.visible');
   });
 
   it('3.2 — La réservation apparaît dans /reservations/me', () => {

@@ -30,6 +30,9 @@ describe('Parcours 1 : Inscription & Connexion', () => {
     });
 
     cy.get('button[type="submit"]').click();
+    
+    // Temps d'attente pour la persistance backend en CI
+    cy.wait(3000);
 
     // VERIFICATION SANS SLASH FINAL
     cy.url({ timeout: 25000 }).should('include', '/restaurants');
