@@ -212,14 +212,14 @@ jobs:
           echo "Backend is UP!"
 
           echo "Waiting for frontend root to be accessible..."
-          timeout 120 bash -c 'until curl -sf http://localhost:4200/ >/dev/null; do echo "Waiting..."; sleep 5; done'
+          timeout 120 bash -c 'until curl -sf http://127.0.0.1:4200/ >/dev/null; do echo "Waiting..."; sleep 5; done'
 
           # Warm up the SPA routes the tests actually visit. nginx must
           # fall back to index.html for these paths; checking them here
           # catches a misconfigured fallback before Cypress starts.
           for path in /auth/register /auth/login /restaurants /reservations/me; do
             echo "Warming up ${path}..."
-            timeout 60 bash -c "until curl -sf -o /dev/null http://localhost:4200${path}; do sleep 2; done"
+            timeout 60 bash -c "until curl -sf -o /dev/null http://127.0.0.1:4200${path}; do sleep 2; done"
           done
 
           # Stabilité : exiger 5 curls successifs sans échec, avec délai.
@@ -230,8 +230,8 @@ jobs:
           ATTEMPTS=0
           while [ $STREAK -lt 5 ] && [ $ATTEMPTS -lt 30 ]; do
             ATTEMPTS=$((ATTEMPTS+1))
-            if curl -sf -o /dev/null http://localhost:4200/auth/register \
-              && curl -sf -o /dev/null http://localhost:4200/auth/login; then
+            if curl -sf -o /dev/null http://127.0.0.1:4200/auth/register \
+              && curl -sf -o /dev/null http://127.0.0.1:4200/auth/login; then
               STREAK=$((STREAK+1))
               echo "OK streak=$STREAK"
             else
@@ -248,10 +248,16 @@ jobs:
 
       - name: Run Cypress E2E tests
         working-directory: tests/e2e
+        # On force 127.0.0.1 au lieu de localhost : sur les runners GitHub,
+        # localhost résout en IPv6 (::1) ET IPv4 (127.0.0.1). Le mapping
+        # Docker n'est pas toujours prêt côté IPv6 dans la première seconde
+        # → Node fait du happy-eyeballs, les deux tentatives échouent en
+        # parallèle, AggregateError ECONNREFUSED côté cy.visit (qui, lui,
+        # ne retry pas sur network failure).
         run: npx cypress run --headless --browser chrome
         env:
-          CYPRESS_BASE_URL: http://localhost:4200
-          CYPRESS_API_URL: http://localhost:8000/api/v1
+          CYPRESS_BASE_URL: http://127.0.0.1:4200
+          CYPRESS_API_URL: http://127.0.0.1:8000/api/v1
 
       - name: Upload screenshots on failure
         if: failure()
