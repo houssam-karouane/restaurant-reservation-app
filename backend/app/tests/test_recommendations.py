@@ -1,7 +1,6 @@
 import pytest
-import json
 from datetime import date, time
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
