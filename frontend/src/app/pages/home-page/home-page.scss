@@ -1,0 +1,124 @@
+@use '../../styles/tokens' as t;
+
+.home-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: t.$space-12 t.$space-6;
+}
+
+.hero {
+  text-align: center;
+  margin-bottom: t.$section-gap-lg;
+}
+
+.hero h1 {
+  font-size: t.$text-2xl;
+  margin-bottom: t.$section-gap-md;
+  line-height: t.$line-height-ui;
+  letter-spacing: t.$letter-spacing-heading;
+  font-weight: t.$font-medium;
+}
+
+.hero p {
+  font-size: t.$text-lg;
+  max-width: 600px;
+  margin: 0 auto t.$section-gap-lg;
+  color: t.$color-text-secondary;
+  line-height: t.$line-height-prose;
+}
+
+.hero-search {
+  width: 100%;
+  max-width: 920px;
+  margin: 0 auto t.$section-gap-lg;
+  text-align: left;
+}
+
+.hero-actions {
+  display: flex;
+  gap: t.$space-4;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.hero-cta,
+.hero-cta-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: t.$space-3 t.$space-8;
+  min-height: 40px;
+}
+
+.featured-section {
+  margin-bottom: t.$section-gap-lg;
+}
+
+.section-title {
+  font-size: t.$text-xl;
+  margin-bottom: t.$section-gap-md;
+  text-align: center;
+  font-weight: t.$font-medium;
+  letter-spacing: t.$letter-spacing-heading;
+}
+
+.restaurants-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: t.$space-6;
+}
+
+.featured-center {
+  display: flex;
+  justify-content: center;
+  padding: t.$space-8 0;
+}
+
+.featured-empty {
+  text-align: center;
+  color: t.$color-text-secondary;
+}
+
+.cta-section {
+  background-color: t.$color-surface;
+  border: t.$border-default;
+  border-radius: t.$radius-card;
+  padding: t.$space-8 t.$space-6;
+  text-align: center;
+  margin-top: t.$section-gap-lg;
+}
+
+.cta-section h2 {
+  margin-bottom: t.$section-gap-md;
+  font-weight: t.$font-medium;
+  letter-spacing: t.$letter-spacing-heading;
+}
+
+.cta-section p {
+  margin-bottom: t.$space-6;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cta-section .btn-primary {
+  padding: t.$space-3 t.$space-8;
+}
+
+@media (max-width: 768px) {
+  .home-container {
+    padding: t.$space-8 t.$space-4;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+  }
+
+  .restaurants-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cta-section {
+    padding: t.$space-8 t.$space-4;
+  }
+}

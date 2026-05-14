@@ -1,0 +1,29 @@
+<a class="restaurant-card" [routerLink]="['/restaurants', restaurant.id]">
+  <div class="restaurant-card__image" aria-hidden="true">
+    @if (restaurant.image_url && !imageFailed()) {
+      <img
+        class="restaurant-card__image-photo"
+        [src]="restaurant.image_url"
+        [alt]="restaurant.name"
+        loading="lazy"
+        (error)="onImageError()"
+      />
+    } @else {
+      <span class="restaurant-card__image-text">{{ restaurant.name.charAt(0) }}</span>
+    }
+  </div>
+  <div class="restaurant-card__body">
+    <h3 class="restaurant-card__name">{{ restaurant.name }}</h3>
+    <p class="restaurant-card__meta">
+      <span class="restaurant-card__rating">⭐ {{ ratingLabel(restaurant.rating) }}</span>
+      @if (restaurant.review_count > 0) {
+        <span class="restaurant-card__reviews">({{ restaurant.review_count }})</span>
+      }
+    </p>
+    <p class="restaurant-card__cuisine">{{ restaurant.cuisine }}</p>
+    <p class="restaurant-card__price">{{ priceLabel(restaurant.price_range) }}</p>
+    @if (restaurant.city) {
+      <p class="restaurant-card__city">{{ restaurant.city }}</p>
+    }
+  </div>
+</a>

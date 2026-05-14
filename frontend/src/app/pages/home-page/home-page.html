@@ -1,1 +1,46 @@
-<p>home-page works!</p>
+<div class="home-container">
+  <section class="hero">
+    <h1>Discover Your Next Favorite Restaurant</h1>
+    <p>
+      Browse, reserve, and enjoy exceptional dining experiences at the finest restaurants in your
+      area.
+    </p>
+
+    <div class="hero-search">
+      <app-search-bar
+        [initialFilters]="heroSearchDefaults"
+        [submitOnly]="true"
+        (filtersChange)="onHeroSearch($event)"
+      />
+    </div>
+
+    <div class="hero-actions">
+      <a routerLink="/restaurants" class="btn-primary hero-cta">Browse Restaurants</a>
+      <a routerLink="/restaurants" class="btn-secondary hero-cta-secondary">See Offers</a>
+    </div>
+  </section>
+
+  <section class="featured-section">
+    <h2 class="section-title">Featured Restaurants</h2>
+
+    @if (loading()) {
+      <div class="featured-center"><app-spinner /></div>
+    } @else if (error()) {
+      <app-inline-alert [message]="error()!" />
+    } @else if (featured().length === 0) {
+      <p class="featured-empty">Aucun restaurant pour le moment.</p>
+    } @else {
+      <div class="restaurants-grid">
+        @for (r of featured(); track r.id) {
+          <app-restaurant-card [restaurant]="r" />
+        }
+      </div>
+    }
+  </section>
+
+  <section class="cta-section">
+    <h2>Ready to Make a Reservation?</h2>
+    <p>Join thousands of diners who have discovered amazing restaurants through our platform.</p>
+    <a routerLink="/restaurants" class="btn-primary">Get Started Today</a>
+  </section>
+</div>

@@ -56,10 +56,15 @@ Exemples :
 
 ## Pre-requis local
 
-Avant ton premier commit, installe les pre-commit hooks :
+Pour installer les dependances de dev (Black, Flake8, pytest-cov, pre-commit) :
 
 ```bash
-pip install pre-commit
+pip install -r backend/requirements-dev.txt
+```
+
+Puis active les pre-commit hooks (a faire une fois) :
+
+```bash
 pre-commit install
 ```
 

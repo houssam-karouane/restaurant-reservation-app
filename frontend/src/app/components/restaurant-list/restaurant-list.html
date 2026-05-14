@@ -1,0 +1,35 @@
+@if (restaurants.length === 0) {
+  <app-empty-state
+    title="No restaurants found"
+    message="No restaurants match your filters. Try broadening your search."
+  />
+} @else {
+  <div class="restaurant-list__grid">
+    @for (r of restaurants; track r.id) {
+      <app-restaurant-card [restaurant]="r" />
+    }
+  </div>
+
+  @if (pages > 1) {
+    <nav class="restaurant-list__pagination" aria-label="Pagination">
+      <button
+        type="button"
+        class="btn-secondary"
+        [disabled]="page <= 1"
+        (click)="goToPage(page - 1)"
+      >
+        Previous
+      </button>
+      <span class="restaurant-list__page-info"> Page {{ page }} of {{ pages }} </span>
+      <span class="restaurant-list__total">{{ total }} results </span>
+      <button
+        type="button"
+        class="btn-secondary"
+        [disabled]="page >= pages"
+        (click)="goToPage(page + 1)"
+      >
+        Next
+      </button>
+    </nav>
+  }
+}

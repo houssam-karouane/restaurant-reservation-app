@@ -1,0 +1,85 @@
+@use '../../styles/tokens' as t;
+
+.restaurant-card {
+  background-color: t.$color-surface;
+  border: t.$border-default;
+  border-radius: t.$radius-card;
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 150ms ease;
+  color: inherit;
+  text-decoration: none;
+}
+
+.restaurant-card:hover {
+  border-color: t.$color-border-hover;
+}
+
+.restaurant-card:focus-visible {
+  outline: none;
+  border-color: t.$focus-ring-color;
+  box-shadow: t.$focus-ring-shadow;
+}
+
+.restaurant-card__image {
+  width: 100%;
+  height: 160px;
+  background: linear-gradient(135deg, t.$color-surface-muted 0%, t.$color-border-muted 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: t.$border-muted;
+  overflow: hidden;
+}
+
+.restaurant-card__image-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.restaurant-card__image-text {
+  font-size: t.$text-2xl;
+  font-weight: t.$font-medium;
+  color: t.$color-text-secondary;
+  text-transform: uppercase;
+}
+
+.restaurant-card__body {
+  padding: t.$card-padding-y t.$card-padding-x;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-2;
+}
+
+.restaurant-card__name {
+  font-size: t.$text-lg;
+  margin: 0;
+}
+
+.restaurant-card__meta {
+  margin: 0;
+  font-size: t.$text-sm;
+  color: t.$color-text-secondary;
+}
+
+.restaurant-card__reviews {
+  color: t.$color-text-hint;
+}
+
+.restaurant-card__cuisine,
+.restaurant-card__price,
+.restaurant-card__city {
+  margin: 0;
+  font-size: t.$text-sm;
+  color: t.$color-text-secondary;
+}
+
+.restaurant-card__price {
+  font-weight: t.$font-medium;
+  color: t.$color-text-primary;
+}

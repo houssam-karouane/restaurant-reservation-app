@@ -1,0 +1,32 @@
+<div class="profile-page">
+  <div class="profile-inner">
+    <div class="profile-panel">
+      <h1 class="profile-title">My Profile</h1>
+
+      <ng-container *ngIf="currentUser$ | async as user">
+        <div *ngIf="user" class="profile-fields">
+          <div class="profile-field">
+            <label>Username</label>
+            <p>{{ user.username }}</p>
+          </div>
+          <div class="profile-field">
+            <label>Full name</label>
+            <p>{{ user.full_name || '—' }}</p>
+          </div>
+          <div class="profile-field">
+            <label>Email</label>
+            <p>{{ user.email }}</p>
+          </div>
+          <div class="profile-field">
+            <label>User ID</label>
+            <p>{{ user.id }}</p>
+          </div>
+        </div>
+
+        <div *ngIf="!user" class="profile-state">
+          <p class="profile-error">Unable to load profile information.</p>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

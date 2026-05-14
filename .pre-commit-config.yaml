@@ -1,4 +1,6 @@
-﻿repos:
+# Run with: pre-commit install (one-time) then pre-commit runs on every git commit.
+# Manual full run: pre-commit run --all-files
+repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
     hooks:
@@ -9,17 +11,33 @@
         args: ['--maxkb=500']
       - id: check-merge-conflict
       - id: detect-private-key
+      - id: mixed-line-ending
+        args: ['--fix=lf']
 
+  # ─── Backend: Black + flake8 ────────────────────────────────────────────────
   - repo: https://github.com/psf/black
     rev: 24.10.0
     hooks:
       - id: black
-        files: ^backend/
+        files: ^backend/.*\.py$
         args: ['--line-length=100']
 
   - repo: https://github.com/PyCQA/flake8
     rev: 7.1.1
     hooks:
       - id: flake8
-        files: ^backend/
+        files: ^backend/.*\.py$
         args: ['--max-line-length=100', '--extend-ignore=E203,W503']
+
+  # ─── Frontend: Prettier ─────────────────────────────────────────────────────
+  # Uses the local prettier binary from frontend/node_modules so versions stay
+  # aligned with the project. Files are auto-fixed; if anything changed,
+  # pre-commit fails the commit so you can re-add and commit again.
+  - repo: local
+    hooks:
+      - id: prettier
+        name: prettier (frontend)
+        language: system
+        entry: npx --prefix frontend prettier --write --end-of-line lf
+        files: ^frontend/src/.*\.(ts|html|scss|css)$
+        pass_filenames: true

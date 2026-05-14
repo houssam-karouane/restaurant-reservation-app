@@ -1,0 +1,52 @@
+<div class="reservations-page">
+  <div class="reservations-inner">
+    <div class="reservations-panel">
+      <h1 class="reservations-title">Mes réservations</h1>
+
+      @if (loading()) {
+        <div class="reservations-state"><app-spinner /></div>
+      } @else if (error()) {
+        <app-inline-alert [message]="error()!" />
+      } @else if (rows().length === 0) {
+        <div class="reservations-state">
+          <p>Vous n’avez pas encore de réservation.</p>
+        </div>
+      } @else {
+        <ul class="reservations-list">
+          @for (row of rows(); track row.reservation.id) {
+            <li class="reservation-row">
+              <div class="reservation-row__head">
+                <h2 class="reservation-row__name">
+                  {{ row.restaurant?.name ?? 'Restaurant #' + row.reservation.restaurant_id }}
+                </h2>
+                <span
+                  class="reservation-row__status"
+                  [class.reservation-row__status--confirmed]="
+                    row.reservation.status === 'confirmed'
+                  "
+                  [class.reservation-row__status--pending]="row.reservation.status === 'pending'"
+                  [class.reservation-row__status--cancelled]="
+                    row.reservation.status === 'cancelled'
+                  "
+                >
+                  {{ statusLabel(row.reservation.status) }}
+                </span>
+              </div>
+              <p class="reservation-row__meta">
+                <span>{{ row.reservation.date }}</span>
+                <span>·</span>
+                <span>{{ row.reservation.time }}</span>
+                <span>·</span>
+                <span>{{ row.reservation.number_of_people }} pers.</span>
+                @if (row.restaurant?.city) {
+                  <span>·</span>
+                  <span>{{ row.restaurant?.city }}</span>
+                }
+              </p>
+            </li>
+          }
+        </ul>
+      }
+    </div>
+  </div>
+</div>
