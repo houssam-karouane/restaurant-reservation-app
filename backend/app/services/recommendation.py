@@ -47,10 +47,7 @@ def score_by_preferred_cuisine(
         return 0.0
     if restaurant.cuisine == preferred_cuisines[0]:
         return 3.0
-    if (
-        len(preferred_cuisines) > 1
-        and restaurant.cuisine == preferred_cuisines[1]
-    ):
+    if len(preferred_cuisines) > 1 and restaurant.cuisine == preferred_cuisines[1]:
         return 2.0
     if restaurant.cuisine in preferred_cuisines[2:]:
         return 1.0
@@ -154,9 +151,7 @@ def compute_recommendations(
 
     if is_fallback:
         # Fallback : top 6 restaurants par note
-        top = sorted(restaurants, key=lambda r: r.rating or 0, reverse=True)[
-            :limit
-        ]
+        top = sorted(restaurants, key=lambda r: r.rating or 0, reverse=True)[:limit]
         return [
             {
                 "id": r.id,
@@ -172,9 +167,7 @@ def compute_recommendations(
         ], True
 
     # Calculer les IDs recommandés par users similaires
-    similar_ids = get_similar_users_restaurant_ids(
-        db, user_id, preferred_cuisines
-    )
+    similar_ids = get_similar_users_restaurant_ids(db, user_id, preferred_cuisines)
 
     # Calculer le score combiné pour chaque restaurant
     scored = []
@@ -201,9 +194,7 @@ def compute_recommendations(
                 "price_range": r.price_range,
                 "rating": r.rating or 0.0,
                 "score": round(total_score, 2),
-                "score_reason": (
-                    ", ".join(reason_parts) if reason_parts else "découverte"
-                ),
+                "score_reason": (", ".join(reason_parts) if reason_parts else "découverte"),
             }
         )
 

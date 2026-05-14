@@ -11,7 +11,6 @@ from __future__ import annotations
 
 from datetime import date, datetime, time, timedelta
 
-
 FUTURE_DATE = (date.today() + timedelta(days=10)).isoformat()
 
 
