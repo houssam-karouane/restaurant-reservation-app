@@ -14,7 +14,6 @@ import pytest
 from app.crud import reservation as crud
 from app.models.reservation import Reservation
 
-
 # ─── is_slot_available ───────────────────────────────────────────────────────
 
 
