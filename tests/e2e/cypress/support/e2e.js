@@ -13,7 +13,6 @@ before(() => {
   cy.request({
     url: '/',
     retryOnNetworkFailure: true,
-    retryOnStatusCodeFailure: true,
     timeout: 60000,
     failOnStatusCode: false,
   });
