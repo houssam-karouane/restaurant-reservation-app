@@ -221,10 +221,30 @@ jobs:
             echo "Warming up ${path}..."
             timeout 60 bash -c "until curl -sf -o /dev/null http://localhost:4200${path}; do sleep 2; done"
           done
-          echo "Frontend is UP!"
 
-          # Laisser quelques secondes au container pour stabiliser
-          sleep 5
+          # Stabilité : exiger 5 curls successifs sans échec, avec délai.
+          # nginx peut répondre à une requête puis hoqueter brièvement —
+          # la flake de 1.1 ECONNREFUSED au début de spec vient de là.
+          echo "Stability check: 5 successive successful requests..."
+          STREAK=0
+          ATTEMPTS=0
+          while [ $STREAK -lt 5 ] && [ $ATTEMPTS -lt 30 ]; do
+            ATTEMPTS=$((ATTEMPTS+1))
+            if curl -sf -o /dev/null http://localhost:4200/auth/register \
+              && curl -sf -o /dev/null http://localhost:4200/auth/login; then
+              STREAK=$((STREAK+1))
+              echo "OK streak=$STREAK"
+            else
+              echo "Hiccup at attempt $ATTEMPTS, resetting streak"
+              STREAK=0
+            fi
+            sleep 2
+          done
+          if [ $STREAK -lt 5 ]; then
+            echo "Frontend did not stabilize after $ATTEMPTS attempts"
+            exit 1
+          fi
+          echo "Frontend is stable."
 
       - name: Run Cypress E2E tests
         working-directory: tests/e2e
