@@ -1,32 +1,19 @@
 <div class="profile-page">
-  <div class="profile-inner">
-    <div class="profile-panel">
-      <h1 class="profile-title">My Profile</h1>
+  <div class="profile-page__inner">
+    <header class="profile-page__header">
+      <h1 class="profile-page__title">Profile</h1>
+      <p class="profile-page__intro">Your account, reservations, favorites, and picks.</p>
+    </header>
 
-      <ng-container *ngIf="currentUser$ | async as user">
-        <div *ngIf="user" class="profile-fields">
-          <div class="profile-field">
-            <label>Username</label>
-            <p>{{ user.username }}</p>
-          </div>
-          <div class="profile-field">
-            <label>Full name</label>
-            <p>{{ user.full_name || '—' }}</p>
-          </div>
-          <div class="profile-field">
-            <label>Email</label>
-            <p>{{ user.email }}</p>
-          </div>
-          <div class="profile-field">
-            <label>User ID</label>
-            <p>{{ user.id }}</p>
-          </div>
-        </div>
-
-        <div *ngIf="!user" class="profile-state">
-          <p class="profile-error">Unable to load profile information.</p>
-        </div>
-      </ng-container>
+    <div class="profile-page__grid">
+      <div class="profile-page__stack profile-page__stack--main">
+        <app-profile-info />
+        <app-reservation-history />
+      </div>
+      <div class="profile-page__stack profile-page__stack--side">
+        <app-favorites />
+        <app-recommendations />
+      </div>
     </div>
   </div>
 </div>

@@ -1,0 +1,79 @@
+<section class="profile-card" aria-labelledby="reservation-history-heading">
+  <h2 id="reservation-history-heading" class="profile-card__title">Reservations</h2>
+
+  <div class="reservation-filters" role="tablist" aria-label="Reservation filters">
+    @for (f of filters; track f.id) {
+      <button
+        type="button"
+        class="reservation-filters__btn"
+        [class.reservation-filters__btn--active]="activeFilter() === f.id"
+        (click)="setFilter(f.id)"
+        role="tab"
+        [attr.aria-selected]="activeFilter() === f.id"
+      >
+        {{ f.label }}
+      </button>
+    }
+  </div>
+
+  @if (cancelError()) {
+    <app-inline-alert [message]="cancelError()!" />
+  }
+
+  @if (loading()) {
+    <div class="profile-card__state"><app-spinner /></div>
+  } @else if (error()) {
+    <app-inline-alert [message]="error()!" />
+  } @else if (filteredRows().length === 0) {
+    <div class="profile-card__state">
+      <p>No reservations in this category.</p>
+    </div>
+  } @else {
+    <ul class="reservation-list">
+      @for (row of filteredRows(); track row.reservation.id) {
+        <li class="reservation-row">
+          <div class="reservation-row__head">
+            <h3 class="reservation-row__name">
+              {{ row.restaurant?.name ?? 'Restaurant #' + row.reservation.restaurant_id }}
+            </h3>
+            <span
+              class="reservation-row__status"
+              [class.reservation-row__status--confirmed]="row.reservation.status === 'confirmed'"
+              [class.reservation-row__status--pending]="row.reservation.status === 'pending'"
+              [class.reservation-row__status--cancelled]="row.reservation.status === 'cancelled'"
+            >
+              {{ statusLabel(row.reservation.status) }}
+            </span>
+          </div>
+          <p class="reservation-row__meta">
+            <span>{{ row.reservation.date }}</span>
+            <span aria-hidden="true">·</span>
+            <span>{{ row.reservation.time }}</span>
+            <span aria-hidden="true">·</span>
+            <span>{{ row.reservation.number_of_people }} guests</span>
+            @if (row.restaurant?.city) {
+              <span aria-hidden="true">·</span>
+              <span>{{ row.restaurant?.city }}</span>
+            }
+          </p>
+          @if (canCancel(row)) {
+            <div class="reservation-row__actions">
+              <button
+                type="button"
+                class="reservation-row__cancel"
+                [disabled]="cancellingId() === row.reservation.id"
+                (click)="confirmCancel(row)"
+              >
+                @if (cancellingId() === row.reservation.id) {
+                  Cancelling…
+                } @else {
+                  Cancel
+                }
+              </button>
+            </div>
+          }
+        </li>
+      }
+    </ul>
+  }
+</section>

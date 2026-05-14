@@ -1,0 +1,102 @@
+@use '../../styles/tokens' as t;
+
+.profile-card {
+  background-color: t.$color-surface;
+  border: t.$border-default;
+  border-radius: t.$radius-modal;
+  padding: t.$modal-padding;
+  height: 100%;
+}
+
+.profile-card__title {
+  margin: 0 0 t.$space-6;
+  font-size: t.$text-lg;
+  font-weight: t.$font-medium;
+  letter-spacing: t.$letter-spacing-heading;
+  color: t.$color-text-primary;
+}
+
+.profile-card__state {
+  text-align: center;
+  padding: t.$space-8 0;
+}
+
+.profile-card__state p {
+  margin: 0;
+  font-size: t.$text-sm;
+  color: t.$color-text-secondary;
+}
+
+.restaurant-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: t.$space-4;
+}
+
+@media (min-width: 640px) {
+  .restaurant-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.restaurant-tile {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border-radius: t.$radius-card;
+  border: t.$border-muted;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  background: t.$color-surface-muted;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.restaurant-tile:hover {
+  border-color: t.$color-border;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+}
+
+.restaurant-tile:focus-visible {
+  outline: t.$focus-ring-width solid t.$focus-ring-color;
+  outline-offset: 2px;
+}
+
+.restaurant-tile__placeholder {
+  aspect-ratio: 16 / 9;
+  background: linear-gradient(135deg, t.$avatar-lavender-bg, t.$avatar-blue-bg);
+}
+
+.restaurant-tile__body {
+  padding: t.$space-4;
+  display: flex;
+  flex-direction: column;
+  gap: t.$space-1;
+  flex: 1;
+  background: t.$color-surface;
+}
+
+.restaurant-tile__name {
+  font-size: t.$text-sm;
+  font-weight: t.$font-medium;
+  color: t.$color-text-primary;
+  line-height: t.$line-height-ui;
+}
+
+.restaurant-tile__meta {
+  font-size: t.$text-xs;
+  color: t.$color-text-secondary;
+}
+
+.restaurant-tile__rating {
+  margin-top: auto;
+  padding-top: t.$space-2;
+  font-size: t.$text-xs;
+  font-weight: t.$font-medium;
+  color: t.$color-text-primary;
+}

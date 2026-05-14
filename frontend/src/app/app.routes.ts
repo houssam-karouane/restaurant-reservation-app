@@ -6,9 +6,14 @@ import { ProfilePage } from './pages/profile-page/profile-page';
 import { ReservationsPage } from './pages/reservations-page/reservations-page';
 import { RestaurantsPage } from './pages/restaurants-page/restaurants-page';
 import { RestaurantDetailPage } from './pages/restaurant-detail-page/restaurant-detail-page';
+import { LoginRedirectPage } from './pages/login-redirect-page/login-redirect-page';
 import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
+  {
+    path: 'login',
+    component: LoginRedirectPage,
+  },
   {
     path: '',
     component: HomePage,
