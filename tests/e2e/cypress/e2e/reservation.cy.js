@@ -9,13 +9,14 @@ describe('Parcours 3 : Réservation complète (E2E)', () => {
   let user;
 
   before(() => {
-    cy.fixture('users').then((data) => {
-      user = data.testUser;
+    // Crée un utilisateur dédié au spec via l'API : pas de dépendance
+    // à un user fixture qui n'existe peut-être pas en base.
+    cy.registerUser().then((u) => {
+      user = u;
     });
   });
 
   beforeEach(() => {
-    // Se connecter via la commande custom (rapide, sans UI)
     cy.login(user.email, user.password);
   });
 
@@ -35,14 +36,19 @@ describe('Parcours 3 : Réservation complète (E2E)', () => {
     // Vérifier que le formulaire de réservation est présent
     cy.get('.reservation-form').should('exist');
 
-    // Calculer une date future (demain)
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    const dateStr = tomorrow.toISOString().split('T')[0]; // format YYYY-MM-DD
+    // Date future avec offset unique : le backend interdit deux
+    // réservations confirmées sur (restaurant, date, heure). Sans offset,
+    // les runs successifs en local (volume Postgres persistant) tombent
+    // en 409 sur le même créneau.
+    const ts = Date.now();
+    const future = new Date();
+    future.setDate(future.getDate() + 1 + (ts % 28));
+    const dateStr = future.toISOString().split('T')[0];
+    const hh = String(10 + ((ts / 60) % 10) | 0).padStart(2, '0');
+    const mm = String(ts % 60).padStart(2, '0');
 
-    // Remplir le formulaire (IDs réels du HTML)
     cy.get('#res-date').type(dateStr);
-    cy.get('#res-time').type('19:00');
+    cy.get('#res-time').type(`${hh}:${mm}`);
     cy.get('#res-people').clear().type('2');
 
     // Soumettre la réservation

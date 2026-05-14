@@ -22,6 +22,13 @@ module.exports = defineConfig({
     pageLoadTimeout: 60000,
     requestTimeout: 15000,
     responseTimeout: 30000,
+
+    // Retente automatiquement en cas de flake CI (ECONNREFUSED transitoire,
+    // attente d'hydratation Angular, etc.). N'affecte pas le mode interactif.
+    retries: {
+      runMode: 2,
+      openMode: 0,
+    },
   },
 
   env: {

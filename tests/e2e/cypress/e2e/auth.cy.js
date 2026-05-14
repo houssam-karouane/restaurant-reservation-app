@@ -3,57 +3,51 @@
 // ============================================================
 
 describe('Parcours 1 : Inscription & Connexion', () => {
-  let user;
+  let userFixture;
 
   before(() => {
     cy.fixture('users').then((data) => {
-      user = data.testUser;
+      userFixture = data.testUser;
     });
   });
 
   it('1.1 — Inscription complète', () => {
-    const uniqueEmail = `test_${Date.now()}@example.com`;
-    const uniqueUsername = `user_${Date.now()}`;
-    
-    // Aller directement sur la page (maintenant que le 404 est fixé)
-    cy.visit('/auth/register');
-    
-    cy.get('#username', { timeout: 20000 }).should('be.visible').type(uniqueUsername);
-    cy.get('#full_name').type(user.full_name);
-    cy.get('#email').type(uniqueEmail);
-    cy.get('#password').type(user.password);
-    cy.get('#confirmPassword').type(user.confirmPassword);
+    const ts = Date.now();
+    const uniqueEmail = `test_${ts}@example.com`;
+    const uniqueUsername = `user_${ts}`;
 
-    cy.writeFile('tests/e2e/cypress/fixtures/last_user_tmp.json', { 
-      email: uniqueEmail,
-      username: uniqueUsername 
-    });
+    cy.visit('/auth/register');
+
+    cy.get('#username', { timeout: 20000 }).should('be.visible').type(uniqueUsername);
+    cy.get('#full_name').type(userFixture.full_name);
+    cy.get('#email').type(uniqueEmail);
+    cy.get('#password').type(userFixture.password);
+    cy.get('#confirmPassword').type(userFixture.confirmPassword);
 
     cy.get('button[type="submit"]').click();
-    
-    // Temps d'attente pour la persistance backend en CI
-    cy.wait(3000);
 
-    // VERIFICATION SANS SLASH FINAL
-    cy.url({ timeout: 25000 }).should('include', '/restaurants');
+    // Le composant register redirige vers '/' (HomePage) après création réussie.
+    // NB : le backend /auth/register ne renvoie pas de token ; la connexion
+    // doit être faite séparément via /auth/login (couvert par 1.3).
+    cy.location('pathname', { timeout: 25000 }).should('eq', '/');
   });
 
   it('1.2 — Logout', () => {
-    // S'assurer qu'on est connecté (peut-être via un visit direct si besoin)
-    cy.visit('/restaurants');
-    
-    // Utiliser un sélecteur plus générique si .btn-logout est capricieux
-    cy.get('button', { timeout: 15000 }).contains('Logout').click({ force: true });
+    cy.registerUser().then((user) => {
+      cy.login(user.email, user.password);
+      cy.visit('/restaurants');
 
-    cy.contains('Sign In', { timeout: 15000 }).should('be.visible');
+      cy.contains('button', 'Logout', { timeout: 15000 }).click({ force: true });
+      cy.contains('Sign In', { timeout: 15000 }).should('be.visible');
+    });
   });
 
   it('1.3 — Login', () => {
-    cy.readFile('tests/e2e/cypress/fixtures/last_user_tmp.json').then((lastUser) => {
+    cy.registerUser().then((user) => {
       cy.visit('/auth/login');
 
-      cy.get('#email', { timeout: 15000 }).should('be.visible').type(lastUser.email);
-      cy.get('#password').type('TestPassword123!');
+      cy.get('#email', { timeout: 15000 }).should('be.visible').type(user.email);
+      cy.get('#password').type(user.password);
 
       cy.get('button[type="submit"]').click();
 
