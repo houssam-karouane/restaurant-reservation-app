@@ -2,20 +2,22 @@ describe('Sprint 3: Nouveaux flux (Annulation, Recommandations, Avis)', () => {
   let user;
 
   before(() => {
-    cy.fixture('users').then((data) => {
-      user = data.testUser;
+    // Créer un utilisateur "frais" via l'API plutôt que d'utiliser un utilisateur
+    // statique qui n'existe pas dans la base de données propre de la CI.
+    cy.registerUser().then((newUser) => {
+      user = newUser;
     });
   });
 
   beforeEach(() => {
-    // Connexion rapide avant chaque test
+    // Connexion avec le nouvel utilisateur
     cy.login(user.email, user.password);
   });
 
   it('1. Annulation de réservation', () => {
     // 1. Créer une réservation
     cy.visit('/restaurants');
-    cy.get('.restaurant-card', { timeout: 15000 }).first().click({ force: true });
+    cy.get('.restaurant-tile', { timeout: 15000 }).first().click({ force: true });
     
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
@@ -59,7 +61,7 @@ describe('Sprint 3: Nouveaux flux (Annulation, Recommandations, Avis)', () => {
   it('3. Ajout d\'un avis après réservation', () => {
     // Étape 1 : Aller sur un restaurant pour ajouter un avis
     cy.visit('/restaurants');
-    cy.get('.restaurant-card', { timeout: 15000 }).first().click({ force: true });
+    cy.get('.restaurant-tile', { timeout: 15000 }).first().click({ force: true });
 
     // Étape 2 : Simuler le backend pour autoriser l'avis
     // Le backend exige une réservation 'completed'. On intercepte la requête POST des reviews
