@@ -28,7 +28,7 @@ describe('RestaurantService', () => {
 
     const req = httpMock.expectOne(
       (request) =>
-        request.url === 'http://localhost:8000/api/v1/restaurants' &&
+        request.url === '/api/v1/restaurants' &&
         request.params.get('page') === '2' &&
         request.params.get('limit') === '5' &&
         request.params.get('city') === 'Lyon' &&
@@ -46,7 +46,7 @@ describe('RestaurantService', () => {
 
     const req = httpMock.expectOne(
       (request) =>
-        request.url === 'http://localhost:8000/api/v1/restaurants' &&
+        request.url === '/api/v1/restaurants' &&
         request.params.get('page') === '1' &&
         request.params.keys().length === 1,
     );
