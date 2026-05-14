@@ -1,3 +1,5 @@
+setuptools>=65.0.0
+wheel>=0.38.0
 -r requirements.txt
 pytest==8.3.3
 pytest-asyncio==0.24.0
