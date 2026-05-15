@@ -43,7 +43,9 @@
   color: var(--ds-color-border, #ddd);
   cursor: pointer;
   padding: 0 2px;
-  transition: color 120ms ease-out, transform 120ms ease-out;
+  transition:
+    color 120ms ease-out,
+    transform 120ms ease-out;
 
   &:hover,
   &:focus-visible {

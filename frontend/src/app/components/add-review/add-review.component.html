@@ -27,7 +27,7 @@
             [attr.aria-checked]="form.controls.rating.value === star"
             [attr.aria-label]="star + (star === 1 ? ' étoile' : ' étoiles')"
             [class.is-filled]="
-              (hoverRating() ? star <= hoverRating() : star <= form.controls.rating.value)
+              hoverRating() ? star <= hoverRating() : star <= form.controls.rating.value
             "
             (mouseenter)="hoverRating.set(star)"
             (click)="setRating(star)"

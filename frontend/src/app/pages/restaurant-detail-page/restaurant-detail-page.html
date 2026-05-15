@@ -88,10 +88,7 @@
 
           <div class="detail-page__add-review">
             <h3 class="detail-page__subtitle">Publier un avis</h3>
-            <app-add-review
-              [restaurantId]="r.id"
-              (reviewCreated)="onReviewCreated()"
-            />
+            <app-add-review [restaurantId]="r.id" (reviewCreated)="onReviewCreated()" />
           </div>
         </section>
       </div>
