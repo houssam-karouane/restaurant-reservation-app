@@ -13,8 +13,6 @@ from __future__ import annotations
 
 from datetime import date, time, timedelta
 
-import pytest
-
 from app.models.reservation import Reservation
 from app.models.restaurant import Restaurant
 
