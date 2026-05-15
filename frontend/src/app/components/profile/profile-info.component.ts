@@ -14,8 +14,9 @@ import type { ProfileUser } from '../../models/user';
 import { AuthService } from '../../services/auth.service';
 import { Spinner } from '../atoms/spinner/spinner';
 import { InlineAlert } from '../atoms/inline-alert/inline-alert';
+import { environment } from '../../../environments/environment';
 
-const API_URL = '/api/v1';
+const API_URL = environment.apiUrl;
 
 @Component({
   selector: 'app-profile-info',
