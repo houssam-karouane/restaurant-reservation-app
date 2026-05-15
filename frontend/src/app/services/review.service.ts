@@ -3,8 +3,9 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import type { Review, ReviewCreateRequest } from '../models/review';
+import { environment } from '../../environments/environment';
 
-const API_URL = '/api/v1';
+const API_URL = environment.apiUrl;
 
 @Injectable({ providedIn: 'root' })
 export class ReviewService {
