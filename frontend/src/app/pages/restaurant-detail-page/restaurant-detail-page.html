@@ -77,14 +77,22 @@
         </section>
 
         <section class="detail-page__section" aria-labelledby="reviews-title">
-          <h2 id="reviews-title">Avis</h2>
-          @if (r.review_count > 0) {
-            <p class="detail-page__muted">
-              {{ r.review_count }} avis publiés. Affichage détaillé à venir.
-            </p>
-          } @else {
-            <p class="detail-page__muted">Aucun avis pour le moment.</p>
-          }
+          <h2 id="reviews-title">
+            Avis
+            @if (r.review_count > 0) {
+              <span class="detail-page__meta-muted">({{ r.review_count }})</span>
+            }
+          </h2>
+
+          <app-reviews-list [restaurantId]="r.id" [reloadKey]="reviewsReloadKey()" />
+
+          <div class="detail-page__add-review">
+            <h3 class="detail-page__subtitle">Publier un avis</h3>
+            <app-add-review
+              [restaurantId]="r.id"
+              (reviewCreated)="onReviewCreated()"
+            />
+          </div>
         </section>
       </div>
 
