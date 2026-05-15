@@ -27,11 +27,21 @@ import { AuthService } from '../../services/auth.service';
 import { ToastService } from '../../services/toast.service';
 import { Spinner } from '../../components/atoms/spinner/spinner';
 import { InlineAlert } from '../../components/atoms/inline-alert/inline-alert';
+import { ReviewsListComponent } from '../../components/reviews-list/reviews-list.component';
+import { AddReviewComponent } from '../../components/add-review/add-review.component';
 
 @Component({
   selector: 'app-restaurant-detail-page',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink, Spinner, InlineAlert],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterLink,
+    Spinner,
+    InlineAlert,
+    ReviewsListComponent,
+    AddReviewComponent,
+  ],
   templateUrl: './restaurant-detail-page.html',
   styleUrl: './restaurant-detail-page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -53,6 +63,9 @@ export class RestaurantDetailPage {
   readonly submitError = signal<string | null>(null);
 
   readonly heroImageFailed = signal(false);
+
+  /** Incrémenté après publication d'un avis pour forcer un refetch de la liste. */
+  readonly reviewsReloadKey = signal(0);
 
   readonly today = new Date().toISOString().split('T')[0];
   readonly maxDate = this.computeMaxDate();
@@ -174,6 +187,15 @@ export class RestaurantDetailPage {
 
   onHeroImageError(): void {
     this.heroImageFailed.set(true);
+  }
+
+  onReviewCreated(): void {
+    // Force la reviews-list à refetch + bump le compteur affiché à côté du titre.
+    this.reviewsReloadKey.update((v) => v + 1);
+    const r = this.restaurant();
+    if (r) {
+      this.restaurant.set({ ...r, review_count: (r.review_count ?? 0) + 1 });
+    }
   }
 
   /**
