@@ -17,8 +17,9 @@ import type { Restaurant } from '../../models/restaurant';
 import { mockFavoriteRestaurants } from '../../data/profile-mocks';
 import { Spinner } from '../atoms/spinner/spinner';
 import { InlineAlert } from '../atoms/inline-alert/inline-alert';
+import { environment } from '../../../environments/environment';
 
-const API_URL = '/api/v1';
+const API_URL = environment.apiUrl;
 
 interface FavoriteListResponse {
   items: Restaurant[];

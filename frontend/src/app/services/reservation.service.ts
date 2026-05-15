@@ -7,8 +7,9 @@ import type {
   ReservationCreateRequest,
   ReservationListResponse,
 } from '../models/reservation';
+import { environment } from '../../environments/environment';
 
-const API_URL = '/api/v1';
+const API_URL = environment.apiUrl;
 
 @Injectable({
   providedIn: 'root',

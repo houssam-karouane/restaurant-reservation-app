@@ -4,6 +4,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { BehaviorSubject, Observable, tap, catchError, of } from 'rxjs';
 
 import type { ProfileUser } from '../models/user';
+import { environment } from '../../environments/environment';
 
 interface LoginRequest {
   email: string;
@@ -22,7 +23,7 @@ interface AuthResponse {
   token_type: string;
 }
 
-const API_URL = '/api/v1';
+const API_URL = environment.apiUrl;
 const TOKEN_KEY = 'auth_token';
 
 @Injectable({
