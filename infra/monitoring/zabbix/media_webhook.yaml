@@ -1,0 +1,77 @@
+# Zabbix 7.0 Media Type — generic webhook (Slack-compatible payload).
+#
+# Wire to a Slack Incoming Webhook URL via user-media config. For the
+# demo we ship a no-op default URL; the on-call user can override at
+# their User → Media tab.
+
+zabbix_export:
+  version: "7.0"
+  media_types:
+    - uuid: c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f6
+      name: "Slack Webhook (Restaurant Reservation)"
+      type: WEBHOOK
+      parameters:
+        - name: alert_subject
+          value: '{ALERT.SUBJECT}'
+        - name: alert_message
+          value: '{ALERT.MESSAGE}'
+        - name: severity
+          value: '{TRIGGER.SEVERITY}'
+        - name: trigger_url
+          value: '{TRIGGER.URL}'
+        - name: event_id
+          value: '{EVENT.ID}'
+        - name: webhook_url
+          value: 'https://hooks.slack.com/services/REPLACE/ME/PLEASE'
+      script: |
+        try {
+          var params = JSON.parse(value);
+          var color = ({
+            'Disaster': '#990000',
+            'High': '#cc3300',
+            'Average': '#e67e22',
+            'Warning': '#f1c40f',
+            'Information': '#3498db'
+          })[params.severity] || '#999999';
+
+          var req = new HttpRequest();
+          req.addHeader('Content-Type: application/json');
+
+          var body = JSON.stringify({
+            attachments: [{
+              color: color,
+              title: '[' + params.severity + '] ' + params.alert_subject,
+              text: params.alert_message,
+              footer: 'Zabbix • event ' + params.event_id
+            }]
+          });
+
+          var resp = req.post(params.webhook_url, body);
+          if (req.getStatus() < 200 || req.getStatus() >= 300) {
+            throw 'Slack webhook returned ' + req.getStatus() + ': ' + resp;
+          }
+          return 'OK';
+        } catch (err) {
+          Zabbix.log(4, 'slack webhook failed: ' + err);
+          throw err;
+        }
+      message_templates:
+        - event_source: TRIGGERS
+          operation_mode: PROBLEM
+          subject: "[{TRIGGER.SEVERITY}] {HOST.NAME}: {TRIGGER.NAME}"
+          message: |
+            *Problem started* at {EVENT.TIME} on {EVENT.DATE}.
+            Host: {HOST.NAME}
+            Trigger: {TRIGGER.NAME}
+            Severity: {TRIGGER.SEVERITY}
+            Last value: {ITEM.LASTVALUE1}
+            Event ID: {EVENT.ID}
+
+        - event_source: TRIGGERS
+          operation_mode: RECOVERY
+          subject: "[RESOLVED] {HOST.NAME}: {TRIGGER.NAME}"
+          message: |
+            Recovered at {EVENT.RECOVERY.TIME} on {EVENT.RECOVERY.DATE}.
+            Duration: {EVENT.DURATION}
+            Host: {HOST.NAME}
+            Trigger: {TRIGGER.NAME}

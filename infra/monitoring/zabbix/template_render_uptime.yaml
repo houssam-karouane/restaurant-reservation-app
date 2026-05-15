@@ -1,0 +1,132 @@
+# Zabbix 7.0 export — Restaurant Reservation: Render Uptime
+#
+# Two Web Scenarios that hit the public Render URLs every minute.
+# Triggers on HTTP failure (service down > 30s) and on /health
+# returning a non-200 status.
+#
+# Macros (override per-host):
+#   {$RENDER_BACKEND_URL}  — e.g. https://restaurant-backend.onrender.com
+#   {$RENDER_FRONTEND_URL} — e.g. https://restaurant-frontend.onrender.com
+
+zabbix_export:
+  version: "7.0"
+  template_groups:
+    - uuid: 7df96b18c2854a39b3aad4e7a5be1c0a
+      name: Templates/Applications
+
+  templates:
+    - uuid: 9c2b5e3f4a4d4ad58a9f5a7c0f3d1e21
+      template: "Restaurant Reservation - Render Uptime"
+      name: "Restaurant Reservation - Render Uptime"
+      description: |
+        HTTP availability checks for the Render-hosted backend and frontend.
+        Polls every 60s; alerts on a 30s outage window or non-200 /health.
+      groups:
+        - name: Templates/Applications
+      macros:
+        - macro: "{$RENDER_BACKEND_URL}"
+          value: "https://restaurant-backend.onrender.com"
+        - macro: "{$RENDER_FRONTEND_URL}"
+          value: "https://restaurant-frontend.onrender.com"
+        - macro: "{$SSL_EXPIRY_WARN_DAYS}"
+          value: "14"
+
+      httptests:
+        - uuid: 7ab5cf12d6f44f6098e0b1d2a8e4c601
+          name: "Backend - GET /health"
+          delay: 60s
+          retries: 1
+          steps:
+            - name: "GET /health"
+              url: "{$RENDER_BACKEND_URL}/health"
+              status_codes: "200"
+              follow_redirects: "YES"
+              timeout: 15s
+
+        - uuid: 91c70a32cb674e87a3c91e5d2f9a7b41
+          name: "Frontend - GET /"
+          delay: 60s
+          retries: 1
+          steps:
+            - name: "GET /"
+              url: "{$RENDER_FRONTEND_URL}/"
+              status_codes: "200,304"
+              follow_redirects: "YES"
+              timeout: 15s
+
+      items:
+        - uuid: 31bce2fc55b4498183de4470e0b58e02
+          name: "Backend SSL certificate days remaining"
+          type: HTTP_AGENT
+          key: "ssl.cert.expiry[backend]"
+          delay: 1h
+          value_type: FLOAT
+          units: "days"
+          url: "{$RENDER_BACKEND_URL}/health"
+          # Vector/Zabbix doesn't compute expiry directly via HTTP_AGENT.
+          # The companion external check ssl_expiry.sh writes the value;
+          # this item is the trapper that receives it.
+          # (Replace with a real "Cert" item type if Zabbix Cert.get is
+          #  available in your build; not all Alpine images include it.)
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - "$.ssl.days_remaining"
+
+        - uuid: 4eaa6c0d8d8a4d7892a2dcbd5e6b9b80
+          name: "Frontend SSL certificate days remaining"
+          type: HTTP_AGENT
+          key: "ssl.cert.expiry[frontend]"
+          delay: 1h
+          value_type: FLOAT
+          units: "days"
+          url: "{$RENDER_FRONTEND_URL}/"
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - "$.ssl.days_remaining"
+
+      triggers:
+        - uuid: 5d8b1be3e4e549a5b2b3a04e1cf76ad1
+          expression: "last(/Restaurant Reservation - Render Uptime/web.test.fail[Backend - GET /health])>0"
+          name: "Backend Render service is DOWN"
+          priority: DISASTER
+          description: |
+            Backend HTTP check failed. Render service is either crashed,
+            restarting, or the cold-start exceeded the 15s step timeout
+            repeatedly.
+          manual_close: "YES"
+
+        - uuid: 7d59e7c3aef74c248814a2c5d3b9a3a2
+          expression: "last(/Restaurant Reservation - Render Uptime/web.test.rspcode[Backend - GET /health,GET /health])<>200"
+          name: "Backend /health returned non-200"
+          priority: HIGH
+          description: |
+            /health returned a non-200 status — application is up but
+            reporting unhealthy (DB unreachable, Redis down, migration
+            mid-flight, etc.).
+
+        - uuid: 9b1d7a52bc824ad8a6a2e8c5d6f4a7b1
+          expression: "last(/Restaurant Reservation - Render Uptime/web.test.fail[Frontend - GET /])>0"
+          name: "Frontend Render service is DOWN"
+          priority: HIGH
+
+        - uuid: a4f30c7e8d514d9c8b7c1d2e3f4a5b6c
+          expression: "last(/Restaurant Reservation - Render Uptime/ssl.cert.expiry[backend])<{$SSL_EXPIRY_WARN_DAYS}"
+          name: "Backend SSL certificate expires in less than {$SSL_EXPIRY_WARN_DAYS} days"
+          priority: WARNING
+
+        - uuid: b5e41d8f9d525e0d9b8c1d2e3f4a5b6d
+          expression: "last(/Restaurant Reservation - Render Uptime/ssl.cert.expiry[frontend])<{$SSL_EXPIRY_WARN_DAYS}"
+          name: "Frontend SSL certificate expires in less than {$SSL_EXPIRY_WARN_DAYS} days"
+          priority: WARNING
+
+  graphs:
+    - uuid: c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5
+      name: "Render Backend HTTP Availability"
+      type: NORMAL
+      graph_items:
+        - color: "1A7C11"
+          item:
+            host: "Restaurant Reservation - Render Uptime"
+            key: "web.test.fail[Backend - GET /health]"

@@ -1,0 +1,75 @@
+# Zabbix stack for Railway.
+#
+# Railway supports docker-compose via the "Compose" template. The
+# free plan gives ~500 execution-hours/month across all services in a
+# project — enough for a single-replica Zabbix + Postgres for a demo.
+#
+# IMPORTANT: Railway's free volumes are best-effort. We mount /var/lib
+# but do NOT rely on persistence: history items use short retention,
+# and templates can be re-imported on restart via the init script in
+# this directory.
+#
+# Public URLs:
+#   - zabbix-web   → :8080  (Railway exposes as https://<service>.up.railway.app)
+#   - zabbix-server → :10051 (TCP — exposed only if Railway TCP proxy is enabled)
+#
+# Default credentials (change in the UI after first boot):
+#   Admin / zabbix
+
+version: "3.9"
+
+services:
+  zabbix-db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: zabbix
+      POSTGRES_PASSWORD: ${ZABBIX_DB_PASSWORD:-zabbix}
+      POSTGRES_DB: zabbix
+    volumes:
+      - zabbix_db:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U zabbix -d zabbix"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  zabbix-server:
+    image: zabbix/zabbix-server-pgsql:7.0-alpine-latest
+    depends_on:
+      zabbix-db:
+        condition: service_healthy
+    environment:
+      DB_SERVER_HOST: zabbix-db
+      POSTGRES_USER: zabbix
+      POSTGRES_PASSWORD: ${ZABBIX_DB_PASSWORD:-zabbix}
+      POSTGRES_DB: zabbix
+      # Short retention — Railway has no disk SLA on free.
+      ZBX_HISTORYSTORAGETYPES: ""
+      ZBX_CACHESIZE: 64M
+      ZBX_HISTORYCACHESIZE: 32M
+      ZBX_TRENDCACHESIZE: 16M
+      ZBX_VALUECACHESIZE: 32M
+    ports:
+      - "10051:10051"
+    restart: unless-stopped
+
+  zabbix-web:
+    image: zabbix/zabbix-web-nginx-pgsql:7.0-alpine-latest
+    depends_on:
+      - zabbix-server
+      - zabbix-db
+    environment:
+      ZBX_SERVER_HOST: zabbix-server
+      DB_SERVER_HOST: zabbix-db
+      POSTGRES_USER: zabbix
+      POSTGRES_PASSWORD: ${ZABBIX_DB_PASSWORD:-zabbix}
+      POSTGRES_DB: zabbix
+      PHP_TZ: Europe/Paris
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+volumes:
+  zabbix_db:
+    driver: local

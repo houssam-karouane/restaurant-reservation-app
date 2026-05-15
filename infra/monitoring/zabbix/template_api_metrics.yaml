@@ -1,0 +1,162 @@
+# Zabbix 7.0 export — API metrics scraped from Vector's Prometheus
+# exporter (sink `prometheus_exporter` in vector.aggregator.yaml).
+#
+# Vector exposes Prometheus metrics on :9598. This template scrapes
+# that endpoint with the HTTP agent + Prometheus preprocessing, builds
+# rate items (req/s by class), and alerts on P99 latency + 5xx rate.
+
+zabbix_export:
+  version: "7.0"
+  template_groups:
+    - uuid: 7df96b18c2854a39b3aad4e7a5be1c0a
+      name: Templates/Applications
+
+  templates:
+    - uuid: 1f2e3d4c5b6a7980a1b2c3d4e5f60718
+      template: "Restaurant Reservation - API Metrics"
+      name: "Restaurant Reservation - API Metrics"
+      description: |
+        Scrapes Vector's Prometheus exporter on Railway and derives
+        HTTP request rate, error rate, and latency percentiles for the
+        backend service.
+      groups:
+        - name: Templates/Applications
+      macros:
+        - macro: "{$VECTOR_PROM_URL}"
+          value: "https://vector-aggregator.up.railway.app/metrics"
+        - macro: "{$P99_LATENCY_THRESHOLD_MS}"
+          value: "500"
+        - macro: "{$ERROR_RATE_THRESHOLD_PCT}"
+          value: "1"
+
+      items:
+        - uuid: 21a1b2c3d4e5f60718293a4b5c6d7e8f
+          name: "HTTP requests total (raw)"
+          type: HTTP_AGENT
+          key: "vector.scrape.raw"
+          delay: 30s
+          history: "1d"
+          trends: "0"
+          value_type: TEXT
+          url: "{$VECTOR_PROM_URL}"
+          timeout: 10s
+
+        - uuid: 32b2c3d4e5f60718293a4b5c6d7e8f01
+          name: "Requests/sec (5xx)"
+          type: DEPENDENT
+          key: "http.rps[5xx]"
+          master_item:
+            key: "vector.scrape.raw"
+          value_type: FLOAT
+          units: "rps"
+          preprocessing:
+            - type: PROMETHEUS_PATTERN
+              parameters:
+                - 'restaurant_http_requests_total{class="5xx"}'
+                - value
+            - type: CHANGE_PER_SECOND
+
+        - uuid: 43c3d4e5f60718293a4b5c6d7e8f0102
+          name: "Requests/sec (4xx)"
+          type: DEPENDENT
+          key: "http.rps[4xx]"
+          master_item:
+            key: "vector.scrape.raw"
+          value_type: FLOAT
+          units: "rps"
+          preprocessing:
+            - type: PROMETHEUS_PATTERN
+              parameters:
+                - 'restaurant_http_requests_total{class="4xx"}'
+                - value
+            - type: CHANGE_PER_SECOND
+
+        - uuid: 54d4e5f60718293a4b5c6d7e8f010203
+          name: "Requests/sec (total)"
+          type: DEPENDENT
+          key: "http.rps[total]"
+          master_item:
+            key: "vector.scrape.raw"
+          value_type: FLOAT
+          units: "rps"
+          preprocessing:
+            - type: PROMETHEUS_PATTERN
+              parameters:
+                - 'restaurant_http_requests_total'
+                - value
+            - type: CHANGE_PER_SECOND
+
+        - uuid: 65e5f60718293a4b5c6d7e8f01020304
+          name: "Error rate 5xx (%)"
+          type: CALCULATED
+          key: "http.error_rate[5xx]"
+          params: 'last(//http.rps[5xx]) / ( last(//http.rps[total]) + 0.001 ) * 100'
+          value_type: FLOAT
+          units: "%"
+          delay: 1m
+
+        - uuid: 76f60718293a4b5c6d7e8f0102030405
+          name: "P99 request duration (ms)"
+          type: DEPENDENT
+          key: "http.duration[p99]"
+          master_item:
+            key: "vector.scrape.raw"
+          value_type: FLOAT
+          units: "ms"
+          preprocessing:
+            - type: PROMETHEUS_PATTERN
+              parameters:
+                - 'restaurant_http_request_duration_seconds{quantile="0.99"}'
+                - value
+            - type: MULTIPLIER
+              parameters:
+                - "1000"
+
+        - uuid: 870718293a4b5c6d7e8f010203040506
+          name: "P95 request duration (ms)"
+          type: DEPENDENT
+          key: "http.duration[p95]"
+          master_item:
+            key: "vector.scrape.raw"
+          value_type: FLOAT
+          units: "ms"
+          preprocessing:
+            - type: PROMETHEUS_PATTERN
+              parameters:
+                - 'restaurant_http_request_duration_seconds{quantile="0.95"}'
+                - value
+            - type: MULTIPLIER
+              parameters:
+                - "1000"
+
+        - uuid: 98293a4b5c6d7e8f01020304050607a
+          name: "P50 request duration (ms)"
+          type: DEPENDENT
+          key: "http.duration[p50]"
+          master_item:
+            key: "vector.scrape.raw"
+          value_type: FLOAT
+          units: "ms"
+          preprocessing:
+            - type: PROMETHEUS_PATTERN
+              parameters:
+                - 'restaurant_http_request_duration_seconds{quantile="0.50"}'
+                - value
+            - type: MULTIPLIER
+              parameters:
+                - "1000"
+
+      triggers:
+        - uuid: a93a4b5c6d7e8f01020304050607a8b9
+          # Sustained 5-minute window to avoid alerting on spiky bursts.
+          expression: "min(/Restaurant Reservation - API Metrics/http.duration[p99],5m)>{$P99_LATENCY_THRESHOLD_MS}"
+          name: "P99 latency > {$P99_LATENCY_THRESHOLD_MS}ms for 5m"
+          priority: WARNING
+
+        - uuid: ba4b5c6d7e8f01020304050607a8b9c0
+          expression: "min(/Restaurant Reservation - API Metrics/http.error_rate[5xx],5m)>{$ERROR_RATE_THRESHOLD_PCT}"
+          name: "HTTP 5xx error rate > {$ERROR_RATE_THRESHOLD_PCT}% for 5m"
+          priority: HIGH
+          description: |
+            Sustained server-error rate above threshold. Check Render
+            backend logs and recent deploys.
