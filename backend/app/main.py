@@ -1,4 +1,5 @@
 import logging
+import os
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -15,10 +16,12 @@ app = FastAPI(
     version="1.0.0",
 )
 
-# Configuration CORS (nécessaire pour que le frontend Angular puisse appeler l'API)
+# CORS — origines pilotées par env (BACKEND_CORS_ORIGINS, séparées par des virgules)
+_origins_env = os.getenv("BACKEND_CORS_ORIGINS", "http://localhost:4200")
+_allowed_origins = [o.strip() for o in _origins_env.split(",") if o.strip()]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:4200"],
+    allow_origins=_allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
