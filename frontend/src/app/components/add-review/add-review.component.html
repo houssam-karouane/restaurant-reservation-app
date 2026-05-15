@@ -1,0 +1,66 @@
+@if (!isAuthenticated) {
+  <p class="add-review__hint">
+    <a routerLink="/auth/login">Connectez-vous</a> pour publier un avis.
+  </p>
+} @else {
+  <form
+    [formGroup]="form"
+    (ngSubmit)="onSubmit()"
+    class="add-review"
+    novalidate
+    aria-label="Formulaire d’avis"
+  >
+    <fieldset class="add-review__fieldset" [disabled]="submitting()">
+      <legend>Donnez votre note</legend>
+
+      <div
+        class="add-review__rating"
+        role="radiogroup"
+        aria-label="Note de 1 à 5 étoiles"
+        (mouseleave)="hoverRating.set(0)"
+      >
+        @for (star of stars; track star) {
+          <button
+            type="button"
+            class="add-review__star"
+            role="radio"
+            [attr.aria-checked]="form.controls.rating.value === star"
+            [attr.aria-label]="star + (star === 1 ? ' étoile' : ' étoiles')"
+            [class.is-filled]="
+              hoverRating() ? star <= hoverRating() : star <= form.controls.rating.value
+            "
+            (mouseenter)="hoverRating.set(star)"
+            (click)="setRating(star)"
+          >
+            ★
+          </button>
+        }
+      </div>
+      @if (form.controls.rating.touched && form.controls.rating.invalid) {
+        <p class="error-text">Veuillez choisir une note.</p>
+      }
+    </fieldset>
+
+    <div class="form-group">
+      <label for="review-comment">Commentaire (optionnel)</label>
+      <textarea
+        id="review-comment"
+        formControlName="comment"
+        rows="4"
+        maxlength="500"
+        placeholder="Partagez votre expérience…"
+      ></textarea>
+      @if (form.controls.comment.touched && form.controls.comment.errors?.['maxlength']) {
+        <p class="error-text">Maximum 500 caractères.</p>
+      }
+    </div>
+
+    @if (submitError(); as msg) {
+      <p class="error-text add-review__error" role="alert">{{ msg }}</p>
+    }
+
+    <button type="submit" class="btn-primary" [disabled]="submitting()">
+      {{ submitting() ? 'Publication…' : 'Publier l’avis' }}
+    </button>
+  </form>
+}
