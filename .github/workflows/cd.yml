@@ -1,0 +1,199 @@
+name: CD Pipeline (Render)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  IMAGE_REGISTRY: ghcr.io
+  RENDER_BACKEND_URL: ${{ vars.RENDER_BACKEND_URL || 'https://restaurant-backend.onrender.com' }}
+  RENDER_FRONTEND_URL: ${{ vars.RENDER_FRONTEND_URL || 'https://restaurant-frontend.onrender.com' }}
+
+jobs:
+  build-and-push:
+    name: Build & Push Images (GHCR)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      image_sha: ${{ steps.meta.outputs.sha_short }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set image metadata
+        id: meta
+        run: |
+          echo "sha_short=$(echo ${{ github.sha }} | cut -c1-7)" >> "$GITHUB_OUTPUT"
+          echo "repo_lc=$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_OUTPUT"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.IMAGE_REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_TOKEN || secrets.GITHUB_TOKEN }}
+
+      - name: Build & push backend image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend
+          push: true
+          tags: |
+            ${{ env.IMAGE_REGISTRY }}/${{ steps.meta.outputs.repo_lc }}/backend:${{ github.sha }}
+            ${{ env.IMAGE_REGISTRY }}/${{ steps.meta.outputs.repo_lc }}/backend:latest
+          cache-from: type=gha,scope=backend
+          cache-to: type=gha,mode=max,scope=backend
+
+      - name: Build & push frontend image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          push: true
+          tags: |
+            ${{ env.IMAGE_REGISTRY }}/${{ steps.meta.outputs.repo_lc }}/frontend:${{ github.sha }}
+            ${{ env.IMAGE_REGISTRY }}/${{ steps.meta.outputs.repo_lc }}/frontend:latest
+          cache-from: type=gha,scope=frontend
+          cache-to: type=gha,mode=max,scope=frontend
+
+  deploy-backend:
+    name: Deploy Backend (Render)
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    steps:
+      - name: Trigger Render deploy hook (backend)
+        env:
+          RENDER_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK_BACKEND }}
+        run: |
+          if [ -z "$RENDER_HOOK" ]; then
+            echo "::warning::RENDER_DEPLOY_HOOK_BACKEND not set — simulating deploy."
+            echo "[SIMULATION] curl -X POST \"\$RENDER_DEPLOY_HOOK_BACKEND\""
+            echo "[SIMULATION] would trigger redeploy of backend service on Render."
+            exit 0
+          fi
+          echo "Triggering Render backend deploy hook..."
+          RESPONSE=$(curl -fsSL -X POST "$RENDER_HOOK")
+          echo "Render response: $RESPONSE"
+
+      - name: Wait for backend to come back online
+        env:
+          RENDER_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK_BACKEND }}
+        run: |
+          if [ -z "$RENDER_HOOK" ]; then
+            echo "Simulation mode — skipping polling."
+            exit 0
+          fi
+          echo "Polling ${RENDER_BACKEND_URL}/health (max ~10 min)..."
+          ATTEMPTS=0
+          MAX=40
+          until curl -fsS "${RENDER_BACKEND_URL}/health" >/dev/null 2>&1; do
+            ATTEMPTS=$((ATTEMPTS+1))
+            if [ $ATTEMPTS -ge $MAX ]; then
+              echo "::error::Backend did not respond after $MAX attempts"
+              exit 1
+            fi
+            echo "Attempt $ATTEMPTS/$MAX — backend not ready, sleeping 15s..."
+            sleep 15
+          done
+          echo "Backend is live."
+
+  deploy-frontend:
+    name: Deploy Frontend (Render)
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    steps:
+      - name: Trigger Render deploy hook (frontend)
+        env:
+          RENDER_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK_FRONTEND }}
+        run: |
+          if [ -z "$RENDER_HOOK" ]; then
+            echo "::warning::RENDER_DEPLOY_HOOK_FRONTEND not set — simulating deploy."
+            echo "[SIMULATION] curl -X POST \"\$RENDER_DEPLOY_HOOK_FRONTEND\""
+            echo "[SIMULATION] would trigger redeploy of frontend service on Render."
+            exit 0
+          fi
+          echo "Triggering Render frontend deploy hook..."
+          RESPONSE=$(curl -fsSL -X POST "$RENDER_HOOK")
+          echo "Render response: $RESPONSE"
+
+      - name: Wait for frontend to come back online
+        env:
+          RENDER_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK_FRONTEND }}
+        run: |
+          if [ -z "$RENDER_HOOK" ]; then
+            echo "Simulation mode — skipping polling."
+            exit 0
+          fi
+          echo "Polling ${RENDER_FRONTEND_URL} (max ~10 min)..."
+          ATTEMPTS=0
+          MAX=40
+          until curl -fsS -o /dev/null "${RENDER_FRONTEND_URL}"; do
+            ATTEMPTS=$((ATTEMPTS+1))
+            if [ $ATTEMPTS -ge $MAX ]; then
+              echo "::error::Frontend did not respond after $MAX attempts"
+              exit 1
+            fi
+            echo "Attempt $ATTEMPTS/$MAX — frontend not ready, sleeping 15s..."
+            sleep 15
+          done
+          echo "Frontend is live."
+
+  smoke-tests:
+    name: Smoke Tests (post-deploy)
+    runs-on: ubuntu-latest
+    needs: [deploy-backend, deploy-frontend]
+    steps:
+      - name: Smoke-test backend /health (with cold-start retry)
+        run: |
+          echo "Target: ${RENDER_BACKEND_URL}/health"
+          for i in 1 2 3 4 5; do
+            echo "Attempt $i/5..."
+            CODE=$(curl -sS -o /tmp/health.out -w "%{http_code}" "${RENDER_BACKEND_URL}/health" || echo "000")
+            if [ "$CODE" = "200" ]; then
+              echo "Backend healthy (HTTP 200):"
+              cat /tmp/health.out
+              echo
+              exit 0
+            fi
+            echo "Got HTTP $CODE — likely cold start, sleeping 30s..."
+            sleep 30
+          done
+          echo "::error::Backend /health never returned 200 after 5 attempts"
+          exit 1
+
+      - name: Smoke-test frontend (with cold-start retry)
+        run: |
+          echo "Target: ${RENDER_FRONTEND_URL}"
+          for i in 1 2 3 4 5; do
+            echo "Attempt $i/5..."
+            CODE=$(curl -sS -o /dev/null -w "%{http_code}" "${RENDER_FRONTEND_URL}" || echo "000")
+            if [ "$CODE" = "200" ] || [ "$CODE" = "304" ]; then
+              echo "Frontend up (HTTP $CODE)"
+              exit 0
+            fi
+            echo "Got HTTP $CODE — likely cold start, sleeping 30s..."
+            sleep 30
+          done
+          echo "::error::Frontend never returned 200/304 after 5 attempts"
+          exit 1
+
+  cd:
+    name: CD Status
+    runs-on: ubuntu-latest
+    needs: [build-and-push, deploy-backend, deploy-frontend, smoke-tests]
+    if: always()
+    steps:
+      - name: Aggregate status
+        run: |
+          if [[ "${{ needs.build-and-push.result }}" != "success" || \
+                "${{ needs.deploy-backend.result }}" != "success" || \
+                "${{ needs.deploy-frontend.result }}" != "success" || \
+                "${{ needs.smoke-tests.result }}" != "success" ]]; then
+            echo "::error::CD pipeline failed"
+            exit 1
+          fi
+          echo "Deployment successful."
