@@ -1,0 +1,166 @@
+.profile-card {
+  background-color: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: 0 2px 12px var(--color-shadow);
+  padding: var(--space-6);
+}
+
+.profile-card__title {
+  margin: 0 0 var(--space-6);
+  font-family: var(--font-heading);
+  font-size: var(--text-xl);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-text-primary);
+}
+
+.profile-card__state {
+  text-align: center;
+  padding: var(--space-8) 0;
+}
+
+.profile-card__state p {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+.reservation-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-6);
+}
+
+.reservation-filters__btn {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  padding: 0.5rem 0.85rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-secondary);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition:
+    background var(--motion-duration) var(--motion-ease),
+    color var(--motion-duration) var(--motion-ease),
+    border-color var(--motion-duration) var(--motion-ease);
+}
+
+.reservation-filters__btn:hover {
+  background: color-mix(in srgb, var(--color-bg-secondary) 85%, var(--color-text-primary));
+  border-color: var(--color-border);
+}
+
+.reservation-filters__btn--active {
+  background: var(--color-green-primary);
+  color: var(--color-text-on-green);
+  border-color: var(--color-green-primary);
+}
+
+.reservation-filters__btn:focus-visible {
+  outline: 2px solid var(--color-green-primary);
+  outline-offset: 2px;
+}
+
+.reservation-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.reservation-row {
+  padding: var(--space-4) 0;
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.reservation-row:last-child {
+  border-bottom: none;
+}
+
+.reservation-row__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+
+.reservation-row__name {
+  margin: 0;
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-primary);
+}
+
+.reservation-row__status {
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-bg-secondary);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+
+.reservation-row__status--confirmed {
+  background: var(--color-green-light);
+  color: var(--color-green-primary);
+}
+
+.reservation-row__status--pending {
+  background: var(--color-bg-secondary);
+  color: var(--color-text-secondary);
+}
+
+.reservation-row__status--cancelled {
+  background: color-mix(in srgb, var(--color-accent-red) 12%, var(--color-bg-primary));
+  color: var(--color-accent-red);
+}
+
+.reservation-row__meta {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+.reservation-row__actions {
+  margin-top: var(--space-2);
+}
+
+.reservation-row__cancel {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-primary);
+  color: var(--color-accent-red);
+  cursor: pointer;
+}
+
+.reservation-row__cancel:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--color-accent-red) 10%, var(--color-bg-primary));
+}
+
+.reservation-row__cancel:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.reservation-row__cancel:focus-visible {
+  outline: 2px solid var(--color-green-primary);
+  outline-offset: 2px;
+}

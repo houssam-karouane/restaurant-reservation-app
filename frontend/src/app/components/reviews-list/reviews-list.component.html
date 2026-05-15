@@ -1,0 +1,31 @@
+@if (loading()) {
+  <app-spinner />
+} @else if (error(); as msg) {
+  <app-inline-alert [message]="msg" />
+} @else if (!hasReviews()) {
+  <p class="reviews-list__empty">Aucun avis publié pour le moment.</p>
+} @else {
+  <ul class="reviews-list" aria-label="Liste des avis">
+    @for (review of reviews(); track review.id) {
+      <li class="reviews-list__item">
+        <div class="reviews-list__header">
+          <div class="reviews-list__stars" [attr.aria-label]="'Note : ' + review.rating + ' sur 5'">
+            @for (filled of starsArray(review.rating); track $index) {
+              <span class="reviews-list__star" [class.is-filled]="filled === 1" aria-hidden="true">
+                ★
+              </span>
+            }
+          </div>
+          @if (review.created_at) {
+            <time class="reviews-list__date" [attr.datetime]="review.created_at">
+              {{ review.created_at | date: 'longDate' }}
+            </time>
+          }
+        </div>
+        @if (review.comment) {
+          <p class="reviews-list__comment">{{ review.comment }}</p>
+        }
+      </li>
+    }
+  </ul>
+}

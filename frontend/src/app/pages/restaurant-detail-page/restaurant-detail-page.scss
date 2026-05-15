@@ -1,42 +1,45 @@
-@use '../../styles/tokens' as t;
-
 .detail-page {
-  padding: t.$space-6 0 t.$space-10;
+  padding: var(--space-6) 0 var(--space-10);
   display: flex;
   flex-direction: column;
-  gap: t.$space-6;
+  gap: var(--space-6);
 }
 
 .detail-page__center {
-  padding: t.$space-10 0;
+  padding: var(--space-10) 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: t.$space-4;
+  gap: var(--space-4);
 }
 
 .detail-page__back {
-  font-size: t.$text-sm;
-  color: t.$color-text-secondary;
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
   text-decoration: none;
 }
 
 .detail-page__back:hover {
-  color: t.$color-text-primary;
+  color: var(--color-green-primary);
 }
 
 .detail-page__hero {
   display: grid;
   grid-template-columns: 220px 1fr;
-  gap: t.$space-6;
-  background: t.$color-surface;
-  border: t.$border-default;
-  border-radius: t.$radius-card;
+  gap: var(--space-6);
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: 0 2px 12px var(--color-shadow);
   overflow: hidden;
 }
 
 .detail-page__hero-image {
-  background: linear-gradient(135deg, t.$color-surface-muted 0%, t.$color-border-muted 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-bg-secondary) 0%,
+    color-mix(in srgb, var(--color-border) 70%, var(--color-bg-secondary)) 100%
+  );
   display: flex;
   align-items: center;
   justify-content: center;
@@ -53,88 +56,108 @@
 }
 
 .detail-page__hero-initial {
-  font-size: 64px;
-  font-weight: t.$font-medium;
-  color: t.$color-text-secondary;
+  font-family: var(--font-heading);
+  font-size: 4rem;
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-secondary);
   text-transform: uppercase;
 }
 
 .detail-page__hero-body {
-  padding: t.$space-6 t.$space-6 t.$space-6 0;
+  padding: var(--space-6) var(--space-6) var(--space-6) 0;
   display: flex;
   flex-direction: column;
-  gap: t.$space-2;
+  gap: var(--space-2);
 }
 
 .detail-page__title {
   margin: 0;
-  font-size: t.$text-2xl;
-  letter-spacing: t.$letter-spacing-heading;
+  font-family: var(--font-heading);
+  font-size: var(--text-3xl);
+  letter-spacing: var(--tracking-tight);
 }
 
 .detail-page__meta {
   margin: 0;
   display: flex;
   flex-wrap: wrap;
-  gap: t.$space-2;
-  font-size: t.$text-sm;
-  color: t.$color-text-secondary;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
 }
 
 .detail-page__meta-muted {
-  color: t.$color-text-hint;
+  color: var(--color-text-muted);
 }
 
 .detail-page__address {
   margin: 0;
-  font-size: t.$text-sm;
-  color: t.$color-text-secondary;
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
 }
 
 .detail-page__grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 320px;
-  gap: t.$space-6;
+  gap: var(--space-6);
   align-items: start;
 }
 
 .detail-page__main {
   display: flex;
   flex-direction: column;
-  gap: t.$space-6;
+  gap: var(--space-6);
 }
 
 .detail-page__section {
-  background: t.$color-surface;
-  border: t.$border-default;
-  border-radius: t.$radius-card;
-  padding: t.$space-5;
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: 0 2px 12px var(--color-shadow);
+  padding: var(--space-5);
   display: flex;
   flex-direction: column;
-  gap: t.$space-3;
+  gap: var(--space-3);
 }
 
 .detail-page__section h2 {
   margin: 0;
-  font-size: t.$text-lg;
+  font-family: var(--font-heading);
+  font-size: var(--text-xl);
 }
 
 .detail-page__muted {
   margin: 0;
-  font-size: t.$text-sm;
-  color: t.$color-text-secondary;
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+.detail-page__subtitle {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+}
+
+.detail-page__add-review {
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
 }
 
 .detail-page__gallery {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: t.$space-3;
+  gap: var(--space-3);
 }
 
 .detail-page__gallery-tile {
   aspect-ratio: 1 / 1;
-  background: linear-gradient(135deg, t.$color-surface-muted 0%, t.$color-border-muted 100%);
-  border-radius: t.$radius-btn;
+  background: linear-gradient(
+    135deg,
+    var(--color-bg-secondary) 0%,
+    color-mix(in srgb, var(--color-border) 65%, var(--color-bg-secondary)) 100%
+  );
+  border-radius: var(--radius-image);
   overflow: hidden;
 }
 
@@ -147,79 +170,60 @@
 
 .detail-page__aside {
   position: sticky;
-  top: t.$space-6;
-  background: t.$color-surface;
-  border: t.$border-default;
-  border-radius: t.$radius-card;
-  padding: t.$space-5;
+  top: var(--space-6);
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: 0 2px 12px var(--color-shadow);
+  padding: var(--space-5);
   display: flex;
   flex-direction: column;
-  gap: t.$space-4;
+  gap: var(--space-4);
 }
 
 .detail-page__aside h2 {
   margin: 0;
-  font-size: t.$text-lg;
+  font-family: var(--font-heading);
+  font-size: var(--text-xl);
 }
 
 .reservation-form {
   display: flex;
   flex-direction: column;
-  gap: t.$space-4;
+  gap: var(--space-4);
 }
 
 .reservation-form .form-group {
   display: flex;
   flex-direction: column;
-  gap: t.$space-1;
+  gap: var(--space-1);
 }
 
 .reservation-form label {
-  font-size: t.$text-sm;
-  color: t.$color-text-secondary;
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
 }
 
 .reservation-form input {
-  font-family: t.$font-stack;
-  font-size: t.$text-base;
-  padding: t.$pill-input-padding;
-  border: t.$border-default;
-  border-radius: t.$radius-btn;
-  background: t.$color-surface;
-  color: t.$color-text-primary;
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  padding: 0.65rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
   width: 100%;
 }
 
 .reservation-form input:focus-visible {
   outline: none;
-  border-color: t.$focus-ring-color;
-  box-shadow: t.$focus-ring-shadow;
+  border-color: var(--color-green-primary);
+  box-shadow: var(--focus-ring);
 }
 
 .reservation-form .error-text {
-  color: t.$color-danger;
-  font-size: t.$text-xs;
-}
-
-.reservation-form .btn-primary {
-  background: t.$color-text-primary;
-  color: t.$color-surface;
-  border: 0;
-  border-radius: t.$radius-btn;
-  padding: t.$btn-primary-padding;
-  font-size: t.$text-base;
-  font-weight: t.$font-medium;
-  cursor: pointer;
-  transition: opacity 150ms ease;
-}
-
-.reservation-form .btn-primary:hover:not(:disabled) {
-  opacity: 0.9;
-}
-
-.reservation-form .btn-primary:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+  color: var(--color-accent-red);
+  font-size: var(--text-xs);
 }
 
 @media (max-width: 960px) {
@@ -236,7 +240,7 @@
   }
 
   .detail-page__hero-body {
-    padding: 0 t.$space-5 t.$space-5;
+    padding: 0 var(--space-5) var(--space-5);
   }
 
   .detail-page__gallery {

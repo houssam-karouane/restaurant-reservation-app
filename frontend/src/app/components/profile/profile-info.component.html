@@ -1,0 +1,36 @@
+<section class="profile-card" aria-labelledby="profile-info-heading">
+  <h2 id="profile-info-heading" class="profile-card__title">Account</h2>
+
+  @if (loading()) {
+    <div class="profile-card__state"><app-spinner /></div>
+  } @else if (loadError()) {
+    <app-inline-alert [message]="loadError()!" />
+  } @else {
+    @if (user(); as u) {
+      <dl class="profile-info">
+        <div class="profile-info__row">
+          <dt>Email</dt>
+          <dd>{{ u.email }}</dd>
+        </div>
+        <div class="profile-info__row">
+          <dt>Name</dt>
+          <dd>{{ u.full_name?.trim() || '—' }}</dd>
+        </div>
+        <div class="profile-info__row">
+          <dt>Registration date</dt>
+          <dd>
+            @if (u.created_at) {
+              {{ u.created_at | date: 'mediumDate' }}
+            } @else {
+              —
+            }
+          </dd>
+        </div>
+      </dl>
+    } @else {
+      <div class="profile-card__state">
+        <p>No profile data.</p>
+      </div>
+    }
+  }
+</section>

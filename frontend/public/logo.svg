@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 36" role="img" aria-labelledby="logoTitle">
+  <title id="logoTitle">Restaurant Reservations</title>
+  <rect x="0" y="2" width="32" height="32" rx="8" fill="#4CAF6E"/>
+  <path fill="#ffffff" d="M8 11h2v14H8V11zm4-1h2v16h-2V10zm6 1h1.2L22 25h-2.1l-.45-4.5h-2.9L16.1 25H14l2.8-14H18zm-.9 8.3L17 14.7l-.5 4.6h2z"/>
+  <text x="40" y="25" fill="#1A1A1A" font-family="Fraunces, Georgia, serif" font-size="15" font-weight="600" letter-spacing="-0.02em">Reservations</text>
+</svg>

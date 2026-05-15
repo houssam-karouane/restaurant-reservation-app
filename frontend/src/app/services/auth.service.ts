@@ -3,6 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { isPlatformBrowser } from '@angular/common';
 import { BehaviorSubject, Observable, tap, catchError, of } from 'rxjs';
 
+import type { ProfileUser } from '../models/user';
+import { environment } from '../../environments/environment';
+
 interface LoginRequest {
   email: string;
   password: string;
@@ -20,15 +23,7 @@ interface AuthResponse {
   token_type: string;
 }
 
-interface User {
-  id: number;
-  email: string;
-  username: string;
-  full_name: string | null;
-  is_active: boolean;
-}
-
-const API_URL = '/api/v1';
+const API_URL = environment.apiUrl;
 const TOKEN_KEY = 'auth_token';
 
 @Injectable({
@@ -36,7 +31,7 @@ const TOKEN_KEY = 'auth_token';
 })
 export class AuthService {
   private readonly platformId = inject(PLATFORM_ID);
-  private currentUserSubject = new BehaviorSubject<User | null>(null);
+  private currentUserSubject = new BehaviorSubject<ProfileUser | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
@@ -45,13 +40,15 @@ export class AuthService {
   constructor(private http: HttpClient) {
     if (this.hasToken()) {
       this.isAuthenticatedSubject.next(true);
-      this.getCurrentUser().subscribe({
-        next: (user) => {
-          this.currentUserSubject.next(user);
-        },
-        error: () => {
-          this.logout();
-        },
+      Promise.resolve().then(() => {
+        this.getCurrentUser().subscribe({
+          next: (user) => {
+            this.currentUserSubject.next(user);
+          },
+          error: () => {
+            this.logout();
+          },
+        });
       });
     }
   }
@@ -84,8 +81,18 @@ export class AuthService {
     );
   }
 
-  getCurrentUser(): Observable<User> {
-    return this.http.get<User>(`${API_URL}/users/me`).pipe(
+  /** Latest profile payload from `GET /users/me` (same shape the API returns). */
+  getProfileSnapshot(): ProfileUser | null {
+    return this.currentUserSubject.value;
+  }
+
+  /** Call after a successful `GET /users/me` so the rest of the app sees the same payload. */
+  cacheUserProfile(user: ProfileUser): void {
+    this.currentUserSubject.next(user);
+  }
+
+  getCurrentUser(): Observable<ProfileUser> {
+    return this.http.get<ProfileUser>(`${API_URL}/users/me`).pipe(
       tap((user) => {
         this.currentUserSubject.next(user);
       }),

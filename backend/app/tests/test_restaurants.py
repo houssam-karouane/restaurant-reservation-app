@@ -23,7 +23,11 @@ def db_session():
     db.add_all(
         [
             Restaurant(
-                name="Sakura Tokyo", cuisine="japonaise", city="Paris", price_range=3, rating=4.8
+                name="Sakura Tokyo",
+                cuisine="japonaise",
+                city="Paris",
+                price_range=3,
+                rating=4.8,
             ),
             Restaurant(
                 name="Le Petit Bistrot",
@@ -33,10 +37,18 @@ def db_session():
                 rating=4.5,
             ),
             Restaurant(
-                name="Bella Napoli", cuisine="italienne", city="Lyon", price_range=2, rating=4.2
+                name="Bella Napoli",
+                cuisine="italienne",
+                city="Lyon",
+                price_range=2,
+                rating=4.2,
             ),
             Restaurant(
-                name="Dragon Palace", cuisine="chinoise", city="Paris", price_range=1, rating=3.7
+                name="Dragon Palace",
+                cuisine="chinoise",
+                city="Paris",
+                price_range=1,
+                rating=3.7,
             ),
             Restaurant(
                 name="Tacos del Sur",
@@ -46,10 +58,18 @@ def db_session():
                 rating=3.9,
             ),
             Restaurant(
-                name="Le Grand Luxe", cuisine="française", city="Paris", price_range=4, rating=4.9
+                name="Le Grand Luxe",
+                cuisine="française",
+                city="Paris",
+                price_range=4,
+                rating=4.9,
             ),
             Restaurant(
-                name="Bouchon Lyonnais", cuisine="française", city="Lyon", price_range=2, rating=4.6
+                name="Bouchon Lyonnais",
+                cuisine="française",
+                city="Lyon",
+                price_range=2,
+                rating=4.6,
             ),
         ]
     )

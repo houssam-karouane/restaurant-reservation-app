@@ -1,0 +1,37 @@
+<section class="profile-card" aria-labelledby="favorites-heading">
+  <h2 id="favorites-heading" class="profile-card__title">Favorite restaurants</h2>
+
+  @if (loading()) {
+    <div class="profile-card__state"><app-spinner /></div>
+  } @else if (error()) {
+    <app-inline-alert [message]="error()!" />
+  } @else if (restaurants().length === 0) {
+    <div class="profile-card__state">
+      <p>You have not saved any favorites yet.</p>
+    </div>
+  } @else {
+    <ul class="restaurant-mini-list">
+      @for (r of restaurants(); track r.id) {
+        <li>
+          <a class="restaurant-mini" [routerLink]="['/restaurants', r.id]">
+            <div class="restaurant-mini__body">
+              <span class="restaurant-mini__name">{{ r.name }}</span>
+              <span class="restaurant-mini__meta">
+                @if (r.city) {
+                  <span>{{ r.city }}</span>
+                  <span aria-hidden="true">·</span>
+                }
+                <span>{{ r.cuisine }}</span>
+                @if (r.rating != null) {
+                  <span aria-hidden="true">·</span>
+                  <span>{{ r.rating | number: '1.1-1' }} ★</span>
+                }
+              </span>
+            </div>
+            <span class="restaurant-mini__chevron" aria-hidden="true">›</span>
+          </a>
+        </li>
+      }
+    </ul>
+  }
+</section>

@@ -1,0 +1,166 @@
+# Vector aggregator — deployed on Railway, fed by Render Log Streams.
+#
+# Render Log Streams ship JSON-line payloads over HTTPS to the configured
+# endpoint. Each line includes at minimum: timestamp, message, host, service
+# (the Render service name), level (best-effort), labels.
+#
+# Two HTTP sources are exposed so we can wire one Render Log Stream per
+# service and tag the events at the edge without parsing labels.
+
+api:
+  enabled: true
+  address: 0.0.0.0:8686
+
+sources:
+  render_backend:
+    type: http_server
+    address: 0.0.0.0:9000
+    path: /backend
+    encoding: ndjson
+    method: POST
+
+  render_frontend:
+    type: http_server
+    address: 0.0.0.0:9000
+    path: /frontend
+    encoding: ndjson
+    method: POST
+
+  vector_internal_metrics:
+    type: internal_metrics
+
+transforms:
+  # Tag every event with its service of origin and a coarse "tier".
+  tag_backend:
+    type: remap
+    inputs: [render_backend]
+    source: |
+      .service = "backend"
+      .tier = "api"
+      # Render envelope: { "timestamp": "...", "message": "...", ... }
+      # Promote known fields.
+      .timestamp = parse_timestamp(.timestamp, "%+") ?? now()
+
+  tag_frontend:
+    type: remap
+    inputs: [render_frontend]
+    source: |
+      .service = "frontend"
+      .tier = "web"
+      .timestamp = parse_timestamp(.timestamp, "%+") ?? now()
+
+  # Parse FastAPI / uvicorn access logs into structured fields. Uvicorn's
+  # default access-log format:
+  #   <client> - "<METHOD> <path> HTTP/<v>" <status> -
+  # The application also emits structured JSON logs for business events;
+  # those are passed through unchanged.
+  parse_backend_access:
+    type: remap
+    inputs: [tag_backend]
+    source: |
+      # If the message looks like uvicorn access log, extract fields.
+      parsed, err = parse_regex(
+        .message,
+        r'^(?P<client>\S+)\s+-\s+"(?P<method>[A-Z]+)\s+(?P<path>\S+)\s+HTTP/\S+"\s+(?P<status>\d{3})'
+      )
+      if err == null {
+        .http.method = parsed.method
+        .http.path = parsed.path
+        .http.status = to_int(parsed.status) ?? 0
+        .http.client = parsed.client
+        .event_kind = "access_log"
+
+        # Buckets for downstream metrics.
+        if .http.status >= 500 { .http.class = "5xx" }
+        else if .http.status >= 400 { .http.class = "4xx" }
+        else if .http.status >= 300 { .http.class = "3xx" }
+        else if .http.status >= 200 { .http.class = "2xx" }
+        else { .http.class = "1xx" }
+      } else {
+        # Try structured JSON line (the backend uses python logging
+        # configured to emit JSON in prod). If it parses, merge fields.
+        json_obj, perr = parse_json(.message)
+        if perr == null && is_object(json_obj) {
+          . = merge(., object!(json_obj))
+          .event_kind = "structured"
+        } else {
+          .event_kind = "plaintext"
+        }
+      }
+
+  # Detect error severity for alerting and dashboards.
+  classify_severity:
+    type: remap
+    inputs: [parse_backend_access, tag_frontend]
+    source: |
+      level = downcase(string(.level) ?? "")
+      if level == "" {
+        msg = downcase(string(.message) ?? "")
+        if contains(msg, "error") || contains(msg, "exception") || contains(msg, "traceback") {
+          .level = "error"
+        } else if contains(msg, "warn") {
+          .level = "warning"
+        } else {
+          .level = "info"
+        }
+      } else {
+        .level = level
+      }
+
+  # Aggregate HTTP request metrics: count by status class + latency
+  # buckets. Vector emits these as metrics that Zabbix scrapes from
+  # the Prometheus exporter sink below.
+  http_status_counter:
+    type: log_to_metric
+    inputs: [classify_severity]
+    metrics:
+      - type: counter
+        field: http.status
+        name: http_requests_total
+        namespace: restaurant
+        tags:
+          service: "{{ service }}"
+          method: "{{ http.method }}"
+          status: "{{ http.status }}"
+          class: "{{ http.class }}"
+
+  error_counter:
+    type: log_to_metric
+    inputs: [classify_severity]
+    metrics:
+      - type: counter
+        field: level
+        name: log_events_total
+        namespace: restaurant
+        tags:
+          service: "{{ service }}"
+          level: "{{ level }}"
+
+sinks:
+  # Prometheus-compatible scrape endpoint. Zabbix's HTTP agent template
+  # consumes this on :9598/metrics — see docs/monitoring/alerts.md.
+  prometheus_exporter:
+    type: prometheus_exporter
+    inputs: [http_status_counter, error_counter, vector_internal_metrics]
+    address: 0.0.0.0:9598
+    default_namespace: restaurant
+
+  # Cold-storage / debugging echo. Goes to stdout so Railway captures
+  # it; cheap and good enough for the demo since Railway containers
+  # have no guaranteed disk persistence anyway.
+  console_debug:
+    type: console
+    inputs: [classify_severity]
+    encoding:
+      codec: json
+
+  # Optional Zabbix sender sink — pushes "log_events_total" snapshots
+  # to a Zabbix trapper item every minute, so alerts can fire even if
+  # the Prometheus scrape path is slow. Disabled by default; enable
+  # by setting ZABBIX_TRAPPER_HOST in the Railway env.
+  # zabbix_trapper:
+  #   type: http
+  #   inputs: [error_counter]
+  #   uri: "http://${ZABBIX_TRAPPER_HOST}:10051"
+  #   encoding:
+  #     codec: json
